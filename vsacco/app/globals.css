@@ -1,0 +1,37 @@
+
+:root{
+  --myBlack: #080708;
+  --myBlue: #0074d9;
+  --myRed: #df2935;
+  --myYellow: #fdca40;
+  --myGrey: #e9e9ed;
+  --myWhite: #ffffff;
+  --myGreen: #34a647;
+  --myDark: #1e2228;
+  
+
+  --myDarkBlue: #0c1e41;
+  --myLightBlue: #283753;
+  --myBlueHover: #081730;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  background-color: var(--myWhite);
+  color: var(--myBlack);
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
