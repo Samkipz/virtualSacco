@@ -1,91 +1,104 @@
-"use client"; // for nextjs 13.4 user
+"use client";
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
+import React, { useEffect, useState } from "react";
 import styles from "./slider.module.css";
 
 const TrendingSlider = () => {
-  const filteredItems = [
-    {
-      id: 1,
-      img: "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg?auto=compress&cs=tinysrgb&w=600",
-      description: "camera",
-      price: 200,
-    },
-    {
-      id: 2,
-      img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=600",
-      description: "Phone",
-      price: 100,
-    },
-    {
-      id: 3,
-      img: "https://images.pexels.com/photos/12753820/pexels-photo-12753820.jpeg?auto=compress&cs=tinysrgb&w=600",
-      description: "Laptop",
-      price: 500,
-    },
-    {
-      id: 4,
-      img: "https://images.pexels.com/photos/1649771/pexels-photo-1649771.jpeg?auto=compress&cs=tinysrgb&w=600",
-      description: "Headephone",
-      price: 40,
-    },
-    {
-      id: 5,
-      img: "https://images.pexels.com/photos/163117/keyboard-white-computer-keyboard-desktop-163117.jpeg?auto=compress&cs=tinysrgb&w=600",
-      description: "Keyboard",
-      price: 140,
-    },
-    {
-      id: 6,
-      img: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=600",
-      description: "Gaming Mouse",
-      price: 140,
-    },
-  ];
+  const [slideIndex, setSlideIndex] = useState(1);
+  const totalSlides = 3; // Assuming there are 3 slides, adjust this based on your actual number of slides
 
-  const slideLeft = () => {
-    let slider = document.getElementById("slider");
-    slider.scrollLeft = slider.scrollLeft - 235;
-  };
+  useEffect(() => {
+    showSlides(slideIndex);
+  }, [slideIndex]);
 
-  const slideRight = () => {
-    let slider = document.getElementById("slider");
-    slider.scrollLeft = slider.scrollLeft + 235;
-  };
+  function plusSlides(n) {
+    const newIndex = slideIndex + n;
+    if (newIndex >= 1 && newIndex <= totalSlides) {
+      setSlideIndex(newIndex);
+    } else if (newIndex > totalSlides) {
+      setSlideIndex(1); // Loop back to the beginning
+    } else {
+      setSlideIndex(totalSlides); // Loop to the end
+    }
+  }
+
+  function currentSlide(n) {
+    setSlideIndex(n);
+  }
+
+  function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName(styles.mySlides);
+    if (n > slides.length) {
+      setSlideIndex(1);
+    }
+    if (n < 1) {
+      setSlideIndex(slides.length);
+    }
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    slides[slideIndex - 1].style.display = "block";
+  }
+
   return (
-    <>
-      <div className={styles.trending}>
-        <div className={styles.container}>
-          <div className={styles.titleBtns}>
-            <h3></h3>
-            <div className={styles.btns}>
-              <button title="scroll left" onClick={slideLeft}>
-                <AiOutlineArrowLeft />
-              </button>
-              <button title="scroll right" onClick={slideRight}>
-                <AiOutlineArrowRight />
-              </button>
+    <div>
+      <div className={styles.container}>
+        <div className={`${styles.mySlides} ${styles.fade}`}>
+          <Image
+            fill
+            src="/image5.jpg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            alt=""
+            className={styles.bgImage}
+            priority
+          />
+          <div className={styles.heroCenter}>
+            <h1>Table banking is the future for today!</h1>
+            <div className={styles.btnGrp}>
+              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Learn More about us</Link>
+              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Know our Services</Link>
             </div>
           </div>
-          <div className={styles.rowContainer} id="slider">
-            {filteredItems.map((item) => (
-              <div key={item.id} className={styles.rowItem}>
-                <Link href={`/`} className={styles.link}>
-                  <div className={styles.itemHeader}>
-                    <img src={item.img} alt="product" />
-                  </div>
-                  <div className={styles.itemDescription}>
-                    <p>{item.description}</p>
-                    <p className={styles.itemPrice}>{item.price}$</p>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
         </div>
+
+        <div className={`${styles.mySlides} ${styles.fade}`}>
+          <div className={styles.numbertext}>1 / {totalSlides}</div>
+          <Image
+            fill
+            src="/image5.jpg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            alt=""
+            className={styles.bgImage}
+            priority
+          />
+          <div className={styles.text}>Caption Text 2</div>
+        </div>
+
+        <div className={`${styles.mySlides} ${styles.fade}`}>
+          <div className={styles.numbertext}>1 / {totalSlides}</div>
+          <Image
+            fill
+            src="/image5.jpg"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            alt=""
+            className={styles.bgImage}
+            priority
+          />
+          <div className={styles.text}>Caption Text 3</div>
+        </div>
+
+        <span className={styles.prev} onClick={() => plusSlides(-1)}>
+          ❮❮
+        </span>
+        <span className={styles.next} onClick={() => plusSlides(1)}>
+          ❯❯
+        </span>
       </div>
-    </>
+      <p>Some footer Content</p>
+    </div>
   );
 };
+
 export default TrendingSlider;

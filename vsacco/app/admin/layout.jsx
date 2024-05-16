@@ -1,14 +1,17 @@
 import Navbar from "../ui/navbar/page"
 import Sidebar from "../ui/sidebar/page"
+import styles from './admin.module.css'
 
 
 const layout = ({children}) => {
   return (
-    <div>
-        <div><Sidebar/></div>
-        <div>
+    <div className={styles.container}>
+        <div className={styles.leftBar}>
+          <Sidebar/>
+        </div>
+        <div className={styles.content}>
             <Navbar/>
-            {children}
+            <div className={styles.children}>{children}</div>
         </div>
     </div>
   )

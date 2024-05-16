@@ -12,8 +12,8 @@
 
 .brand{
     float: left;
-    /* padding-top: 25px;
-    padding-bottom: 20px; */
+    padding-top: 15px;
+    padding-bottom: 10px;
     color: var(--myWhite);
 }
 
