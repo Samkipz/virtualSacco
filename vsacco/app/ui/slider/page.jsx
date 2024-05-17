@@ -23,10 +23,6 @@ const HeroSlider = () => {
     }
   }
 
-  function currentSlide(n) {
-    setSlideIndex(n);
-  }
-
   function showSlides(n) {
     let i;
     let slides = document.getElementsByClassName(styles.mySlides);
@@ -48,7 +44,7 @@ const HeroSlider = () => {
         <div className={`${styles.mySlides} ${styles.fade}`}>
           <Image
             fill
-            src="/image5.jpg"
+            src="/image2.jfif"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
             className={styles.bgImage}
@@ -64,30 +60,41 @@ const HeroSlider = () => {
         </div>
 
         <div className={`${styles.mySlides} ${styles.fade}`}>
-          <div className={styles.numbertext}>1 / {totalSlides}</div>
           <Image
             fill
-            src="/image5.jpg"
+            src="/image3.jpeg"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
             className={styles.bgImage}
             priority
           />
-          <div className={styles.text}>Caption Text 2</div>
+          <div className={styles.heroCenter}>
+            <h1>Together we can achieve more!</h1>
+            <div className={styles.btnGrp}>
+              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Learn More about us</Link>
+              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Know our Services</Link>
+            </div>
+          </div>
         </div>
 
         <div className={`${styles.mySlides} ${styles.fade}`}>
-          <div className={styles.numbertext}>1 / {totalSlides}</div>
           <Image
             fill
-            src="/image5.jpg"
+            src="/image4.jpg"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt=""
             className={styles.bgImage}
             priority
           />
-          <div className={styles.text}>Caption Text 3</div>
+          <div className={styles.heroCenter}>
+            <h1>Start your Investment as early as now!</h1>
+            <div className={styles.btnGrp}>
+              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Learn More about us</Link>
+              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Know our Services</Link>
+            </div>
+          </div>
         </div>
+
 
         <span className={styles.prev} onClick={() => plusSlides(-1)}>
           ❮❮
