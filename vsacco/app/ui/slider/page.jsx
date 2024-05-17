@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styles from "./slider.module.css";
 
-const TrendingSlider = () => {
+const HeroSlider = () => {
   const [slideIndex, setSlideIndex] = useState(1);
   const totalSlides = 3; // Assuming there are 3 slides, adjust this based on your actual number of slides
 
@@ -101,4 +101,4 @@ const TrendingSlider = () => {
   );
 };
 
-export default TrendingSlider;
+export default HeroSlider;

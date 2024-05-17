@@ -1,16 +1,19 @@
+"use client"
+import Image from 'next/image'
+import Brand from '../brand/page'
 import styles from './navbar.module.css'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import {MdNotifications, MdOutlineChat} from 'react-icons/md'
 
-const Navbar = () => {
+const Navbar = ({admin}) => {
+  const pathname = usePathname();
+  
   return (
     <div className={styles.container}>
-      <div className={styles.brand}>
-        <div className={styles.brand_name}>
-          <Link href='/'>MQ</Link>
-        </div>
-        <p className={styles.brand_slogan}>Your One Stop Sacco</p>
-      </div>
-      <nav className={styles.nav}>
+      { (!admin) ? (<div className={styles.inContainer}>
+        <Brand/>
+        <nav className={styles.nav}>
           <ul className={styles.navList} data-type="navbar">
               <li className={styles.navItem}>
                 <Link href='/'>Home</Link>
@@ -44,6 +47,32 @@ const Navbar = () => {
               </li>
           </ul>
       </nav>
+        </div>) 
+        : 
+      (
+      <div className={styles.adminNavContainer}>
+        <div className={styles.navTitle}>
+          {pathname.split("/").pop()}
+        </div>
+        <div className={styles.navMenu}>
+          <MdNotifications size={30} />
+          <MdOutlineChat size={30} />
+          <div className={styles.avatar}>
+            <Image 
+              src="/noavatar.png"
+              alt='profile pic'
+              width='40'
+              height='40'
+            />
+            <h6>Some name</h6>
+          </div>
+        </div>
+      </div>
+    )}
+      
+      
+
+      
     </div>
   )
 }

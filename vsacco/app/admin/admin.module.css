@@ -2,9 +2,10 @@
     display: flex;
 }
 .leftBar{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     flex: 1;
     min-height: 100vh;
+    background: var(--myBlue);
 }
 .content{
     flex: 4;

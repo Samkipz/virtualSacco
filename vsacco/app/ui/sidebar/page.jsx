@@ -1,51 +1,58 @@
-import styles from './sidebar.module.css'
-import Link from 'next/link'
+'use client'
+import Brand from "../brand/page";
+import styles from "./sidebar.module.css";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
+  const pathname = usePathname();
+  
   const sideBarItems = [
     {
       title: "Dashboard",
       list: [
         {
           name: "Dashboard",
-          path: "/admin"
+          path: "/admin",
         },
         {
           name: "CBO",
-          path: "/admin/cbo"
+          path: "/admin/cbo",
         },
         {
           name: "Sacco",
-          path: "/admin/sacco"
+          path: "/admin/sacco",
         },
         {
           name: "Accounts",
-          path: "/admin/accounts"
+          path: "/admin/accounts",
         },
         {
           name: "Finances",
-          path: "/admin/finances"
+          path: "/admin/finances",
         },
-      ]
-    }
-  ]
+        {
+          name: "Secretary",
+          path: "/admin/finances",
+        },
+      ],
+    },
+  ];
   return (
     <div className={styles.container}>
-      <div className={styles.brand}>
-        <div className={styles.brand_name}>
-          <Link href='/'>MQ</Link>
-        </div>
-        <p className={styles.brand_slogan}>Your One Stop Sacco</p>
-      </div>
+      <Brand />
 
       <ul className={styles.sideBarMenu}>
         {sideBarItems.map((category) => (
           <li key={category.title}>
             <span>{category.title}</span>
             <ul className={styles.sideBarList}>
-              {category.list.map((listItem) =>(
+              {category.list.map((listItem) => (
                 <li key={listItem.name}>
-                  {listItem.name}
+                  <Link href={listItem.path} 
+                  className={`${styles.listItem} ${pathname === listItem.path && styles.active}`}>
+                    {listItem.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -53,7 +60,7 @@ const Sidebar = () => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
