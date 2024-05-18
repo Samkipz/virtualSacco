@@ -1,0 +1,22 @@
+/* Button */
+.btn {
+    display: inline-block;
+    text-align: center;
+    font-weight: 600;
+  }
+  .btnMd {
+    font-size: 15px;
+    padding: 12px 27px;
+    border-width: 2px;
+  }
+  .btnPrimary {
+    color: var(--myWhite);
+    background: var(--myBlue);
+    border-color: var(--myBlue);
+    border-style: solid;
+  }
+  .btnPrimary:hover {
+    color: var(--myWhite);
+    background: transparent;
+    border-color: var(--myWhite);
+  }

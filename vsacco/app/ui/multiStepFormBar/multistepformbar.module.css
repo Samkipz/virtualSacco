@@ -1,0 +1,16 @@
+.multistepBar{
+    display: flex;
+    border: 1px solid red;
+    justify-content: center;
+}
+
+.multistepItem{
+    display: flex;
+    padding: 20px 10px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.formArea{
+    border: 1px solid blue;
+}
