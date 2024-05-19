@@ -10,24 +10,58 @@ const MultistepFormBar = () => {
   return (
         <div className={styles.multistepBar}>
             <div className={styles.multistepItem}>
-                <FaPeopleGroup />
-                Create Chama
+                <div className={styles.text}>
+                    <FaPeopleGroup />Create Chama
+                </div>
+                <span> 
+                    <h3>1</h3> 
+                    <hr className={styles.myHr}/> 
+                    <h4>❯❯</h4> 
+                </span>
             </div>
+
             <div className={styles.multistepItem}>
-                <MdGroupAdd />
-                Add Members
+                <div className={styles.text}>
+                    <MdGroupAdd />Add Members
+                </div>
+                <span> 
+                    <h3>2</h3> 
+                    <hr className={styles.myHr}/> 
+                    <h4>❯❯</h4> 
+                </span>
             </div>
+
             <div className={styles.multistepItem}>
-                <FaSlideshare />
-                Contribution setup
+                <div className={styles.text}>
+                    <FaSlideshare />Set up contribution
+                </div>
+                <span> 
+                    <h3>3</h3> 
+                    <hr className={styles.myHr}/> 
+                    <h4>❯❯</h4> 
+                </span>
             </div>
+
             <div className={styles.multistepItem}>
-                <RiBankFill />
-                Configure Bank
+                <div className={styles.text}>
+                    <RiBankFill />Configure Bank
+                </div>
+                <span> 
+                    <h3>4</h3> 
+                    <hr className={styles.myHr}/> 
+                    <h4>❯❯</h4> 
+                </span>
             </div>
+                
             <div className={styles.multistepItem}>
-                <GiConfirmed />
-                Confirmaton
+                <div className={styles.text}>
+                    <GiConfirmed />Confirm details
+                </div>
+                <span> 
+                    <h3>5</h3> 
+                    <hr className={styles.myHr}/> 
+                    <h4>❯❯</h4> 
+                </span>
             </div>
         </div>
   )

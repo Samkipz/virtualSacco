@@ -1,6 +1,7 @@
 .container {
     display: flex;
     padding: 20px;
+    flex-direction: column;
 }
 
 .topPart{
@@ -19,4 +20,64 @@
     color: var(--myGreen);
     background: transparent;
     border: 1px solid var(--myGreen);
+}
+
+
+
+.tableContainer{
+    background-color: var(--myDarkBlue);
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 30px;
+    color: var(--myWhite);
+}
+.tableTop{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table{
+    width: 100%;
+}
+
+.table td{
+    padding: 10px;
+}
+
+.user{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.avatar {
+    border-radius: 50px;
+    border: none;
+    object-fit: cover;
+}
+
+.buttons{
+    display: flex;
+    gap: 10px;
+}
+
+.button{
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    color: var(--myWhite);
+    cursor: pointer;
+}
+
+.addButton{
+    background-color: var(--myBlue);
+}
+
+.view{
+    background-color: var(--myGreen);
+}
+
+.delete{
+    background-color: var(--myRed);
 }

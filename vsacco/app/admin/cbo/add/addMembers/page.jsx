@@ -1,8 +1,12 @@
-import React from 'react'
+import Image from "next/image"
+import Link from "next/link"
+import styles from './addmembers.module.css'
 
 const AddMembersForm = () => {
   return (
-    <div>AddMembersForm</div>
+    <div>
+      Add Chama form
+    </div>
   )
 }
 
