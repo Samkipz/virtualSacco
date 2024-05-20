@@ -37,7 +37,7 @@ const Navbar = ({admin}) => {
                   </ul> */}
               </li>
               <li className={styles.navItem}>
-                <Link href='/'>Blog</Link>
+                <Link href='/chamaList'>Our Chamas</Link>
               </li>
               <li className={styles.navItem}>
                 <Link href='/'>Contact Us</Link>
