@@ -5,7 +5,7 @@ import styles from './addmembers.module.css'
 const AddMembersForm = () => {
   return (
     <div>
-      Add Chama form
+      Add Members form
     </div>
   )
 }

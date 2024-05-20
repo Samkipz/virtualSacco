@@ -79,15 +79,19 @@
     width: 100%;
     padding: 12px 20px;
     margin: 20px 0;
-    background-color: var(--myBlue);
-    border: none;
-    color: var(--myWhite);
+    background: transparent;
     border-radius: 2px;
     cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 20px 0 rgba(0, 0, 0, 0.06);
+    border: 1px solid #ccc;
+    font-weight: 600;
 }
 
 .submitButton:hover{
-    background-color: var(--myBlueHover);
+    background-color: var(--myBlue);
+    color: var(--myWhite);
+    border: none;
+    transition: ease-in;
 }
 
 .checkboxToreveal{

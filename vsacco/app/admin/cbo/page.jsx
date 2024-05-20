@@ -2,34 +2,30 @@ import MyBtn from '@/app/ui/button/page'
 import styles from './cbo.module.css'
 import Image from 'next/image'
 import Link from 'next/link'
+import { MdAdd } from "react-icons/md";
+import Search from '@/app/ui/search/search';
 
 const cbo = () => {
   return (
     <div className={styles.container}>
         <div className={styles.topPart}>
-            <MyBtn path='/admin/cbo/add' btnName='Register New Chama' />
+            <MyBtn icon={<MdAdd />} path='/admin/cbo/add' btnName='Register New Chama' />
         </div>
         <div className={styles.top}>Top space</div>
       <div className={styles.tableContainer}>
         <div className={styles.tableTop}>
-          {/* <Search placeholder="Search doctor" /> */}
-          <input type='text' placeholder='Search'/>
-          <Link href="/admin/user/add">
-            <button className={`${styles.button} ${styles.addButton}`}>
-              Add Doctor
-            </button>
-          </Link>
+          <Search placeholder="Search for chama"/>
         </div>
         <table className={styles.table}>
           <thead>
             <tr>
-              <td>Staff No</td>
+              <td>#</td>
               <td>Name</td>
-              <td>Gender</td>
-              <td>DOB</td>
-              <td>Speciality</td>
-              <td>Phone</td>
-              <td>Created At</td>
+              <td>Description</td>
+              <td>Location</td>
+              <td>Address</td>
+              <td>Certificate Number</td>
+              <td>Created On</td>
               <td>Action</td>
             </tr>
           </thead>
@@ -56,6 +52,7 @@ const cbo = () => {
                 <td>13.01.2024</td>
                 <td>
                   <div className={styles.buttons}>
+                    {/* <MyBtn icon=w' /> */}
                     <Link href="/">
                       <button className={`${styles.button} ${styles.view}`}> 
                         View
