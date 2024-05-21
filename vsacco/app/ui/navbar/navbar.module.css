@@ -8,18 +8,22 @@
     min-width: 300px;
     background: var(--myBlue);
     color: var(--myWhite);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    height: 10vh;
 }
 
 .inContainer{
     width: 100%;
     display: flex;
     justify-content: space-between;
+    height: 100%;
 }
 
 .nav{
     display: flex;
     /* float: right; */
     align-items: center;
+    height: 100%;
 }
 
 .nav ul{
@@ -27,7 +31,8 @@
     display: flex;
     flex-direction: row;
     font: inherit;
-
+    height: 100%;
+    align-items: center;
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
@@ -37,13 +42,32 @@
     
 }
 
+.nav ul li{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .navItem a{
     font-weight: 600;
     color: var(--myWhite);
-    padding: 48px 19px 48px 18px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 19px;
 }
 
 .navItem a:hover{
+    background: var(--myWhite);
+    color: var(--myBlack);
+}
+
+.navItem a:hover{
+    background: var(--myWhite);
+    color: var(--myBlack);
+}
+
+.navItem a.active{
     background: var(--myWhite);
     color: var(--myBlack);
 }

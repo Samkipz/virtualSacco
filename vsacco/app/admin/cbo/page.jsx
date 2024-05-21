@@ -1,11 +1,28 @@
 import MyBtn from '@/app/ui/button/page'
 import styles from './cbo.module.css'
-import Image from 'next/image'
 import Link from 'next/link'
 import { MdAdd } from "react-icons/md";
 import Search from '@/app/ui/search/search';
+import prisma from '@/app/lib/prisma';
 
-const cbo = () => {
+const cbo = async () => {
+  const chamaList = await prisma.chama.findMany({
+    where:{
+      deleted: 0,
+    }
+  });
+
+  // Function to format date
+  function formatCreatedDate(isoDateString) {
+    // Parse the ISO date string into a Date object
+    const dte = new Date(isoDateString);
+
+    // Format the date to a human-readable format
+    return dte.toLocaleDateString();
+  }
+
+  let num = 1
+
   return (
     <div className={styles.container}>
         <div className={styles.topPart}>
@@ -30,26 +47,19 @@ const cbo = () => {
             </tr>
           </thead>
           <tbody>
-            
-              <tr>
-                <td>12345</td>
+            {chamaList.map((chama)=>(
+              <tr key={chama.id}>
+                <td> { num++ }</td>
                 <td>
                   <div className={styles.user}>
-                    <Image
-                      src="/noavatar.png"
-                      alt="doctor avatar"
-                      width={40}
-                      height={40}
-                      className={styles.avatar}
-                    />
-                    Sam Kipz
+                    {chama.name}
                   </div>
                 </td>
-                <td>sam@mail.com</td>
-                <td>13.01.1995</td>
-                <td>Dermatologist</td>
-                <td>0712345678</td>
-                <td>13.01.2024</td>
+                <td>{chama.description}</td>
+                <td>{chama.location}</td>
+                <td>{chama.address}</td>
+                <td>{chama.certificate?chama.certificate:'_'}</td>
+                <td>{formatCreatedDate(chama.date_created)}</td>
                 <td>
                   <div className={styles.buttons}>
                     {/* <MyBtn icon=w' /> */}
@@ -64,7 +74,7 @@ const cbo = () => {
                   </div>
                 </td>
               </tr>
-            
+            ))}
           </tbody>
         </table>
         </div>

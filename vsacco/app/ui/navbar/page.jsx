@@ -16,31 +16,21 @@ const Navbar = ({admin}) => {
         <nav className={styles.nav}>
           <ul className={styles.navList} data-type="navbar">
               <li className={styles.navItem}>
-                <Link href='/'>Home</Link>
+                <Link 
+                  href='/' 
+                  className={pathname === '/' ? styles.active : undefined}
+                >
+                  Home
+                </Link>
               </li>
               <li className={styles.navItem}>
-                <Link href='/'>Services</Link>
-                  {/* <a href="index-1.html" class="sf-with-ul">About us</a>
-                  <ul style="display: none;">
-                      <li style="opacity: 0;"><a href="#">Lorem ipsum dolor </a>
-
-                      </li>
-                      <li style="opacity: 0;"><a href="#">Ait amet conse </a></li>
-                      <li class="" style="opacity: 0;"><a href="#" class="sf-with-ul">Ctetur adipisicing elit</a>
-                          <ul style="display: none;">
-                              <li style="opacity: 0;"><a href="#">Lorem ipsum dolor</a></li>
-                              <li style="opacity: 0;"><a href="#">Lorem ipsum dolor</a></li>
-                          </ul>
-                      </li>
-                      <li style="opacity: 0;"><a href="#">Sed do eiusmod </a></li>
-                      <li style="opacity: 0;"><a href="#">Tempor incididunt </a></li>
-                  </ul> */}
+                <Link href='/chamaList' className={pathname === '/chamaList' ? styles.active : undefined}>Our Chamas</Link>
               </li>
               <li className={styles.navItem}>
-                <Link href='/chamaList'>Our Chamas</Link>
+                <Link href='/saccoList' className={pathname === '/saccoList' ? styles.active : undefined}>Our Saccos</Link>
               </li>
               <li className={styles.navItem}>
-                <Link href='/'>Contact Us</Link>
+                <Link href='/register' className={pathname === '/register' ? styles.active : undefined}>Join Us</Link>
               </li>
               <li className={styles.navItem}>
                 <Link href='/'>About Us</Link>

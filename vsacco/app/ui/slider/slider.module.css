@@ -1,5 +1,70 @@
+/* General styles for the slides */
+.mySlides {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
 
-.mySlides {display: none}
+/* Slide in from the left */
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Slide out to the left */
+@keyframes slideOutToLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Slide in from the right */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Slide out to the right */
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Animation classes for slides */
+.slide-in-left {
+  animation: slideInFromLeft 1s ease-in-out forwards;
+}
+
+.slide-out-left {
+  animation: slideOutToLeft 1s ease-in-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInFromRight 1s ease-in-out forwards;
+}
+
+.slide-out-right {
+  animation: slideOutToRight 1s ease-in-out forwards;
+}
+
+
 .bgImage {
   vertical-align: middle;
   object-fit: cover;
@@ -18,7 +83,7 @@
 .prev, .next {
   cursor: pointer;
   position: absolute;
-  top: 50%;
+  top: 47%;
   width: auto;
   padding: 16px;
   margin-top: -22px;

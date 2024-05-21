@@ -6,96 +6,74 @@ import styles from "./slider.module.css";
 
 const HeroSlider = () => {
   const [slideIndex, setSlideIndex] = useState(1);
-  const totalSlides = 3; // Assuming there are 3 slides, adjust this based on your actual number of slides
+  const [prevSlideIndex, setPrevSlideIndex] = useState(null);
+  const totalSlides = 3; // Adjust based on your actual number of slides
 
   useEffect(() => {
-    showSlides(slideIndex);
-  }, [slideIndex]);
+    const interval = setInterval(() => {
+      plusSlides(1);
+    }, 6000); // Change slide every 6 seconds
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
   function plusSlides(n) {
-    const newIndex = slideIndex + n;
-    if (newIndex >= 1 && newIndex <= totalSlides) {
-      setSlideIndex(newIndex);
-    } else if (newIndex > totalSlides) {
-      setSlideIndex(1); // Loop back to the beginning
-    } else {
-      setSlideIndex(totalSlides); // Loop to the end
+    setPrevSlideIndex(slideIndex);
+    let newIndex = slideIndex + n;
+    if (newIndex > totalSlides) {
+      newIndex = 1; // Loop back to the beginning
+    } else if (newIndex < 1) {
+      newIndex = totalSlides; // Loop to the end
     }
-  }
-
-  function showSlides(n) {
-    let i;
-    let slides = document.getElementsByClassName(styles.mySlides);
-    if (n > slides.length) {
-      setSlideIndex(1);
-    }
-    if (n < 1) {
-      setSlideIndex(slides.length);
-    }
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-    slides[slideIndex - 1].style.display = "block";
+    setSlideIndex(newIndex);
   }
 
   return (
     <div>
       <div className={styles.container}>
-        <div className={`${styles.mySlides} ${styles.fade}`}>
-          <Image
-            fill
-            src="/image2.jfif"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            alt=""
-            className={styles.bgImage}
-            priority
-          />
-          <div className={styles.heroCenter}>
-            <h1>Table banking is the future for today!</h1>
-            <div className={styles.btnGrp}>
-              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Learn More about us</Link>
-              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Know our Services</Link>
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className={`${styles.mySlides} ${
+              i === slideIndex ? "slide-in-right" : prevSlideIndex === i ? "slide-out-left" : ""
+            }`}
+            style={{ display: i === slideIndex || i === prevSlideIndex ? "block" : "none" }}
+          >
+            <Image
+              fill
+              src={`/image${i}.jpg`} // Adjust the source based on your images
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              alt=""
+              className={styles.bgImage}
+              priority
+            />
+            <div className={styles.heroCenter}>
+              <h1>
+                {i === 1
+                  ? "Table banking is the future for today!"
+                  : i === 2
+                  ? "Together we can achieve more!"
+                  : i === 3
+                  ?"Start your Investment as early as now!"
+                  : "Build your future with us"}
+              </h1>
+              <div className={styles.btnGrp}>
+                <Link
+                  href="/"
+                  className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}
+                >
+                  Learn More about us
+                </Link>
+                <Link
+                  href="/"
+                  className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}
+                >
+                  Know our Services
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className={`${styles.mySlides} ${styles.fade}`}>
-          <Image
-            fill
-            src="/image3.jpeg"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            alt=""
-            className={styles.bgImage}
-            priority
-          />
-          <div className={styles.heroCenter}>
-            <h1>Together we can achieve more!</h1>
-            <div className={styles.btnGrp}>
-              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Learn More about us</Link>
-              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Know our Services</Link>
-            </div>
-          </div>
-        </div>
-
-        <div className={`${styles.mySlides} ${styles.fade}`}>
-          <Image
-            fill
-            src="/image4.jpg"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            alt=""
-            className={styles.bgImage}
-            priority
-          />
-          <div className={styles.heroCenter}>
-            <h1>Start your Investment as early as now!</h1>
-            <div className={styles.btnGrp}>
-              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Learn More about us</Link>
-              <Link href='/' className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}> Know our Services</Link>
-            </div>
-          </div>
-        </div>
-
-
+        ))}
         <span className={styles.prev} onClick={() => plusSlides(-1)}>
           ❮❮
         </span>
