@@ -8,6 +8,7 @@
   --myWhite: #ffffff;
   --myGreen: #34a647;
   --myDark: #1e2228;
+  --myLightText: #4d4a4a;
   
 
   --myDarkBlue: #0c1e41;
@@ -35,13 +36,11 @@
 }
 
 * + p {
-  margin-top: 5px;
+  margin-top: 3px;
 }
 
 p {
   display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   unicode-bidi: isolate;
