@@ -24,16 +24,18 @@ const Navbar = ({admin}) => {
                 </Link>
               </li>
               <li className={styles.navItem}>
-                <Link href='/chamaList' className={pathname === '/chamaList' ? styles.active : undefined}>Our Chamas</Link>
+                <Link href='/chama' className={pathname === '/chama' ? styles.active : undefined}>Our Chamas</Link>
               </li>
               <li className={styles.navItem}>
-                <Link href='/saccoList' className={pathname === '/saccoList' ? styles.active : undefined}>Our Saccos</Link>
+                <Link href='/sacco' className={pathname === '/sacco' ? styles.active : undefined}>Our Saccos</Link>
+              </li><li className={styles.navItem}>
+                <Link href='/' className={pathname === '/about' ? styles.active : undefined}>About Us</Link>
               </li>
               <li className={styles.navItem}>
                 <Link href='/register' className={pathname === '/register' ? styles.active : undefined}>Join Us</Link>
               </li>
               <li className={styles.navItem}>
-                <Link href='/'>About Us</Link>
+                <Link href='/login' className={pathname === '/login' ? styles.active : undefined}>Login</Link>
               </li>
           </ul>
       </nav>

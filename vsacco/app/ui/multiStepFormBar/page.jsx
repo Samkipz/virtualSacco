@@ -16,7 +16,7 @@ const MultistepFormBar = () => {
                 <span> 
                     <h3>1</h3> 
                     <hr className={styles.myHr}/> 
-                    <h4>❯❯</h4> 
+                    <h4>❯</h4> 
                 </span>
             </div>
 
@@ -27,7 +27,7 @@ const MultistepFormBar = () => {
                 <span> 
                     <h3>2</h3> 
                     <hr className={styles.myHr}/> 
-                    <h4>❯❯</h4> 
+                    <h4>❯</h4> 
                 </span>
             </div>
 
@@ -38,7 +38,7 @@ const MultistepFormBar = () => {
                 <span> 
                     <h3>3</h3> 
                     <hr className={styles.myHr}/> 
-                    <h4>❯❯</h4> 
+                    <h4>❯</h4> 
                 </span>
             </div>
 
@@ -49,7 +49,7 @@ const MultistepFormBar = () => {
                 <span> 
                     <h3>4</h3> 
                     <hr className={styles.myHr}/> 
-                    <h4>❯❯</h4> 
+                    <h4>❯</h4> 
                 </span>
             </div>
                 
@@ -60,7 +60,7 @@ const MultistepFormBar = () => {
                 <span> 
                     <h3>5</h3> 
                     <hr className={styles.myHr}/> 
-                    <h4>❯❯</h4> 
+                    <h4>❯</h4> 
                 </span>
             </div>
         </div>
