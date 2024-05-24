@@ -1,0 +1,7 @@
+.content{
+    height: 100vh;
+}
+.children{
+    border: 1px solid red;
+    display: flex;
+}

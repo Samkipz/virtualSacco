@@ -1,0 +1,305 @@
+.profileContainer {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.row{
+    display: flex;
+    flex-direction: column;
+}
+
+.left{
+    padding: 20px;
+    width: 20vw;
+}
+
+.profilePicArea{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.profilePicArea img{
+    border-radius: 50%;
+    border: none;
+    object-fit: cover;
+}
+
+.userNameInfo{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.h4 {
+    font-weight: 600;
+    color: var(--myLightBlue);
+}
+
+.h6 {
+    font-size: 80%;
+    color: var(--myLightText);
+}
+
+.editBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: var(--myRed);
+    border: 1px solid var(--myRed);
+    color: var(--myWhite);
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.editBtn:hover{
+    background-color: transparent;
+    border: 1px solid var(--myRed);
+    color: var(--myRed);
+}
+
+/* ---------------- Profile Completed ---------------- */
+
+/* Create a container using CSS properties */
+.profileCompleteArea {
+    margin-top: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* Apply CSS properties to uiWidgets class */
+.uiWidgets {
+    position: relative;
+    display: inline-block;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 9rem;
+    margin: 1.5rem;
+    border: 1.2rem solid palegreen;
+    box-shadow: inset 0 0 7px grey;
+
+    border-left-color: var(--myDark);
+    border-top-color: var(--myBlue);
+    border-right-color: var(--myGreen);
+    border-bottom-color: var(--myGrey);
+
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/*  Apply css properties to the second 
+    child of uiWidgets class */
+.uiWidgets:nth-child(2) {
+    border-top-color: chartreuse;
+    border-right-color: white;
+    border-left-color: palegreen;
+    border-bottom-color: white;
+}
+
+/*  Apply css properties to uiWidgets class 
+    and uiValues class*/
+.uiWidgets .uiValues {
+    top: 40px;
+    position: absolute;
+    left: 10px;
+    right: 0;
+    font-weight: 700;
+    font-size: 2.0rem;
+}
+
+.uiWidgets .uiValues h6{
+    font-weight: 400;
+    font-size: small;
+}
+
+/*  Apply css properties to uiWidgets 
+    class and uiLabels class*/
+.uiWidgets .uiLabels {
+
+    left: 0;
+    bottom: -16px;
+    text-shadow: 0 0 4px grey;
+    color: black;
+    position: absolute;
+    width: 100%;
+    font-size: 16px;
+}
+
+
+
+.middle{
+    margin: 25px 20px auto;
+    width: 40vw;
+}
+.profileCard {
+    background: var(--myWhite);
+    color: var(--myBlack);
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.h3 {
+    color: var(--myBlue);
+    font-size: 110%;
+    font-weight: 600;
+}
+.userInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 1em;
+    padding: 0 15px 0 0;
+}
+.lightBlueRegion{
+    margin-top: 10px;
+    background-color: lightblue;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.table tr td{
+    padding-right: 40px;
+}
+.thead td{
+    font-weight: 600;
+}
+
+.table tbody .status p{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 4px;
+    margin: 5px 0;
+    padding: 0 5px;
+    font-weight: 600;
+    gap: 5px;
+}
+
+.table tbody .active{
+    color: var(--myGreen);
+}
+
+.table tbody .pending{
+    color: var(--myYellow);
+}
+
+.table tbody .revoked{
+    color: var(--myRed);
+}
+
+.right{
+    margin: 25px 20px auto;
+    width: 40vw;
+}
+
+.financialSection{
+    margin-top: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.lightRedRegion{
+    /* margin-top: 10px; */
+    background-color: #f48f8f85;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.lightRedRegion h4{
+    color: var(--myRed);
+    display: flex;
+    justify-content: center;
+}
+
+.extraInfo{
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.extraInfo hr{
+    height: 40px;
+    color: #4d4a4a42;;
+}
+
+.smallCol{
+    display: flex;
+    flex-direction: column;
+}
+
+.smallCol p{
+    font-weight: 500;
+    margin-top: 0;
+
+}
+
+.eventItem{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 20px 0 rgba(0, 0, 0, 0.06);
+}
+
+.dateArea{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 50px;
+    border-radius: 5px 0 0 5px;
+    color: var(--myWhite);
+    background-color: var(--myBlueHover);
+    border: none;
+}
+.bgDate{
+    font-size: 140%;
+    font-weight: 700;
+}
+.smallMonth{
+    font-size: 80%;
+}
+.detailsArea{
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.eventDetails{
+    margin: 0;
+}
+.eventTime{
+    display: flex;
+    justify-content: flex-start;
+}
+.eventTime p{
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+
+
+@media (max-width: 768px) {
+    .profileSection {
+        width: 100%;
+        padding: 10px;
+    }
+}

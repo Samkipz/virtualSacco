@@ -1,0 +1,53 @@
+.fileUploadArea{
+    margin: 0 auto;
+    background: var(--myWhite);
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    border: dashed;
+    align-items: center;
+    justify-content: center;
+}
+
+.smBorder{
+    border: 1px solid;
+}
+
+.bgBorder{
+    border: 2px solid;
+}
+
+.uploadLabel{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.upLoadArea{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upLoadArea object{
+    border-radius: 40%;
+    /* rounded-md w-full max-w-xs h-72 */
+}
+
+.upLoadArea button{
+    padding: 5px 10px;
+    margin-top: 20px;
+    text-transform: uppercase;
+    /* text-replace: auto; */
+    outline: none;
+    background: var(--myRed);
+    font-weight: 600;
+    color: var(--myWhite);
+    border-radius: 40%;
+    /* px-4 mt-10 uppercase py-2 tracking-widest outline-none bg-red-600 text-white rounded */
+}
+
+
+

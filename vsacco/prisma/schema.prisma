@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model chama {
+  id           Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name         String   @unique(map: "name_UNIQUE") @db.VarChar(200)
+  description  String   @db.Text
+  location     String   @db.VarChar(200)
+  address      String   @db.VarChar(150)
+  certificate  String?  @db.VarChar(150)
+  date_created DateTime @default(now()) @db.Timestamp(0)
+  deleted      Int      @default(0)
+  user         user[]
+}
+
+model sacco {
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  user        user[]
+}
+
+model user {
+  id          Int       @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  firstname   String    @db.VarChar(50)
+  lastname    String    @db.VarChar(50)
+  email       String    @db.VarChar(50)
+  gender      String    @db.VarChar(50)
+  password    String    @db.VarChar(50)
+  dob         DateTime  @db.Date
+  phone       Int
+  n_id        Bytes     @db.Blob
+  create_time DateTime? @default(now()) @db.DateTime(0)
+  deleted     Int?      @default(0)
+  sacco_id    Int?
+  chama_id    Int?
+  chama       chama?    @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
+  sacco       sacco?    @relation(fields: [sacco_id], references: [id], onDelete: Cascade, map: "fk_user_sacco")
+
+  @@index([chama_id], map: "fk_user_chama1_idx")
+  @@index([sacco_id], map: "fk_user_sacco_idx")
+}
