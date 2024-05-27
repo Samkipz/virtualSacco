@@ -4,13 +4,28 @@
     display: flex;
     flex-direction: column;
     width: auto;
-    border: dashed;
+    
     align-items: center;
     justify-content: center;
+    height: 240%;
+    cursor: pointer;
+}
+
+.fileUploadArea input{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .smBorder{
-    border: 1px solid;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: dashed;
 }
 
 .bgBorder{

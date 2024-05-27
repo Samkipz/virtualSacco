@@ -66,7 +66,7 @@ const FileUpload = () => {
               
               onDrop={handleOnDrop}
               
-              className={`${fileEnter ? styles.bgBorder : styles.smBorder } ${styles.fileUploadArea}`}
+              className={`${fileEnter ? styles.bgBorder : styles.smBorder} ${styles.fileUploadArea}`}
             >
               <label htmlFor="file" className={styles.uploadLabel}>
                 Click to upload or drag and drop

@@ -38,10 +38,10 @@ model user {
   n_id        Bytes     @db.Blob
   create_time DateTime? @default(now()) @db.DateTime(0)
   deleted     Int?      @default(0)
-  sacco_id    Int?
-  chama_id    Int?
-  chama       chama?    @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
-  sacco       sacco?    @relation(fields: [sacco_id], references: [id], onDelete: Cascade, map: "fk_user_sacco")
+  sacco_id    Int
+  chama_id    Int
+  chama       chama     @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
+  sacco       sacco     @relation(fields: [sacco_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_sacco")
 
   @@index([chama_id], map: "fk_user_chama1_idx")
   @@index([sacco_id], map: "fk_user_sacco_idx")

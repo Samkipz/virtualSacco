@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import styles from './register.module.css';
+import styles from './registerPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
 import FileUpload from '../ui/fileUpload/page';
@@ -56,7 +56,6 @@ const Register = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.contentSection}>
         <form onSubmit={handleSubmit} className={styles.formSection}>
           <div className={`${styles.col} ${styles.left}`}>
             <h2 className={styles.h2}>General Information</h2>
@@ -101,27 +100,8 @@ const Register = () => {
                 />
               </div>
             </div>
-            <div className={styles.inputArea}>
-              <div className={styles.halfWidth}>
-                <input
-                  type="file"
-                  name="idFile"
-                  onChange={handleChange}
-                  required
-                  id="idFiles"
-                />
-                <label htmlFor="idFiles">Upload National ID</label>
-              </div>
-              <div className={styles.halfWidth}>
-                <input
-                  type="file"
-                  name="avatarFile"
-                  onChange={handleChange}
-                  required
-                  id="avatarFile"
-                />
-                <label htmlFor="avatarFile">Upload Profile pic</label>
-              </div>
+            <div className={styles.uploadID}>
+              <label>Upload National ID</label>
               <FileUpload/>
             </div>
           </div>
@@ -200,7 +180,6 @@ const Register = () => {
             </div>
           </div>
         </form>
-      </div>
     </div>
   );
 };
