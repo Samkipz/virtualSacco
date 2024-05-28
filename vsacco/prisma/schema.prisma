@@ -29,20 +29,33 @@ model sacco {
 model user {
   id          Int       @id @unique(map: "id_UNIQUE") @default(autoincrement())
   firstname   String    @db.VarChar(50)
-  lastname    String    @db.VarChar(50)
-  email       String    @db.VarChar(50)
+  othernames  String    @db.VarChar(50)
   gender      String    @db.VarChar(50)
-  password    String    @db.VarChar(50)
   dob         DateTime  @db.Date
-  phone       Int
-  n_id        Bytes     @db.Blob
+  idNum       Int       @unique(map: "idNum_UNIQUE")
+  email       String    @db.VarChar(50)
+  phone1      String    @db.VarChar(50)
+  phone2      String?   @db.VarChar(45)
+  password    String    @db.VarChar(200)
   create_time DateTime? @default(now()) @db.DateTime(0)
   deleted     Int?      @default(0)
-  sacco_id    Int
-  chama_id    Int
-  chama       chama     @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
-  sacco       sacco     @relation(fields: [sacco_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_sacco")
+  sacco_id    Int?
+  chama_id    Int?
+  idfile      idfile[]
+  chama       chama?    @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
+  sacco       sacco?    @relation(fields: [sacco_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_sacco")
 
   @@index([chama_id], map: "fk_user_chama1_idx")
   @@index([sacco_id], map: "fk_user_sacco_idx")
+}
+
+model idfile {
+  id           Int      @id @default(autoincrement())
+  size         Int
+  type         String   @db.VarChar(100)
+  lastModified DateTime @db.DateTime(0)
+  user_id      Int
+  user         user     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_idfile_user1")
+
+  @@index([user_id], map: "fk_idfile_user1_idx")
 }

@@ -7,8 +7,14 @@
     
     align-items: center;
     justify-content: center;
-    height: 240%;
+    height: 180%;
     cursor: pointer;
+}
+
+.fileUploadArea label{
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
 }
 
 .fileUploadArea input{
@@ -17,6 +23,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0;
+    z-index: -1;
 }
 
 .smBorder{
@@ -29,7 +37,7 @@
 }
 
 .bgBorder{
-    border: 2px solid;
+    border: 1px solid;
 }
 
 .uploadLabel{
@@ -47,21 +55,28 @@
 }
 
 .upLoadArea object{
-    border-radius: 40%;
+    width: 300px;
+    height: 100px;
+    object-fit: contain;
     /* rounded-md w-full max-w-xs h-72 */
 }
 
-.upLoadArea button{
+.upLoadArea span{
     padding: 5px 10px;
-    margin-top: 20px;
-    text-transform: uppercase;
-    /* text-replace: auto; */
+    margin-top: 15px;
     outline: none;
-    background: var(--myRed);
-    font-weight: 600;
+    background: var(--myBlue);
     color: var(--myWhite);
-    border-radius: 40%;
-    /* px-4 mt-10 uppercase py-2 tracking-widest outline-none bg-red-600 text-white rounded */
+    width: 80%;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.upLoadArea span:hover{
+    color: var(--myBlue);
+    background-color: var(--myWhite);
+    border: 1px solid var(--myBlue);
 }
 
 

@@ -11,8 +11,8 @@ const Register = () => {
     othernames: '',
     gender: '',
     dob: '',
+    idNum: '',
     idFile: null,
-    avatarFile: null,
     email: '',
     phone1: '',
     phone2: '',
@@ -29,10 +29,16 @@ const Register = () => {
     }));
   };
 
+  const handleFileUpload = (file) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      idFile: file,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Create a FormData object to handle file uploads
     const data = new FormData();
     for (const key in formData) {
       data.append(key, formData[key]);
@@ -100,9 +106,19 @@ const Register = () => {
                 />
               </div>
             </div>
+            <div className={styles.inputArea}>
+              <input
+                type="number"
+                placeholder="ID/Passport Number"
+                name="idNum"
+                value={formData.idNum}
+                onChange={handleChange}
+                required
+              />
+            </div>
             <div className={styles.uploadID}>
-              <label>Upload National ID</label>
-              <FileUpload/>
+              <label>Upload National ID Image</label>
+              <FileUpload onFileUpload={handleFileUpload}/>
             </div>
           </div>
           <div className={`${styles.col} ${styles.right}`}>
@@ -122,7 +138,7 @@ const Register = () => {
                 <input
                   type="text"
                   name="phone1"
-                  placeholder="Phone number e.g. 0712345678"
+                  placeholder="Phone e.g. 0712345678"
                   value={formData.phone1}
                   onChange={handleChange}
                   required
@@ -132,7 +148,7 @@ const Register = () => {
                 <input
                   type="text"
                   name="phone2"
-                  placeholder="Alternative Phone number"
+                  placeholder="Alternative number"
                   value={formData.phone2}
                   onChange={handleChange}
                   required
