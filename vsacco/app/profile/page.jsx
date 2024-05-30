@@ -229,7 +229,7 @@ const Profile = () => {
               </div>
               <hr />
               <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Chamas</h6>
+                <h6 className={styles.h6}>Saccos</h6>
                 <p>1 Sacco</p>
               </div>
             </div>

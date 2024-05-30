@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import styles from './login.module.css';
+import styles from './loginPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
 
