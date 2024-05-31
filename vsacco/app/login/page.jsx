@@ -6,7 +6,7 @@ import { ImEnter } from "react-icons/im";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    idNum: '',
     password: '',
     remember: false,
   });
@@ -49,10 +49,10 @@ const Login = () => {
             <h2 className={styles.h2}>Login</h2>
             <div className={styles.inputArea}>
               <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
+                type="number"
+                name="idNum"
+                placeholder="ID/Passport Number"
+                value={formData.idNum}
                 onChange={handleChange}
                 required
               />
