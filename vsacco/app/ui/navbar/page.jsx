@@ -1,50 +1,26 @@
-"use client"
 import Image from 'next/image'
 import Brand from '../brand/page'
 import styles from './navbar.module.css'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {MdNotifications, MdOutlineChat} from 'react-icons/md'
+import Nav from './nav/nav'
+import { auth } from '@/app/api/auth/auth'
 
-const Navbar = ({admin}) => {
-  const pathname = usePathname();
-  
+const Navbar = async ({admin}) => {
+  const session = await auth();
+  console.log(session);
+   
   return (
     <div className={styles.container}>
       { (!admin) ? (<div className={styles.inContainer}>
         <Brand/>
-        <nav className={styles.nav}>
-          <ul className={styles.navList} data-type="navbar">
-              <li className={styles.navItem}>
-                <Link 
-                  href='/' 
-                  className={pathname === '/' ? styles.active : undefined}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link href='/chama' className={pathname === '/chama' ? styles.active : undefined}>Our Chamas</Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link href='/sacco' className={pathname === '/sacco' ? styles.active : undefined}>Our Saccos</Link>
-              </li><li className={styles.navItem}>
-                <Link href='/' className={pathname === '/about' ? styles.active : undefined}>About Us</Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link href='/register' className={pathname === '/register' ? styles.active : undefined}>Join Us</Link>
-              </li>
-              <li className={styles.navItem}>
-                <Link href='/login' className={pathname === '/login' ? styles.active : undefined}>Login</Link>
-              </li>
-          </ul>
-      </nav>
+        <Nav/>
         </div>) 
         : 
       (
       <div className={styles.adminNavContainer}>
         <div className={styles.navTitle}>
-          {pathname.split("/").pop()}
+          {/* {pathname.split("/").pop()} */}
+          Admin
         </div>
         <div className={styles.navMenu}>
           <MdNotifications size={30} />

@@ -36,7 +36,6 @@ export const { signIn, signOut, auth } = NextAuth({
         },
         authorize: async (credentials) => {
           try {
-            console.log("--------------- credentials----", credentials)
             const user = await login(credentials);
             return user;
           } catch (err) {
@@ -44,16 +43,23 @@ export const { signIn, signOut, auth } = NextAuth({
           }
         },
       }),
-    // CredentialsProvider({
-    //   async authorize({ credentials }) {
-
-    //     try{
-    //         const user = await login(credentials);
-    //         return user;
-    //     }catch(err){
-    //         return null;
-    //     }
-    //   },
-    // }),
   ],
+  callbacks:{
+    async jwt({token, user}){
+      if (user) {
+        token.firstname = user.firstname,
+        token.othernames = user.othernames,
+        token.idNum = user.idNum
+      }
+      return token;
+    },
+    async session({session, token}){
+      if (token) {
+        session.firstname = token.firstname,
+        session.othernames = token.othernames,
+        session.idNum = token.idNum
+      }
+      return session;
+    },
+  }
 })
