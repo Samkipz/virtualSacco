@@ -7,7 +7,7 @@ import styles from "./slider.module.css";
 const HeroSlider = () => {
   const [slideIndex, setSlideIndex] = useState(1);
   const [prevSlideIndex, setPrevSlideIndex] = useState(null);
-  const totalSlides = 3; // Adjust based on your actual number of slides
+  const totalSlides = 4; // Adjust based on your actual number of slides
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -15,9 +15,9 @@ const HeroSlider = () => {
     }, 6000); // Change slide every 6 seconds
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []);
+  }, [slideIndex]);
 
-  function plusSlides(n) {
+  const plusSlides = (n) => {
     setPrevSlideIndex(slideIndex);
     let newIndex = slideIndex + n;
     if (newIndex > totalSlides) {
@@ -26,7 +26,7 @@ const HeroSlider = () => {
       newIndex = totalSlides; // Loop to the end
     }
     setSlideIndex(newIndex);
-  }
+  };
 
   return (
     <div>
@@ -35,7 +35,7 @@ const HeroSlider = () => {
           <div
             key={i}
             className={`${styles.mySlides} ${
-              i === slideIndex ? "slide-in-right" : prevSlideIndex === i ? "slide-out-left" : ""
+              i === slideIndex ? styles['slide-in-right'] : prevSlideIndex === i ? styles['slide-out-left'] : ""
             }`}
             style={{ display: i === slideIndex || i === prevSlideIndex ? "block" : "none" }}
           >
@@ -54,7 +54,7 @@ const HeroSlider = () => {
                   : i === 2
                   ? "Together we can achieve more!"
                   : i === 3
-                  ?"Start your Investment as early as now!"
+                  ? "Start your Investment as early as now!"
                   : "Build your future with us"}
               </h1>
               <div className={styles.btnGrp}>

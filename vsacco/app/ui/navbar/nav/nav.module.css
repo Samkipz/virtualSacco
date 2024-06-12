@@ -1,12 +1,10 @@
-
-.nav{
+.nav {
     display: flex;
-    /* float: right; */
     align-items: center;
     height: 100%;
 }
 
-.nav ul{
+.nav ul {
     list-style: none;
     display: flex;
     flex-direction: row;
@@ -19,16 +17,15 @@
     margin-inline-end: 0px;
     padding-inline-start: 40px;
     unicode-bidi: isolate;
-    
 }
 
-.nav ul li{
+.nav ul li {
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-.navItem a{
+.navItem a {
     font-weight: 600;
     color: var(--myWhite);
     height: 100%;
@@ -37,17 +34,17 @@
     padding: 0 19px;
 }
 
-.navItem a:hover{
+/* .navItem a:hover {
+    background: var(--myWhite);
+    color: var(--myBlack);
+} */
+
+.navItem a.active {
     background: var(--myWhite);
     color: var(--myBlack);
 }
 
-.navItem a:hover{
-    background: var(--myWhite);
-    color: var(--myBlack);
-}
-
-.navItem a.active{
+.navItem a.activeHover {
     background: var(--myWhite);
     color: var(--myBlack);
 }
