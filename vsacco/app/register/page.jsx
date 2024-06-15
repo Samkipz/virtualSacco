@@ -34,7 +34,7 @@ const Register = () => {
       ...prevData,
       idFile: file,
     }));
-  };
+  }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();

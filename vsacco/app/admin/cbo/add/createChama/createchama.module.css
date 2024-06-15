@@ -13,7 +13,7 @@
 }
 .label{
     font-weight: 500;
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
 }
@@ -75,6 +75,7 @@
 }
 
 .submitButton{
+    color: var(--myBlue);;
     width: 100%;
     padding: 12px 20px;
     margin: 20px 0;
@@ -82,14 +83,13 @@
     border-radius: 2px;
     cursor: pointer;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 20px 0 rgba(0, 0, 0, 0.06);
-    border: 1px solid #ccc;
+    border: 1px solid var(--myBlue);
     font-weight: 600;
 }
 
 .submitButton:hover{
     background-color: var(--myBlue);
     color: var(--myWhite);
-    border: none;
     transition: ease-in;
 }
 

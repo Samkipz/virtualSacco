@@ -32,18 +32,18 @@ model user {
   othernames  String    @db.VarChar(50)
   gender      String    @db.VarChar(50)
   dob         DateTime  @db.Date
+  idNum       Int       @unique(map: "idNum_UNIQUE")
   email       String    @db.VarChar(50)
   phone1      String    @db.VarChar(50)
   phone2      String?   @db.VarChar(45)
   password    String    @db.VarChar(200)
-  idNum       Int       @unique(map: "idNum_UNIQUE")
   create_time DateTime? @default(now()) @db.DateTime(0)
   deleted     Int?      @default(0)
   sacco_id    Int?
   chama_id    Int?
   idfile      idfile[]
-  chama       chama?    @relation(fields: [chama_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_user_chama1")
-  sacco       sacco?    @relation(fields: [sacco_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_user_sacco")
+  chama       chama?    @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
+  sacco       sacco?    @relation(fields: [sacco_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_sacco")
 
   @@index([chama_id], map: "fk_user_chama1_idx")
   @@index([sacco_id], map: "fk_user_sacco_idx")

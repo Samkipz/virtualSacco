@@ -14,8 +14,9 @@ const AddCBO = () => {
 
   const handleChamaCreated = (success) => {
     if (success) {
-      setIsChamaCreated(true);
-      sessionStorage.setItem("isChamaCreated", "true");
+      console.log("New Chama created!");
+      // setIsChamaCreated(true);
+      // sessionStorage.setItem("isChamaCreated", "true");
     }
   };
 
@@ -26,14 +27,16 @@ const AddCBO = () => {
 
   return (
     <div className={styles.container}>
-      {!isChamaCreated ? (
-        <CreateChamaForm onChamaCreated={handleChamaCreated} />
+       <CreateChamaForm onChamaCreated={handleChamaCreated} />
+      
+      {/* {!isChamaCreated ? (
+       
       ) : (
         <div>
           <button onClick={handleBack}>Back</button>
           <AddMembersForm />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

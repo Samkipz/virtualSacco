@@ -17,19 +17,19 @@ export async function createChama(formData) {
     });
 
     if (existingChama) {
-      // If chama exists, update its details
       console.log('-------->',existingChama)
-      await prisma.chama.update({
-        where: {
-          id: existingChama.id,
-        },
-        data: {
-          description,
-          location,
-          address,
-          certificate,
-        },
-      });
+      throw new Error("A chama with this name already exists", err);
+      // await prisma.chama.update({
+      //   where: {
+      //     id: existingChama.id,
+      //   },
+      //   data: {
+      //     description,
+      //     location,
+      //     address,
+      //     certificate,
+      //   },
+      // });
     } else {
       // If chama doesn't exist, create a new entry
       await prisma.chama.create({

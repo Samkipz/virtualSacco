@@ -1,5 +1,6 @@
-import styles from './chama.module.css'
+import styles from './chamaPage.module.css'
 import prisma from '../lib/prisma';
+import Link from 'next/link';
 
 const  ChamaList = async () => {
   const chamaList = await prisma.chama.findMany({
@@ -12,9 +13,19 @@ const  ChamaList = async () => {
 
   return (
     <div className={styles.container}>
-      <ul>
+      <div>Our Chamas</div>
+      <ul className={styles.chamaList}>
         {chamaList.map((chama)=>(
-          <li key={chama.id}>{chama.name}</li>
+          <Link href="#" className={styles.chama}>
+            <li key={chama.id}>
+              <span className={styles.chamaNameDesc}>
+                <span className={styles.chamaName}>{chama.name}</span>
+                <span className={styles.chamaDesc}>{chama.description}</span>
+              </span>
+              <span className={styles.viewMore}>View More</span>
+            </li>
+          </Link>
+          
         ))}
       </ul>
     </div>

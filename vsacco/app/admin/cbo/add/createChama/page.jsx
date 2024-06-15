@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./createchama.module.css";
-import { createChama } from "@/app/lib/actions/createChama";
+import { redirect } from "next/navigation";
+// import { createChama } from "@/app/lib/actions/createChama";
 
 const CreateChamaForm = ({ onChamaCreated }) => {
   const [isRegistered, setIsRegistered] = useState(false);
@@ -10,16 +11,7 @@ const CreateChamaForm = ({ onChamaCreated }) => {
     location: "",
     address: "",
     certificate: "",
-    registered: false,
   });
-
-  useEffect(() => {
-    const savedData = sessionStorage.getItem("chamaFormData");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-      setIsRegistered(JSON.parse(savedData).registered);
-    }
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,20 +21,28 @@ const CreateChamaForm = ({ onChamaCreated }) => {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const formDataObj = new FormData(form);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+    for (const key in formData) {
+      data.append(key, formData[key]);
+    }
 
     try {
-      const response = await createChama(formDataObj);
-      if (response.success) {
-        sessionStorage.setItem("chamaFormData", JSON.stringify(Object.fromEntries(formDataObj)));
-        onChamaCreated(true);
+      const response = await fetch('/api/chama/create', {
+        method: 'POST',
+        body: data,
+      });
+
+      if (response.ok) {
+        console.log("Chama created!");
+        redirect('/admin/cbo');
+      } else {
+        console.error("Failed to create chama.");
       }
-    } catch (err) {
-      console.error("Failed to create chama", err);
-      onChamaCreated(false);
+    } catch (error) {
+      console.error("Some error occured chama:", error);
     }
   };
 
