@@ -4,16 +4,22 @@ import styles from './navbar.module.css'
 import {MdNotifications, MdOutlineChat} from 'react-icons/md'
 import Nav from './nav/nav'
 import { auth } from '@/app/api/auth/auth'
+import LogoutButton from '../Logout/page'
 
 const Navbar = async ({admin}) => {
   const session = await auth();
-  console.log(session);
+  session && console.log(session);
    
   return (
     <div className={styles.container}>
       { (!admin) ? (<div className={styles.inContainer}>
         <Brand/>
-        <Nav/>
+        <div className={styles.nav}>
+          <Nav session={session}/>
+          {/* {session ? (<LogoutButton/>):(<h6>smthg else</h6>)
+          } */}
+        </div>
+        
         </div>) 
         : 
       (

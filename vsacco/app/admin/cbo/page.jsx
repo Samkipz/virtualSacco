@@ -63,7 +63,7 @@ const cbo = async () => {
                 <td>
                   <div className={styles.buttons}>
                     {/* <MyBtn icon=w' /> */}
-                    <Link href="/">
+                    <Link href={`/chama/${encodeURIComponent(chama.id)}`}>
                       <button className={`${styles.button} ${styles.view}`}> 
                         View
                       </button>

@@ -30,7 +30,7 @@ const CreateChamaForm = ({ onChamaCreated }) => {
     }
 
     try {
-      const response = await fetch('/api/chama/create', {
+      const response = await fetch('/api/chama', {
         method: 'POST',
         body: data,
       });

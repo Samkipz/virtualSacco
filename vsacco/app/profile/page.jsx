@@ -1,11 +1,15 @@
-"use client";
-import React from "react";
 import styles from "./profilepage.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { MdCheckCircle, MdOutlinePending, MdLockClock, MdOutlineWarningAmber} from "react-icons/md";
+import { auth } from "../api/auth/auth";
+import { redirect } from "next/navigation";
 
-const Profile = () => {
+const Profile = async () => {
+  const session = await auth();
+  if (!session){
+    redirect("/login");
+  }
   // Dummy data for demonstration
   const userData = {
     name: "John Doe",

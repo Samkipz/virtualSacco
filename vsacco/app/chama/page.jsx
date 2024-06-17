@@ -9,15 +9,19 @@ const  ChamaList = async () => {
     }
   });
 
-  console.log(chamaList)
+  // console.log(chamaList)
 
   return (
     <div className={styles.container}>
       <div>Our Chamas</div>
       <ul className={styles.chamaList}>
         {chamaList.map((chama)=>(
-          <Link href="#" className={styles.chama}>
-            <li key={chama.id}>
+          <Link 
+            key={chama.id} 
+            href={`/chama/${encodeURIComponent(chama.id)}`}
+            className={styles.chama}
+          >
+            <li>
               <span className={styles.chamaNameDesc}>
                 <span className={styles.chamaName}>{chama.name}</span>
                 <span className={styles.chamaDesc}>{chama.description}</span>

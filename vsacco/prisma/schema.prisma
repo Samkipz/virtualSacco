@@ -8,45 +8,39 @@ datasource db {
 }
 
 model chama {
-  id           Int      @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  name         String   @unique(map: "name_UNIQUE") @db.VarChar(200)
-  description  String   @db.Text
-  location     String   @db.VarChar(200)
-  address      String   @db.VarChar(150)
-  certificate  String?  @db.VarChar(150)
-  date_created DateTime @default(now()) @db.Timestamp(0)
-  deleted      Int      @default(0)
-  user         user[]
+  id             Int              @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  name           String           @unique(map: "name_UNIQUE") @db.VarChar(200)
+  description    String           @db.Text
+  location       String           @db.VarChar(200)
+  address        String           @db.VarChar(150)
+  certificate    String?          @db.VarChar(150)
+  date_created   DateTime         @default(now()) @db.Timestamp(0)
+  deleted        Int              @default(0)
+  user_has_chama user_has_chama[]
 }
 
 model sacco {
   id          Int     @id @default(autoincrement())
   name        String  @db.VarChar(150)
   description String? @db.Text
-  user        user[]
 }
 
 model user {
-  id          Int       @id @unique(map: "id_UNIQUE") @default(autoincrement())
-  firstname   String    @db.VarChar(50)
-  othernames  String    @db.VarChar(50)
-  gender      String    @db.VarChar(50)
-  dob         DateTime  @db.Date
-  idNum       Int       @unique(map: "idNum_UNIQUE")
-  email       String    @db.VarChar(50)
-  phone1      String    @db.VarChar(50)
-  phone2      String?   @db.VarChar(45)
-  password    String    @db.VarChar(200)
-  create_time DateTime? @default(now()) @db.DateTime(0)
-  deleted     Int?      @default(0)
-  sacco_id    Int?
-  chama_id    Int?
-  idfile      idfile[]
-  chama       chama?    @relation(fields: [chama_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_chama1")
-  sacco       sacco?    @relation(fields: [sacco_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_sacco")
-
-  @@index([chama_id], map: "fk_user_chama1_idx")
-  @@index([sacco_id], map: "fk_user_sacco_idx")
+  id             Int              @id @unique(map: "id_UNIQUE") @default(autoincrement())
+  firstname      String           @db.VarChar(50)
+  othernames     String           @db.VarChar(50)
+  gender         String           @db.VarChar(50)
+  dob            DateTime         @db.Date
+  idNum          Int              @unique(map: "idNum_UNIQUE")
+  email          String           @db.VarChar(50)
+  phone1         String           @db.VarChar(50)
+  phone2         String?          @db.VarChar(45)
+  isAdmin        Int              @default(0) @db.TinyInt
+  password       String           @db.VarChar(200)
+  create_time    DateTime?        @default(now()) @db.DateTime(0)
+  deleted        Int?             @default(0)
+  idfile         idfile[]
+  user_has_chama user_has_chama[]
 }
 
 model idfile {
@@ -58,4 +52,18 @@ model idfile {
   user         user     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_idfile_user1")
 
   @@index([user_id], map: "fk_idfile_user1_idx")
+}
+
+model user_has_chama {
+  user_id      Int
+  chama_id     Int
+  status       String    @db.VarChar(45)
+  created_time DateTime  @default(now()) @db.Timestamp(0)
+  update_time  DateTime? @default(now()) @db.Timestamp(0)
+  chama        chama     @relation(fields: [chama_id], references: [id], onDelete: Cascade, map: "fk_user_has_chama_chama1")
+  user         user      @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_user_has_chama_user1")
+
+  @@id([user_id, chama_id])
+  @@index([chama_id], map: "fk_user_has_chama_chama1_idx")
+  @@index([user_id], map: "fk_user_has_chama_user1_idx")
 }

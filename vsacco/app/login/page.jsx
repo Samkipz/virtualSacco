@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import styles from './loginPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     idNum: '',
     password: '',
@@ -33,6 +35,7 @@ const Login = () => {
 
       if (response.ok) {
         console.log("User logged in!");
+        router.push("/profile");
       } else {
         console.error("Failed to log in.");
       }

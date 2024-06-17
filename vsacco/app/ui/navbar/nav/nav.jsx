@@ -3,9 +3,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import styles from './nav.module.css'
 import LogoutButton from '../../Logout/page'
-import { useSession } from "next-auth/react";
 
-const Nav = () => {
+const Nav = ({session}) => {
     const pathname = usePathname();
 
     const handleMouseOver = (e) => {
@@ -81,7 +80,13 @@ const Nav = () => {
                             About Us
                         </Link>
                     </li>
-                    <li className={styles.navItem}>
+                    
+                    <li>
+                        {session ?
+                            (<span>{session.firstname} <LogoutButton/></span>):
+
+                            (<div>
+                                <span className={styles.navItem}>
                         <Link 
                             href='/register' 
                             className={`${styles.navLink} ${pathname === '/register' ? styles.active : ''}`}
@@ -90,8 +95,8 @@ const Nav = () => {
                         >
                             Join Us
                         </Link>
-                    </li>
-                    <li className={styles.navItem}>
+                    </span>
+                    <span className={styles.navItem}>
                         <Link 
                             href='/login' 
                             className={`${styles.navLink} ${pathname === '/login' ? styles.active : ''}`}
@@ -100,9 +105,10 @@ const Nav = () => {
                         >
                             Login
                         </Link>
-                    </li>
-                    <li>
-                        <LogoutButton/>
+                    </span>
+                            </div>)
+
+                        }
                     </li>
                 </ul>
             </nav>
