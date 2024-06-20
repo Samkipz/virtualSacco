@@ -10,13 +10,13 @@
     border-width: 2px;
   }
   .btnPrimary {
-    color: var(--myWhite);
-    background: var(--myBlue);
+    color: inherit;
+    background: inherit;
     border-color: var(--myBlue);
     border-style: solid;
   }
   .btnPrimary:hover {
-    color: var(--myWhite);
+    color: inherit;
     background: transparent;
-    border-color: var(--myWhite);
+    border-color: inherit;
   }

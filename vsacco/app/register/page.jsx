@@ -4,8 +4,10 @@ import styles from './registerPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
 import FileUpload from '../ui/fileUpload/page';
+import { useRouter } from 'next/router';
 
 const Register = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstname: '',
     othernames: '',
@@ -52,6 +54,7 @@ const Register = () => {
 
       if (response.ok) {
         console.log("User created!");
+        router.push("/login");
       } else {
         console.error("Failed to create user.");
       }

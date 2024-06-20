@@ -2,6 +2,7 @@
 import styles from "./singleChama.module.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { joinChama } from "@/app/lib/actions/joinChama";
 
 const Chama = () => {
   const pathname = usePathname();
@@ -13,7 +14,7 @@ const Chama = () => {
     try {
       const response = await fetch(`/api/chama?id=${chamaId}`, {
         method: "GET",
-      });
+      }); 
       if (response.ok) {
         const data = await response.json();
         setChama(data);
@@ -29,10 +30,22 @@ const Chama = () => {
     getChama();
   }, [pathname]);
 
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    joinChama(chama);
+    
+  }
+
   return (
     <div className={styles.container}>
-      <h1>This is a test if it works</h1>
-      {chama && <pre>{JSON.stringify(chama, null, 2)}</pre>}
+      {chama && 
+      <div className={styles.titleArea}>
+          <h1>{chama.name}</h1>
+          <form onSubmit={handleSubmit} className={styles.joinForm}>
+            <button type="submit" className={styles.joinBtn}>Join</button>
+          </form>
+      </div>
+      }
     </div>
   );
 };

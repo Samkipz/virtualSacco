@@ -48,3 +48,30 @@
     background: var(--myWhite);
     color: var(--myBlack);
 }
+
+.logout{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loginRegister{
+    display: flex;
+    height: 100%;
+}
+
+.logoutBtn{
+    height: 100%;
+    padding: 0 19px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--myWhite);
+    cursor: pointer;
+}
+
+.logoutBtn:hover{
+    background-color: var(--myWhite);
+    color: var(--myBlack);
+    cursor: pointer;
+}

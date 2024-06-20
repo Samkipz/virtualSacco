@@ -35,10 +35,10 @@ model user {
   email          String           @db.VarChar(50)
   phone1         String           @db.VarChar(50)
   phone2         String?          @db.VarChar(45)
-  isAdmin        Int              @default(0) @db.TinyInt
   password       String           @db.VarChar(200)
   create_time    DateTime?        @default(now()) @db.DateTime(0)
   deleted        Int?             @default(0)
+  isAdmin        Int              @default(0) @db.TinyInt
   idfile         idfile[]
   user_has_chama user_has_chama[]
 }
@@ -55,13 +55,13 @@ model idfile {
 }
 
 model user_has_chama {
-  user_id      Int
-  chama_id     Int
-  status       String    @db.VarChar(45)
-  created_time DateTime  @default(now()) @db.Timestamp(0)
-  update_time  DateTime? @default(now()) @db.Timestamp(0)
-  chama        chama     @relation(fields: [chama_id], references: [id], onDelete: Cascade, map: "fk_user_has_chama_chama1")
-  user         user      @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_user_has_chama_user1")
+  user_id     Int
+  chama_id    Int
+  status      String    @db.VarChar(45)
+  create_time DateTime? @default(now()) @db.DateTime(0)
+  update_time DateTime? @default(now()) @db.DateTime(0)
+  chama       chama     @relation(fields: [chama_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_has_chama_chama1")
+  user        user      @relation(fields: [user_id], references: [id], onDelete: NoAction, map: "fk_user_has_chama_user1")
 
   @@id([user_id, chama_id])
   @@index([chama_id], map: "fk_user_has_chama_chama1_idx")

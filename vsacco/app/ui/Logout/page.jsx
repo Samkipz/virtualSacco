@@ -6,9 +6,6 @@ const LogoutButton = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    // await signOut();
-    // await signOut(); // Redirect to the home page after logout
-
     try {
       const response = await fetch("/api/user/logout", {
         method: "POST",

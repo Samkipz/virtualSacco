@@ -1,0 +1,34 @@
+.container{
+    display: flex;
+    width: 100%;
+}
+.titleArea{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.titleArea h1{
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.joinBtn{
+    font-size: 15px;
+    padding: 12px 27px;
+    border-width: 2px;
+    border: none;
+    background-color: var(--myGreen);
+    cursor: pointer;
+    border: 1px solid var(--myGreen);;
+    color: var(--myWhite);
+    font-weight: 600;
+}
+
+.joinBtn:hover{
+    border: 1px solid var(--myGreen);
+    color: var(--myGreen);
+    background-color: transparent;
+}
