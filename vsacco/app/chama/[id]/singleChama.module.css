@@ -15,20 +15,61 @@
     align-items: center;
 }
 
-.joinBtn{
+.Btn{
     font-size: 15px;
     padding: 12px 27px;
     border-width: 2px;
     border: none;
-    background-color: var(--myGreen);
-    cursor: pointer;
-    border: 1px solid var(--myGreen);;
     color: var(--myWhite);
     font-weight: 600;
 }
 
+.joinBtn{
+    background-color: var(--myGreen);
+    border: 1px solid var(--myGreen);
+    cursor: pointer;
+}
 .joinBtn:hover{
     border: 1px solid var(--myGreen);
     color: var(--myGreen);
     background-color: transparent;
+}
+
+.pendingBtn{
+    border: 1px solid var(--myYellow);
+    color: var(--myYellow);
+    background-color: transparent;
+}
+.approvedBtn{
+    background-color: var(--myGreen);
+    border: 1px solid var(--myGreen);
+}
+.approvedBtn:hover{
+    border: 1px solid var(--myGreen);
+    color: var(--myGreen);
+    background-color: transparent;
+}
+
+.revokedBtn{
+    background-color: var(--myRed);
+    border: 1px solid var(--myRed);
+}
+.revokedBtn:hover{
+    border: 1px solid var(--myRed);
+    color: var(--myRed);
+    background-color: transparent;
+}
+
+.cancelBtn{
+    border: 1px solid var(--myRed);
+    background-color: var(--myRed);
+    color: var(--myWhite);
+    font-weight: 600;
+}
+
+.cancelBtn:hover{
+    border: 1px solid red;
+    background-color: transparent;
+    color: red;
+    cursor: pointer;
 }

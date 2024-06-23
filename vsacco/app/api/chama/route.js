@@ -76,9 +76,9 @@ export async function GET(req) {
           }
         });
 
-        return new NextResponse({body: JSON.stringify(chamaList)}, {status: 200})
+        // return new NextResponse({body: JSON.stringify(chamaList)}, {status: 200})
   
-        // return new NextResponse(JSON.stringify(chamaList),{status: 200});
+        return new NextResponse(JSON.stringify(chamaList),{status: 200});
       } catch (error) {
         return new NextResponse('Internal Server Error Occured\n'+error, { status: 500 });
       }
@@ -88,6 +88,9 @@ export async function GET(req) {
           where:{
             id: id,
             deleted: 0,
+          },
+          include: {
+            user_has_chama: true,
           }
         });
   

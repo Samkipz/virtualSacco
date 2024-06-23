@@ -1,9 +1,38 @@
-import NextAuth from 'next-auth';
-import { authConfig } from './auth.config';
- 
-export default NextAuth(authConfig).auth;
- 
+import { NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+
+export async function middleware(req) {
+  const secret = process.env.AUTH_SECRET;
+  const token = await getToken({ req, secret });
+
+  const { pathname } = req.nextUrl;
+
+  if (token) {
+    // Redirect logged-in users away from login page
+    if (pathname === '/login' || pathname === '/profile') {
+      if (token.isAdmin) {
+        return NextResponse.redirect(new URL('/admin', req.url));
+      } else {
+        return NextResponse.redirect(new URL('/profile', req.url));
+      }
+    }
+
+    // Protect the /admin route
+    if (pathname.startsWith('/admin')) {
+      if (!token.isAdmin) {
+        return NextResponse.redirect(new URL('/profile', req.url));
+      }
+    }
+  } else {
+    // Redirect unauthenticated users away from protected routes
+    if (pathname.startsWith('/admin') || pathname.startsWith('/profile')) {
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
 export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+  matcher: ['/((?!/static|_next/image|.*\\.png$).*)'],
 };

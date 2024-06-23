@@ -3,18 +3,22 @@ import styles from "./singleChama.module.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { joinChama } from "@/app/lib/actions/joinChama";
+import { getUser } from "@/app/lib/actions/getUser";
 
 const Chama = () => {
   const pathname = usePathname();
   const [chama, setChama] = useState(null);
+  const [message, setMessage] = useState("");
+  const [user, setUser] = useState("");
+  const [membershipStatus, setMembershipStatus] = useState("");
 
   const getChama = async () => {
     const chamaId = pathname.split("/").pop();
-    
+
     try {
       const response = await fetch(`/api/chama?id=${chamaId}`, {
         method: "GET",
-      }); 
+      });
       if (response.ok) {
         const data = await response.json();
         setChama(data);
@@ -26,26 +30,63 @@ const Chama = () => {
     }
   };
 
+  const loggedInUser = async () =>{
+    const fetchUser = await getUser();
+    setUser(fetchUser);
+  }
+
   useEffect(() => {
     getChama();
-  }, [pathname]);
+    loggedInUser();
+  }, [pathname]); // pathname as dependencies
 
-  const handleSubmit = async (e) =>{
+  useEffect(() => {
+    if (chama && user) {
+      let userStatus;
+      chama.user_has_chama.forEach(member => {
+        if (parseInt(member.user_id) === parseInt(user.userId)) {
+          userStatus = member.status;
+        }
+      });
+      setMembershipStatus(userStatus);
+      console.log(">>>>>-->>", membershipStatus);
+    }
+  }, [chama, user]); // chama and user as dependencies
+
+  const handleCancel = async (e) => {
     e.preventDefault();
-    joinChama(chama);
-    
+    //handle canceling
+    console.log("Cancel clicked!");
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const result = await joinChama(chama);
+    setMessage(result.message);
+  };
 
   return (
     <div className={styles.container}>
-      {chama && 
-      <div className={styles.titleArea}>
+      {chama &&
+        <div className={styles.titleArea}>
           <h1>{chama.name}</h1>
           <form onSubmit={handleSubmit} className={styles.joinForm}>
-            <button type="submit" className={styles.joinBtn}>Join</button>
+            {membershipStatus ? (
+              membershipStatus === 'pending' ? 
+              <span className={styles.statusSection}> 
+                <span className={`${styles.Btn} ${styles.pendingBtn}`}>
+                  Membership Pending
+                </span>
+                <span className={`${styles.Btn} ${styles.cancelBtn}`} onClick={handleCancel}> &#x2715; </span>
+              </span>
+                   :
+              membershipStatus === 'approved' ? <span className={`${styles.Btn} ${styles.approvedBtn}`}>Membership Active</span>:
+              membershipStatus === 'revoked' ? <span className={`${styles.Btn} ${styles.revokedBtn}`}>Membership Revoked</span>: undefined)
+              :
+              <button type="submit" className={`${styles.Btn} ${styles.joinBtn}`}>Join</button>}
           </form>
-      </div>
+        </div>
       }
+      {message && <p>{message}</p>}
     </div>
   );
 };

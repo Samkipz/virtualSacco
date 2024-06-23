@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styles from "./nav.module.css";
 import LogoutButton from "../../Logout/page";
+import Image from "next/image";
 
 const Nav = ({ session }) => {
   const pathname = usePathname();
@@ -90,9 +91,18 @@ const Nav = ({ session }) => {
 
         <li>
           {session ? (
-            <span className={styles.logout}>
+            <span className={styles.userInfo}>
               <p>Welcome {session.firstname}!</p>
-              <p className={styles.logoutBtn}><LogoutButton /></p>
+              <div className={styles.avatar}>
+              <Image
+                  src="/noavatar.png"
+                  alt="profile pic"
+                  width="40"
+                  height="40"
+                />
+                <h6 className={styles.logoutBtn}><LogoutButton /></h6>
+              </div>
+              {/* <p className={styles.logoutBtn}><LogoutButton /></p>  */}
             </span>
           ) : (
             <div className={styles.loginRegister}>

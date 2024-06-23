@@ -3,18 +3,21 @@ export const authConfig = {
     signIn: '/login',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnProfile = nextUrl.pathname.startsWith('/profile');
-      if (isOnProfile) {
-        if (isLoggedIn) return true;
-        return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        return true;
-        // return Response.redirect(new URL('/profile', nextUrl));
+    async jwt({ token, user }) {
+      if (user) {
+        token.isAdmin = user.isAdmin;
       }
-      return true;
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.isAdmin = token.isAdmin;
+      return session;
+    },
+    async authorized({ req }) {
+      const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+      const isLoggedIn = !!token;
+      return isLoggedIn;
     },
   },
-  providers: [], // Add providers with an empty array for now
+  providers: [], // Add providers here
 };

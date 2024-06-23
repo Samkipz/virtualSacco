@@ -8,7 +8,7 @@ import LogoutButton from "../Logout/page";
 
 const Navbar = async ({ admin }) => {
   const session = await auth();
-  session && console.log(session);
+  session && console.log(session, 'session user is admin -- ', !session.isAdmin); 
 
   return (
     <div className={styles.container}>
@@ -20,7 +20,7 @@ const Navbar = async ({ admin }) => {
       ) : (
         <div className={styles.adminNavContainer}>
           <div className={styles.navTitle}>
-            {/* {pathname.split("/").pop()} */}
+            {/* {pathname.split("/").pop()} */} 
             Admin
           </div>
           <div className={styles.navMenu}>

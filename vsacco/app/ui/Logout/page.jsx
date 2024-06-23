@@ -18,6 +18,7 @@ const LogoutButton = () => {
       if (response.ok) {
         console.log("User logged out!");
         router.push("/");
+        router.refresh();
       } else {
         console.error("Failed to log out.");
       }

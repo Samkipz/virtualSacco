@@ -38,7 +38,7 @@ model user {
   password       String           @db.VarChar(200)
   create_time    DateTime?        @default(now()) @db.DateTime(0)
   deleted        Int?             @default(0)
-  isAdmin        Int              @default(0) @db.TinyInt
+  isAdmin        Int?             @db.TinyInt
   idfile         idfile[]
   user_has_chama user_has_chama[]
 }

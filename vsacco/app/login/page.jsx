@@ -1,11 +1,27 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './loginPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
+import { getUser } from '../lib/actions/getUser';
 
 const Login = () => {
+
+  const checkUser = async ()=>{
+    const currentUser = await getUser();
+    if (currentUser){
+      console.log("....>>", currentUser)
+      return redirect("/profile");
+    }
+  
+  }
+
+  useEffect(()=>{
+    checkUser();
+  },[]);
+
+  
   const router = useRouter();
   const [formData, setFormData] = useState({
     idNum: '',
@@ -34,8 +50,16 @@ const Login = () => {
       });
 
       if (response.ok) {
+        const data = await response.json();
         console.log("User logged in!");
-        router.push("/profile");
+
+        if (data.isAdmin) {
+          router.push("/admin");
+          router.refresh();
+        } else {
+          router.push("/profile");
+          router.refresh();
+        }
       } else {
         console.error("Failed to log in.");
       }

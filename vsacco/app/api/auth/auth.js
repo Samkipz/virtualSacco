@@ -50,7 +50,8 @@ export const { signIn, signOut, auth } = NextAuth({
         token.userId = user.id,
         token.firstname = user.firstname,
         token.othernames = user.othernames,
-        token.idNum = user.idNum
+        token.idNum = user.idNum,
+        token.isAdmin = user.isAdmin
       }
       return token;
     },
@@ -59,7 +60,8 @@ export const { signIn, signOut, auth } = NextAuth({
         session.userId = token.userId,
         session.firstname = token.firstname,
         session.othernames = token.othernames,
-        session.idNum = token.idNum
+        session.idNum = token.idNum,
+        session.isAdmin = token.isAdmin
       }
       return session;
     },
