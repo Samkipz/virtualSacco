@@ -91,6 +91,7 @@ const Nav = ({ session }) => {
 
         <li>
           {session ? (
+            <Link href="/profile">
             <span className={styles.userInfo}>
               <p>Welcome {session.firstname}!</p>
               <div className={styles.avatar}>
@@ -104,6 +105,7 @@ const Nav = ({ session }) => {
               </div>
               {/* <p className={styles.logoutBtn}><LogoutButton /></p>  */}
             </span>
+            </Link>
           ) : (
             <div className={styles.loginRegister}>
               <span className={styles.navItem}>

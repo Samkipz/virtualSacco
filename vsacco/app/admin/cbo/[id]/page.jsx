@@ -3,25 +3,45 @@ import styles from "./chamaId.module.css";
 const page = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.cards}>
-        <div className={styles.card}>
-          <h3>Members</h3>
-          <p>Total: 8</p>
+      <div className={styles.cardsCircleRow}>
+        <div className={styles.cardsColumn}>
+          <div className={styles.card}>
+            <h3>Members</h3>
+            <p>Total: 8</p>
+          </div>
+          <div className={styles.card}>
+            <h3>Contribution</h3>
+            <p>KShs. 200000</p>
+          </div>
+          <div className={styles.card}>
+            <h3>Events</h3>
+            <p>2 Upcoming this month</p>
+          </div>
         </div>
-        <div className={styles.card}>
-          <h3>Contribution</h3>
-          <p>KShs. 200000</p>
-        </div>
-        <div className={styles.card}>
-          <h3>Events</h3>
-          <p>2 Upcoming this month</p>
+
+        <div className={styles.circlesBtnColumn}>
+          <div className={styles.BtnsRow}>
+              <button className={styles.button}>Contributions</button>
+              <button className={styles.button}>Edit Chama</button>
+              <button className={styles.button}>Create Event</button>
+              <button className={styles.button}>Post a blog</button>
+          </div>
+
+          <div className={styles.circlesRow}>
+            <div className={styles.circle}>
+              <h4>KShs. 20000</h4>
+              <p>Total Loans</p>
+            </div>
+            <div className={styles.circle}>
+              <h4 className={styles.h4}>KShs. 100000</h4>
+              <p>Total Contribution</p>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <div className={styles.buttons}>
-        <button className={styles.button}>Post a blog</button>
-        <button className={styles.button}>Edit Chama</button>
-      </div>
+      
 
       <div className={styles.tableContainer}>
         <h3>Recent Members</h3>
@@ -45,7 +65,13 @@ const page = () => {
                   sample.pdf
                 </a>
               </td>
-              <td><button className={styles.button}>Accept</button></td>
+              <td>
+              <div className={styles.BtnsRow}>
+                  <button className={styles.button}>Accept</button>
+                  <button className={styles.button}>Decline</button>
+                  <button className={styles.button}>View</button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -75,21 +101,12 @@ const page = () => {
               <td>TX123456</td>
               <td>2024-06-24</td>
               <td>Admin</td>
-              <td><button className={styles.button}>View</button></td>
+              <td>
+                <button className={styles.button}>View</button>
+              </td>
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <div className={styles.circleContainer}>
-        <div className={styles.circle}>
-          <p>Total Loans</p>
-          <h4>KShs. 20000</h4>
-        </div>
-        <div className={styles.circle}>
-          <p>Total Contribution</p>
-          <h4>KShs. 100000</h4>
-        </div>
       </div>
     </div>
   );
