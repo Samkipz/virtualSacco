@@ -4,11 +4,11 @@ import styles from "./navbar.module.css";
 import { MdNotifications, MdOutlineChat } from "react-icons/md";
 import Nav from "./nav/nav";
 import { auth } from "@/app/api/auth/auth";
-import LogoutButton from "../Logout/page";
+// import LogoutButton from "../Logout/page";
 
 const Navbar = async ({ admin }) => {
   const session = await auth();
-  session && console.log(session, 'session user is admin -- ', !session.isAdmin); 
+  session && console.log(session, 'session user is not admin -- ', !session.isAdmin); 
 
   return (
     <div className={styles.container}>

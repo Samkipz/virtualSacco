@@ -1,6 +1,6 @@
 import { signOut } from "../../auth/auth";
 
-export async function POST(req) {
+export async function POST() {
   try{
     await signOut()
   }catch(err){

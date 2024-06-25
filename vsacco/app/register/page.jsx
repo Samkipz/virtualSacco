@@ -4,7 +4,7 @@ import styles from './registerPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
 import FileUpload from '../ui/fileUpload/page';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const Register = () => {
   const router = useRouter();

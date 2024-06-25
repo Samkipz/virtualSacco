@@ -3,13 +3,24 @@ import Link from "next/link";
 import Image from "next/image";
 import { MdCheckCircle, MdOutlinePending, MdLockClock, MdOutlineWarningAmber} from "react-icons/md";
 import { auth } from "../api/auth/auth";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
+// import { getUserProfile } from "../lib/actions/getUser";
 
 const Profile = async () => {
   const session = await auth();
-  if (!session){
-    redirect("/login");
-  }
+  const userIdNum = session.idNum;
+
+  const user = await prisma.user.findUnique({
+    where:{
+        idNum: userIdNum,
+    },
+    include:{
+      user_has_chama: true,
+    }
+  });
+
+  console.log("Profile user -->>", user);
+
   // Dummy data for demonstration
   const userData = {
     name: "John Doe",
@@ -51,8 +62,8 @@ const Profile = async () => {
             height="300"
           />
           <div className={styles.userNameInfo}>
-            <h4 className={styles.h4}>{userData.name}</h4>
-            <h6 className={styles.h6}>{userData.email}</h6>
+            <h4 className={styles.h4}>{user.firstname} {user.othernames}</h4>
+            <h6 className={styles.h6}>{user.email}</h6>
             <Link href="#" className={styles.editBtn}>
               Edit Profile
             </Link>
@@ -74,15 +85,15 @@ const Profile = async () => {
 
           <div className={styles.userInfo}>
             <h6 className={styles.h6}>Name</h6>
-            <p>{userData.name}</p>
+            <p>{user.firstname} {user.othernames}</p>
           </div>
           <div className={styles.userInfo}>
             <h6 className={styles.h6}>Email</h6>
-            <p>{userData.email}</p>
+            <p>{user.email}</p>
           </div>
           <div className={styles.userInfo}>
             <h6 className={styles.h6}>Phone</h6>
-            <p>{userData.phone}</p>
+            <p>{user.phone1} / {user.phone2}</p>
           </div>
           <div className={styles.userInfo}>
             <h6 className={styles.h6}>Date of Birth:</h6>

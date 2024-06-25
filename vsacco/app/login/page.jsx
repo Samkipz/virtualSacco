@@ -3,25 +3,9 @@ import React, { useEffect, useState } from 'react';
 import styles from './loginPage.module.css';
 import Link from 'next/link';
 import { ImEnter } from "react-icons/im";
-import { redirect, useRouter } from 'next/navigation';
-import { getUser } from '../lib/actions/getUser';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
-
-  const checkUser = async ()=>{
-    const currentUser = await getUser();
-    if (currentUser){
-      console.log("....>>", currentUser)
-      return redirect("/profile");
-    }
-  
-  }
-
-  useEffect(()=>{
-    checkUser();
-  },[]);
-
-  
   const router = useRouter();
   const [formData, setFormData] = useState({
     idNum: '',
@@ -50,7 +34,7 @@ const Login = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data = response;
         console.log("User logged in!");
 
         if (data.isAdmin) {

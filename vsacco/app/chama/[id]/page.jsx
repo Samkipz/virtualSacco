@@ -12,6 +12,7 @@ const Chama = () => {
   const [user, setUser] = useState("");
   const [membershipStatus, setMembershipStatus] = useState("");
 
+  //get the current chama using API endpoint /api/chama-id
   const getChama = async () => {
     const chamaId = pathname.split("/").pop();
 
@@ -30,6 +31,7 @@ const Chama = () => {
     }
   };
 
+  //get the current logged in user
   const loggedInUser = async () =>{
     const fetchUser = await getUser();
     setUser(fetchUser);
@@ -42,14 +44,18 @@ const Chama = () => {
 
   useEffect(() => {
     if (chama && user) {
-      let userStatus;
+      let userStatus; //Variable to track whether current user belongs to current chama (membership status)
+      
+      //check if the current user is in the "user has chama" table. 
+      //If so get the membership status
       chama.user_has_chama.forEach(member => {
         if (parseInt(member.user_id) === parseInt(user.userId)) {
           userStatus = member.status;
         }
       });
+
+      //Update membership status on the DOM.
       setMembershipStatus(userStatus);
-      console.log(">>>>>-->>", membershipStatus);
     }
   }, [chama, user]); // chama and user as dependencies
 
