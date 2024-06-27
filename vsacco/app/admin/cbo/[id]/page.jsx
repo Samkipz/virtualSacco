@@ -19,25 +19,28 @@ const SingleChama = () => {
     getChama(chamaId);
   },[chamaId])
 
-  if(Chama) console.log("------->",Chama);
-
-
+  // if(Chama) console.log('======>>',JSON.stringify(Chama,null,2));
 
   return (
     <div className={styles.container}>
-      <div className={styles.cardsCircleRow}>
+      {Chama ?
+       <>
+       <div className={styles.cardsCircleRow}>
         <div className={styles.cardsColumn}>
-          <div className={styles.card}>
-            <h3>Members</h3>
-            <p>Total: 8</p>
-          </div>
-          <div className={styles.card}>
-            <h3>Contribution</h3>
-            <p>KShs. 200000</p>
-          </div>
-          <div className={styles.card}>
-            <h3>Events</h3>
-            <p>2 Upcoming this month</p>
+          <div className={styles.titleRow}>{Chama.name}</div>
+          <div className={styles.cardsRow}>
+            <div className={styles.card}>
+              <h3>Members</h3>
+              <p>Total: 8</p>
+            </div>
+            <div className={styles.card}>
+              <h3>Contribution</h3>
+              <p>KShs. 200000</p>
+            </div>
+            <div className={styles.card}>
+              <h3>Events</h3>
+              <p>2 Upcoming this month</p>
+            </div>
           </div>
         </div>
 
@@ -62,8 +65,6 @@ const SingleChama = () => {
 
         </div>
       </div>
-
-      
 
       <div className={styles.tableContainer}>
         <h3>Recent Members</h3>
@@ -130,6 +131,10 @@ const SingleChama = () => {
           </tbody>
         </table>
       </div>
+       </> :
+       <p>Loading...</p>
+      }
+
     </div>
   );
 };

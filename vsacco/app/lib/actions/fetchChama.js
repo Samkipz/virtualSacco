@@ -1,12 +1,11 @@
 "use server";
 import prisma from "../prisma";
 
-// fetch a Chama
+// fetch a Chama with it's relations. Deep fetch.
 export async function fetchChama(chamaId) {
     console.log('======>>',chamaId);
 
     const id = parseInt(chamaId);
-
     const chama = await prisma.chama.findUnique({
         where:{
             id:id,
@@ -21,8 +20,6 @@ export async function fetchChama(chamaId) {
             }
         }
     });
-
-    console.log('======>>',JSON.stringify(chama,null,2));
-
-
+    // console.log('======>>',JSON.stringify(chama,null,2));
+    return chama;
 }
