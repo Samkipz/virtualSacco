@@ -123,7 +123,7 @@ const Profile = async () => {
 
           
 
-          {user.user_has_chama ? 
+          {user.user_has_chama.length  ? (
           
           <table className={styles.table}>
             <thead>
@@ -175,7 +175,7 @@ const Profile = async () => {
               ))}
             </tbody>
           </table>
-          :
+          ) :
           <span className={styles.noMembership}>
             You have not joined any Chama. Click explore
             Chamas button above to browse and join chamas</span>}

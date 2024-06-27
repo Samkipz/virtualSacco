@@ -32,23 +32,25 @@ model user {
   gender         String           @db.VarChar(50)
   dob            DateTime         @db.Date
   idNum          Int              @unique(map: "idNum_UNIQUE")
+  idFile         Bytes            @db.Blob
   email          String           @db.VarChar(50)
   phone1         String           @db.VarChar(50)
   phone2         String?          @db.VarChar(45)
   password       String           @db.VarChar(200)
+  isAdmin        Int?             @db.TinyInt
   create_time    DateTime?        @default(now()) @db.DateTime(0)
   deleted        Int?             @default(0)
-  isAdmin        Int?             @db.TinyInt
   idfile         idfile[]
   user_has_chama user_has_chama[]
 }
 
 model idfile {
   id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(100)
   size         Int
   type         String   @db.VarChar(100)
-  lastModified DateTime @db.DateTime(0)
   user_id      Int
+  lastModified DateTime @db.DateTime(0)
   user         user     @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "fk_idfile_user1")
 
   @@index([user_id], map: "fk_idfile_user1_idx")
@@ -58,7 +60,6 @@ model user_has_chama {
   user_id     Int
   chama_id    Int
   status      String    @db.VarChar(45)
-  role        String    @default("member") @db.VarChar(45)
   create_time DateTime? @default(now()) @db.DateTime(0)
   update_time DateTime? @default(now()) @db.DateTime(0)
   chama       chama     @relation(fields: [chama_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user_has_chama_chama1")

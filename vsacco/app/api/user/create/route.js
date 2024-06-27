@@ -12,11 +12,10 @@ export async function POST(req) {
 
   // Handle file upload
   const file = formData.idFile;
+  let fileBuffer = null;
   if (file) {
-    const fileBuffer = await file.arrayBuffer();
-    const fileName = file.name;
-    // Process the fileBuffer as needed, e.g., save it to a storage service or database
-    console.log('File received:', fileName);
+    fileBuffer = await file.arrayBuffer();
+    console.log('File received:', file.name);
   }
 
   async function createUser(data) {
@@ -27,7 +26,7 @@ export async function POST(req) {
     }
 
     if (data.terms.toString() !== 'true') {
-      throw new Error("You have to accept our terms and condition to proceed");
+      throw new Error("You have to accept our terms and conditions to proceed");
     }
 
     const userIdNum = parseInt(data.idNum);
@@ -38,7 +37,7 @@ export async function POST(req) {
     });
 
     if (existingUser) {
-      throw new Error("User with this id number already exists");
+      throw new Error("User with this ID number already exists");
     }
 
     const { firstname, othernames, gender, dob, email, phone1, phone2, password1 } = data;
@@ -58,6 +57,7 @@ export async function POST(req) {
           phone1,
           phone2,
           password: hashedPassword,
+          idFile: fileBuffer ? Buffer.from(fileBuffer) : null,  // Save file as BLOB
         },
       });
 

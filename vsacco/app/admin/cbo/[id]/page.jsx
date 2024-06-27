@@ -68,7 +68,8 @@ const SingleChama = () => {
 
       <div className={styles.tableContainer}>
         <h3>Recent Members</h3>
-        <table className={styles.table}>
+        
+          <table  className={styles.table}>
           <thead>
             <tr>
               <th>#</th>
@@ -79,13 +80,20 @@ const SingleChama = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Joe Doe</td>
-              <td>32628002</td>
+          {Chama.user_has_chama.length ? Chama.user_has_chama.map((user, index) =>(
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{user.user.firstname} {user.user.othernames}</td>
+              <td>{user.user.idNum}</td>
               <td>
-                <a href="/path/to/file/sample.pdf" download>
+                {/* <a href="/path/to/file/sample.pdf" download>
                   sample.pdf
+                </a> */}
+                <a
+                  href={`data:image/jpeg;base64,${user.user.idFile}`}
+                  download={`${user.user.firstname}_ID.jpg`}
+                >
+                  Download {user.user.firstname} ID File
                 </a>
               </td>
               <td>
@@ -96,8 +104,11 @@ const SingleChama = () => {
                 </div>
               </td>
             </tr>
+            )) : undefined}
           </tbody>
         </table>
+         
+        
       </div>
 
       <div className={styles.tableContainer}>
