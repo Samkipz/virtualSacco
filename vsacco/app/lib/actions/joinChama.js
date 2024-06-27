@@ -2,6 +2,7 @@
 import prisma from "../prisma";
 import { auth } from "@/app/api/auth/auth";
 
+//User Request to join Chama
 export async function joinChama(chama) {
   const session = await auth();
   if (!session) {
@@ -46,3 +47,6 @@ export async function joinChama(chama) {
     return { success: false, message: "An error occurred" };
   }
 }
+
+//Admin approve to join Chama
+

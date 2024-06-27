@@ -1,6 +1,28 @@
+"use client"
+import { fetchChama } from "@/app/lib/actions/fetchChama";
 import styles from "./chamaId.module.css";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
-const page = () => {
+const SingleChama = () => {
+  const [Chama, setChama] = useState(null);
+  const pathname = usePathname();
+
+  const chamaId = pathname.split("/").pop();
+
+  const getChama = async (chamaId) =>{
+    const fetchedChama = await fetchChama(chamaId);
+    setChama(fetchedChama);
+  }
+
+  useEffect(()=>{
+    getChama(chamaId);
+  },[chamaId])
+
+  if(Chama) console.log("------->",Chama);
+
+
+
   return (
     <div className={styles.container}>
       <div className={styles.cardsCircleRow}>
@@ -112,4 +134,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default SingleChama;
