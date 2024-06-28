@@ -19,7 +19,7 @@ export async function joinChama(chama) {
         chama_id: chamaId,
       },
     });
-    console.log(">>>>>", userStatus);
+    // console.log(">>>>>", userStatus);
 
     // userStatus can either be blank, 'pending', 'approved' or 'revoked'
     if (userStatus) {
@@ -50,3 +50,53 @@ export async function joinChama(chama) {
 
 //Admin approve to join Chama
 
+export async function approveRequest(chamaId, userId){
+  const intUserId = parseInt(userId);
+  const intChamaId = parseInt(chamaId);
+
+  console.log("chama ---> "+chamaId+" user ----> "+userId);
+
+  //check db if the request exist
+  //if it exist as blank throw err
+  //if it exist as something else say approved.. throw error
+  //if it exists as revoked throw error
+  // else approve
+
+  try{
+    const joinRqst = await prisma.user_has_chama.findFirst({
+      where:{
+        user_id: intUserId,
+        chama_id: intChamaId,
+      }
+    });
+
+    // if(joinRqst) console.log("Join Request ==+=> ",joinRqst );
+
+    if (!joinRqst) return { success: false, message: "The user has not applied to join this Chama. This seems ambigous" };
+    if (joinRqst.status === "approved") return { success: false, message: "This user is already a member of this chama" };
+    if (joinRqst.status === "revoked") return { success: false, message: "The user membership was revoked. Kindly rescind the decision first" };
+
+    try{
+      await prisma.user_has_chama.update({
+        where: {
+          user_id_chama_id: {
+            user_id: intUserId,
+            chama_id: intChamaId
+          }
+        },
+        data:{
+          status: "approved",
+        }
+      });
+      return { success: true, message: "Request successful and the user is now a member of this chama" };
+    }catch(err){
+      console.log("An error occurred updating user status --> ", err);
+      return { success: false, message: "An error occurred updating user status" };
+    }
+
+  }catch(err){
+    console.log("An error occurred checking if user status exists in db >>>", err);
+    return { success: false, message: "An error occurred" };
+  }
+  
+}

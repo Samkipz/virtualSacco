@@ -31,7 +31,7 @@ const Profile = async () => {
   // const user = JSON.stringify(fetchUser, null, 2)
 
   console.log("Profile user -->>", user);
-  console.log("Profile user -->>", user?.firstname);
+  // console.log("Profile user -->>", user?.firstname);
 
   // Dummy data for demonstration
   const userData = {
@@ -167,7 +167,7 @@ const Profile = async () => {
                     </div>
                   </td>
                   <td>
-                    <Link href="/#" className={styles.linKBtn}>
+                    <Link href={`/profile/${encodeURIComponent(chama.chama.name)}`} className={styles.linKBtn}>
                       Manage
                     </Link>
                   </td>
@@ -229,7 +229,7 @@ const Profile = async () => {
                     </div>
                   </td>
                   <td>
-                    <Link href="/#" className={styles.linKBtn}>
+                    <Link href={`/profile/${encodeURIComponent(sacco.name)}`} className={styles.linKBtn}>
                       Manage
                     </Link>
                   </td>

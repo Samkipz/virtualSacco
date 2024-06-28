@@ -7,7 +7,8 @@ import styles from "./slider.module.css";
 const HeroSlider = () => {
   const [slideIndex, setSlideIndex] = useState(1);
   const [prevSlideIndex, setPrevSlideIndex] = useState(null);
-  const totalSlides = 4; // Adjust based on your actual number of slides
+  const [hovered, setHovered] = useState(false);
+  const totalSlides = 4; // Adjust based on actual number of slides
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -28,6 +29,15 @@ const HeroSlider = () => {
     setSlideIndex(newIndex);
   };
 
+  // ------ handle toggle buttons ------ //
+  const handleMouseOver = () => {
+    setHovered(true);
+  };
+  const handleMouseOut = () => {
+    setHovered(false);
+  }
+  
+
   return (
     <div>
       <div className={styles.container}>
@@ -41,7 +51,7 @@ const HeroSlider = () => {
           >
             <Image
               fill
-              src={`/image${i}.jpg`} // Adjust the source based on your images
+              src={`/image${i}.jpg`} // Adjust the source based on images
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               alt=""
               className={styles.bgImage}
@@ -60,13 +70,19 @@ const HeroSlider = () => {
               <div className={styles.btnGrp}>
                 <Link
                   href="/"
-                  className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  className={`${styles.btn} ${styles.btnMd} 
+                  ${ hovered ? styles.btnWhite : styles.btnBlue}`}
                 >
                   Learn More about us
                 </Link>
                 <Link
                   href="/"
-                  className={`${styles.btn} ${styles.btnMd} ${styles.btnPrimary}`}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  className={`${styles.btn} ${styles.btnMd} 
+                  ${ hovered ? styles.btnBlue : styles.btnWhite}`}
                 >
                   Know our Services
                 </Link>

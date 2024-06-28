@@ -113,6 +113,12 @@
     background-color: #007bff;
     color: white;
   }
+
+  .userDoc{
+    /* border: 1px solid red; */
+    text-decoration: underline;
+    color: var(--myBlue);
+  }
   
 
   

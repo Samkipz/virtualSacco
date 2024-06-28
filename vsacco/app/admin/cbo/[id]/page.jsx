@@ -3,9 +3,10 @@ import { fetchChama } from "@/app/lib/actions/fetchChama";
 import styles from "./chamaId.module.css";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { approveRequest } from "@/app/lib/actions/joinChama";
 
 const SingleChama = () => {
-  const [Chama, setChama] = useState(null);
+const [Chama, setChama] = useState(null);
   const pathname = usePathname();
 
   const chamaId = pathname.split("/").pop();
@@ -20,6 +21,17 @@ const SingleChama = () => {
   },[chamaId])
 
   // if(Chama) console.log('======>>',JSON.stringify(Chama,null,2));
+
+  // ----------- Other Functions to handle page events ------ //
+  const handleApprove = async (chamaId, userId)=> {
+    //handle accept
+    // alert("chama -"+ chamaId+" user - "+ userId);
+    const response = await approveRequest(chamaId, userId);
+    console.log("====>",response);
+    if (response){
+      alert(response.message);
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -92,13 +104,14 @@ const SingleChama = () => {
                 <a
                   href={`data:image/jpeg;base64,${user.user.idFile}`}
                   download={`${user.user.firstname}_ID.jpg`}
+                  className={styles.userDoc}
                 >
                   Download {user.user.firstname} ID File
                 </a>
               </td>
               <td>
               <div className={styles.BtnsRow}>
-                  <button className={styles.button}>Accept</button>
+                  <button onClick={()=>handleApprove(Chama.id, user.user.id)} className={styles.button}>Accept</button>
                   <button className={styles.button}>Decline</button>
                   <button className={styles.button}>View</button>
                 </div>

@@ -150,17 +150,20 @@
   padding: 12px 27px;
   border-width: 2px;
 }
-.btnPrimary {
+
+.btnBlue {
   color: var(--myWhite);
   background: var(--myBlue);
   border-color: var(--myBlue);
   border-style: solid;
 }
-.btnPrimary:hover {
+.btnWhite {
   color: var(--myWhite);
   background: transparent;
   border-color: var(--myWhite);
+  border-style: solid;
 }
+
 
 /* @media (min-width: 480px) {
  .btn {
