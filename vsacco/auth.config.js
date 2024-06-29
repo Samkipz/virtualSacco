@@ -16,7 +16,7 @@ export const authConfig = {
     async authorized({ req }) {
       const token = await getToken({ req, secret: process.env.AUTH_SECRET });
       const isLoggedIn = !!token;
-      return isLoggedIn;
+      return isLoggedIn; 
     },
   },
   providers: [], // Add providers here

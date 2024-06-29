@@ -167,7 +167,7 @@ const Profile = async () => {
                     </div>
                   </td>
                   <td>
-                    <Link href={`/profile/${encodeURIComponent(chama.chama.name)}`} className={styles.linKBtn}>
+                    <Link href={`/profile/chama/${encodeURIComponent(chama.chama.name)}`} className={styles.linKBtn}>
                       Manage
                     </Link>
                   </td>
@@ -229,7 +229,7 @@ const Profile = async () => {
                     </div>
                   </td>
                   <td>
-                    <Link href={`/profile/${encodeURIComponent(sacco.name)}`} className={styles.linKBtn}>
+                    <Link href={`/profile/sacco/${encodeURIComponent(sacco.name)}`} className={styles.linKBtn}>
                       Manage
                     </Link>
                   </td>

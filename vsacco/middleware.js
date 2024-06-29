@@ -17,14 +17,14 @@ export async function middleware(req) {
       }
     }
 
-    // Protect the /admin route
+    // Redirect admin to admin profile.
     if (pathname.startsWith('/profile')) {
       if (token.isAdmin) {
         return NextResponse.redirect(new URL('/admin', req.url));
       }
     }
 
-    // Protect the /admin route
+    // Protect the /admin route (Redirect non-admin logged in users to normal profile)
     if (pathname.startsWith('/admin')) {
       if (!token.isAdmin) {
         return NextResponse.redirect(new URL('/profile', req.url));

@@ -67,6 +67,11 @@ export async function GET(req) {
     const url = new URL(req.url).searchParams;
     const id = Number(url.get("id")) || 0;
 
+    // ---------------------- ANOTHER BETTER APPROACH --------------//
+    //          const { searchParams } = new URL(request.url)       //
+    //          const id = searchParams.get('id')                   //
+    // -------------------------------------------------------------//
+
     //If parameters does not exist return all chamas else return according to parameter
     if (id === 0){
       try {
