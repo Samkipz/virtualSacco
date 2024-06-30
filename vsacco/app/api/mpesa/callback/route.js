@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
-    const callBackData = await request.body;
+  console.log("-------------- Request reached ------");
 
-    if(callBackData) console.log("DATA RCVD BACK------>",callBackData)
+  try {
+    const callBackData = await request.json();
+    console.log("DATA RCVD BACK------>", callBackData.CallbackMetadata);
+  } catch (error) {
+    console.error("Error reading request body:", error);
+  }
+
+  return NextResponse.json({ message: 'Received' }, { status: 200 });
 }
