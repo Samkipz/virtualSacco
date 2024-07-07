@@ -1,9 +1,11 @@
 "use server";
+import { auth } from "@/app/api/auth/auth";
 import prisma from "../prisma";
+import { NextResponse } from "next/server";
 
 // fetch a Chama with it's relations. Deep fetch.
 export async function fetchChama(chamaId) {
-    // console.log('======>>',chamaId);
+    console.log('======>>',chamaId);
 
     const id = parseInt(chamaId);
     const chama = await prisma.chama.findUnique({
@@ -32,6 +34,31 @@ export async function fetchChama(chamaId) {
 
     // console.log('======>>',JSON.stringify(chama,null,2));
     return chama;
+}
+
+//fetch single chama for a particular user
+export async function getUsersChama(chamaId){
+    // get user
+    const session = await auth();
+    if(!session){
+        return { success: false, message: "You must be logged in to view the contents of this page" };
+    }
+
+    const userId = parseInt(session.userId)
+
+    const userChama = await prisma.user_has_chama.findFirst({
+        where:{
+            chama_id: chamaId,
+            user_id: userId
+        }
+    });
+
+    const chama = await prisma.chama.findUnique({
+        where:{
+            id:chamaId,
+        }
+    })
+    return { success: true, data: {userId, userChama, chama}, message: "Users chama fetched" };
 }
 
 

@@ -1,4 +1,3 @@
-import styles from "./profilepage.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -7,9 +6,25 @@ import {
   MdLockClock,
   MdOutlineWarningAmber,
 } from "react-icons/md";
+import {
+  CircleCheck,
+  CircleEllipsis,
+  SquareCheck,
+  TriangleAlert,
+} from "lucide-react";
 import { auth } from "../api/auth/auth";
-// import { redirect } from "next/navigation";
-// import { getUserProfile } from "../lib/actions/getUser";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+// import {Input, Label, Button } from "@/components/ui/input";
 
 const Profile = async () => {
   const session = await auth();
@@ -21,17 +36,12 @@ const Profile = async () => {
     },
     include: {
       user_has_chama: {
-        include:{
+        include: {
           chama: true,
-        }
+        },
       },
     },
   });
-
-  // const user = JSON.stringify(fetchUser, null, 2)
-
-  console.log("Profile user -->>", user);
-  // console.log("Profile user -->>", user?.firstname);
 
   // Dummy data for demonstration
   const userData = {
@@ -45,9 +55,9 @@ const Profile = async () => {
       { name: "CBO Three", role: "Member", status: "Revoked" },
     ],
     saccos: [
-      { name: "Sacco One", role: "Member", status: "Active" },
-      { name: "Sacco Two", role: "Admin", status: "Pending" },
-      { name: "Sacco Three", role: "Member", status: "Revoked" },
+      { name: "Sacco One", role: "Member", status: "approved" },
+      { name: "Sacco Two", role: "Admin", status: "pending" },
+      { name: "Sacco Three", role: "Member", status: "revoked" },
     ],
     events: [{ name: "Event One", date: "2024-06-15" }],
     finances: {
@@ -55,371 +65,341 @@ const Profile = async () => {
       contributions: "200000",
     },
     loans: [
-      { name: "Loan One", amount: "200", status: "Paid" },
-      { name: "Loan Two", amount: "300", status: "Ongoing" },
+      { name: "Loan One", amount: "200", status: "paid" },
+      { name: "Loan Two", amount: "300", status: "ongoing" },
+      { name: "Loan Three", amount: "800", status: "overdue" },
     ],
     otherCbos: [{ name: "CBO Four" }, { name: "CBO Five" }],
   };
 
   return (
-    <div className={styles.profileContainer}>
-      <div className={`${styles.row} ${styles.left}`}>
-        <div className={styles.profilePicArea}>
-          <Image
-            src="/noavatar.png"
-            alt="profile pic"
-            width="200"
-            height="200"
-          />
-          <div className={styles.userNameInfo}>
-            <h4 className={styles.h4}>
+    <div className="flex flex-wrap gap-3 p-6">
+      {/* Top Row */}
+      <div className="w-full flex lg:flex-row flex-wrap lg:flex-nowrap flex-grow gap-3">
+        {/* Avator card */}
+        <Card className="md:w-1/3">
+          <CardHeader>
+            <Image
+              src="/noavatar.png"
+              alt="profile pic"
+              width="200"
+              height="200"
+              className="rounded-full mx-auto"
+            />
+            <CardTitle className="text-center mt-4">
               {user.firstname} {user.othernames}
-            </h4>
-            <h6 className={styles.h6}>{user.email}</h6>
-            <Link href="#" className={styles.editBtn}>
+            </CardTitle>
+            <CardDescription className="text-center">
+              {user.email}
+            </CardDescription>
+            <Link
+              href="#"
+              className="block mt-4 text-center text-blue-600 hover:underline"
+            >
               Edit Profile
             </Link>
-          </div>
-        </div>
-        <div className={styles.profileCompleteArea}>
-          <div className={styles.uiWidgets}>
-            <div className={styles.uiValues}>85%</div>
-          </div>
-          <h4 className={styles.h4}>Profile Complete</h4>
-        </div>
-      </div>
+          </CardHeader>
+        </Card>
 
-      <div className={`${styles.row} ${styles.middle}`}>
-        <div className={styles.profileCard}>
-          <h3 className={styles.h3}>Personal Information</h3>
-
-          <div className={styles.userInfo}>
-            <h6 className={styles.h6}>Name</h6>
-            <p>
-              {user.firstname} {user.othernames}
-            </p>
-          </div>
-          <div className={styles.userInfo}>
-            <h6 className={styles.h6}>Email</h6>
-            <p>{user.email}</p>
-          </div>
-          <div className={styles.userInfo}>
-            <h6 className={styles.h6}>Phone</h6>
-            <p>
-              {user.phone1} / {user.phone2}
-            </p>
-          </div>
-          <div className={styles.userInfo}>
-            <h6 className={styles.h6}>Date of Birth:</h6>
-            <p>{userData.dob}</p>
-          </div>
-        </div>
-        <div className={styles.profileCard}>
-          <h3 className={styles.h3}>My Memberships</h3>
-          <div className={styles.membershipExplore}>
-            <h4 className={styles.h4}>Chama Memberships</h4>
-            <Link href="/#"> Explore Chamas</Link>
-          </div>
-
-          
-
-          {user.user_has_chama.length  ? (
-          
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.thead}>
-                <th>#</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {user.user_has_chama.map((chama, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{chama.chama.name}</td>
-                  <td>{chama.role}</td>
-                  <td>
-                    <div
-                      className={`${styles.status} ${
-                        chama.status === "approved"
-                          ? styles.active
-                          : chama.status === "pending"
-                          ? styles.pending
-                          : styles.revoked
-                      }`}
-                    >
-                      {chama.status === "approved" ? (
-                        <p>
-                          <MdCheckCircle /> Active
-                        </p>
-                      ) : chama.status === "pending" ? (
-                        <p>
-                          <MdOutlinePending /> Pending
-                        </p>
-                      ) : (
-                        <p>
-                          <MdOutlineWarningAmber /> Revoked
-                        </p>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <Link href={`/profile/chama/${encodeURIComponent(chama.chama.name)}`} className={styles.linKBtn}>
-                      Manage
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          ) :
-          <span className={styles.noMembership}>
-            You have not joined any Chama. Click explore
-            Chamas button above to browse and join chamas</span>}
-          
-          <br />
-          <div className={styles.membershipExplore}>
-            <h4 className={styles.h4}>Sacco Memberships</h4>
-            <Link href="/#"> Explore Sacco</Link>
-          </div>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userData.saccos.map((sacco, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {sacco.name}
-                  </td>
-                  <td>{sacco.role}</td>
-                  <td>
-                    <div
-                      className={`${styles.status} ${
-                        sacco.status === "Active"
-                          ? styles.active
-                          : sacco.status === "Pending"
-                          ? styles.pending
-                          : styles.revoked
-                      }`}
-                    >
-                      {sacco.status === "Active" ? (
-                        <p>
-                          <MdCheckCircle /> Active
-                        </p>
-                      ) : sacco.status === "Pending" ? (
-                        <p>
-                          <MdOutlinePending /> Pending
-                        </p>
-                      ) : (
-                        <p>
-                          <MdOutlineWarningAmber /> Revoked
-                        </p>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <Link href={`/profile/sacco/${encodeURIComponent(sacco.name)}`} className={styles.linKBtn}>
-                      Manage
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className={`${styles.row} ${styles.right}`}>
-        <div className={styles.profileCard}>
-          <h3 className={styles.h3}>Financial Details</h3>
-
-          <div className={styles.financialSection}>
-            <h4 className={styles.h4}>Chama Contributions</h4>
-            <div className={styles.lightRedRegion}>
-              <h4 className={styles.h4}>
-                {userData.finances.contributions} KES
-              </h4>
-            </div>
-            <div className={styles.extraInfo}>
-              <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Term</h6>
-                <p>6 Months</p>
+        {/* User Info Card */}
+        <Card className="md:w-2/5">
+          <CardHeader>
+            <CardTitle>Personal Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <Label>Name</Label>
+                <p>
+                  {user.firstname} {user.othernames}
+                </p>
               </div>
-              <hr />
-              <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Deductions</h6>
-                <p>Excluded</p>
+              <div>
+                <Label>Email</Label>
+                <p>{user.email}</p>
               </div>
-              <hr />
-              <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Chamas</h6>
-                <p>3 Chamas</p>
+              <div>
+                <Label>Phone</Label>
+                <p>
+                  {user.phone1} / {user.phone2}
+                </p>
+              </div>
+              <div>
+                <Label>Date of Birth</Label>
+                <p>{userData.dob}</p>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <div className={styles.financialSection}>
-            <h4 className={styles.h4}>Sacco Contributions</h4>
-            <div className={styles.lightRedRegion}>
-              <h4 className={styles.h4}>{userData.finances.balance} KES</h4>
-            </div>
-            <div className={styles.extraInfo}>
-              <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Term</h6>
-                <p>4 Months</p>
-              </div>
-              <hr />
-              <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Deductions</h6>
-                <p>Excluded</p>
-              </div>
-              <hr />
-              <div className={styles.smallCol}>
-                <h6 className={styles.h6}>Saccos</h6>
-                <p>1 Sacco</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.profileCard}>
-          <h3 className={styles.h3}>My Loans</h3>
-
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.thead}>
-                <td>Name</td>
-                <td>Amount</td>
-                <td>Status</td>
-              </tr>
-            </thead>
-            <tbody>
-              {userData.loans.map((loan, index) => (
-                <tr key={index}>
-                  <td>
-                    {index + 1} {loan.name}
-                  </td>
-                  <td>{loan.amount}</td>
-                  <td>
-                    <div
-                      className={`${styles.status} ${
-                        loan.status === "Paid"
-                          ? styles.active
-                          : loan.status === "Ongoing"
-                          ? styles.pending
-                          : styles.revoked
-                      }`}
-                    >
-                      {loan.status === "Paid" ? (
-                        <p>
-                          <MdCheckCircle /> Paid
-                        </p>
-                      ) : loan.status === "Ongoing" ? (
-                        <p>
-                          <MdOutlinePending /> Ongoing
-                        </p>
-                      ) : (
-                        <p>
-                          <MdOutlineWarningAmber /> Arrears
-                        </p>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className={styles.profileCard}>
-          <h3 className={styles.h3}>Upcoming Events</h3>
-          {userData.events.map((event, index) => (
-            <div key={index} className={styles.eventItem}>
-              <div className={styles.dateArea}>
-                <div className={styles.bgDate}>8</div>
-                <div className={styles.smallMonth}>Nov</div>
-              </div>
-              <div className={styles.detailsArea}>
-                <h4 className={styles.h4}>SOME TITLE</h4>
-                <div className={styles.eventDetails}>
-                  CBO One contribution Deadline
+        {/* Financial Info Card */}
+        <Card className="md:w-1/3">
+          <CardHeader>
+            <CardTitle>Financial Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <Label>My Total Chama Contributions</Label>
+                <div className="bg-red-100 p-3 rounded-md">
+                  <h4 className="text-red-600 text-center text-xl">
+                    {userData.finances.contributions} KES
+                  </h4>
                 </div>
-                <div className={styles.eventTime}>
-                  <p>
-                    <MdLockClock /> 10.45 am
-                  </p>
+              </div>
+              <div>
+                <Label>My Total Sacco Contributions</Label>
+                <div className="bg-red-100 p-3 rounded-md">
+                  <h4 className="text-red-600 text-center text-xl">
+                    {userData.finances.contributions} KES
+                  </h4>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* <h2 className={styles.h2}>Profile</h2>
-        <div className={styles.profileCard}>
-          <h3>Personal Information</h3>
-          <p><strong>Name:</strong> {userData.name}</p>
-          <p><strong>Email:</strong> {userData.email}</p>
-          <p><strong>Phone:</strong> {userData.phone}</p>
-          <p><strong>Date of Birth:</strong> {userData.dob}</p>
+      {/* Bottom Rows */}
+      <div className="w-full flex flex-wrap lg:flex-nowrap flex-row flex-grow gap-3">
+        <div className="flex flex-wrap gap-3 lg:flex-col md:w-1/2">
+          {/* Chama Membership Table Card */}
+          <Card className="mt-3">
+            <CardHeader>
+              <CardTitle>Chama Memberships</CardTitle>
+              <Link href="/#" className="text-blue-600 hover:underline">
+                Explore Chamas
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {user.user_has_chama.length ? (
+                  <table className="w-full border-collapse border border-gray-200">
+                    <thead className="bg-blue-600 text-white">
+                      <tr>
+                        <th className="border border-gray-200 p-2">#</th>
+                        <th className="border border-gray-200 p-2">Name</th>
+                        <th className="border border-gray-200 p-2">Role</th>
+                        <th className="border border-gray-200 p-2">Status</th>
+                        <th className="border border-gray-200 p-2">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {user.user_has_chama.map((chama, index) => (
+                        <tr key={index} className="border border-gray-200">
+                          <td className="border border-gray-200 p-2">
+                            {index + 1}
+                          </td>
+                          <td className="border border-gray-200 p-2">
+                            {chama.chama.name}
+                          </td>
+                          <td className="border border-gray-200 p-2">
+                            {chama.role}
+                          </td>
+                          <td className="border border-gray-200 p-2">
+                            <div
+                              className={`flex items-center gap-2 ${
+                                chama.status === "approved"
+                                  ? "text-green-600"
+                                  : chama.status === "pending"
+                                  ? "text-yellow-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {chama.status === "approved" ? (
+                                <SquareCheck />
+                              ) : chama.status === "pending" ? (
+                                <CircleEllipsis />
+                              ) : (
+                                <TriangleAlert />
+                              )}
+                              {chama.status.charAt(0).toUpperCase() +
+                                chama.status.slice(1)}
+                            </div>
+                          </td>
+                          <td className="border border-gray-200 p-2">
+                            <Link
+                              href={`/profile/chama/${encodeURIComponent(
+                                chama.chama.id
+                              )}`}
+                              className="text-blue-600 hover:underline"
+                            >
+                              Manage
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <span className="block mt-4 text-red-600">
+                    You have not joined any Chama. Click explore Chamas button
+                    above to browse and join chamas
+                  </span>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+          {/* Sacco Membership Table Card */}
+          <Card className="mt-3">
+            <CardHeader>
+              <CardTitle>Sacco Memberships</CardTitle>
+              <Link href="/#" className="text-blue-600 hover:underline">
+                Explore Sacco
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <table className="w-full border-collapse border border-gray-200">
+                  <thead className="bg-blue-600 text-white">
+                    <tr>
+                      <th className="border border-gray-200 p-2">#</th>
+                      <th className="border border-gray-200 p-2">Name</th>
+                      <th className="border border-gray-200 p-2">Role</th>
+                      <th className="border border-gray-200 p-2">Status</th>
+                      <th className="border border-gray-200 p-2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userData.saccos.map((sacco, index) => (
+                      <tr key={index} className="border border-gray-200">
+                        <td className="border border-gray-200 p-2">
+                          {index + 1}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          {sacco.name}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          {sacco.role}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          <div
+                            className={`flex items-center gap-2 ${
+                              sacco.status === "approved"
+                                ? "text-green-600"
+                                : sacco.status === "pending"
+                                ? "text-yellow-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {sacco.status === "approved" ? (
+                              <SquareCheck />
+                            ) : sacco.status === "pending" ? (
+                              <CircleEllipsis />
+                            ) : (
+                              <TriangleAlert />
+                            )}
+                            {sacco.status.charAt(0).toUpperCase() +
+                              sacco.status.slice(1)}
+                          </div>
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          <Link
+                            href={`/profile/sacco/${encodeURIComponent(
+                              sacco.name
+                            )}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            Manage
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        <div className={styles.profileCard}>
-          <h3>CBO Memberships</h3>
-          {userData.cbos.map((cbo, index) => (
-            <div key={index} className={styles.cboItem}>
-              <p><strong>Name:</strong> {cbo.name}</p>
-              <p><strong>Role:</strong> {cbo.role}</p>
-              <p><strong>Status:</strong> {cbo.status}</p>
-            </div>
-          ))}
+        <div className="flex flex-wrap gap-3 lg:flex-col md:w-1/2">
+          {/* Loans Card */}
+          <Card className="mt-3">
+            <CardHeader>
+              <CardTitle>My Loans</CardTitle>
+              <Link href="/#" className="text-blue-600 hover:underline">
+                Request Loan
+              </Link>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <table className="w-full border-collapse border border-gray-200">
+                  <thead className="bg-blue-600 text-white">
+                    <tr>
+                      <th className="px-4 py-2">No.</th>
+                      <th className="px-4 py-2">Name</th>
+                      <th className="px-4 py-2">Amount</th>
+                      <th className="px-4 py-2">Chama/Sacco</th>
+                      <th className="px-4 py-2">Status</th>
+                      <th className="px-4 py-2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {userData.loans.map((loan, index) => (
+                      <tr key={index} className="border border-gray-200">
+                        <td className="border border-gray-200 p-2">
+                          {index + 1}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          {loan.name}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          {loan.amount}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          Chama - {loan.name}
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          <div
+                            className={`flex items-center gap-2 ${
+                              loan.status === "paid"
+                                ? "text-green-600"
+                                : loan.status === "ongoing"
+                                ? "text-yellow-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {loan.status === "paid" ? (
+                              <SquareCheck />
+                            ) : loan.status === "ongoing" ? (
+                              <CircleEllipsis />
+                            ) : (
+                              <TriangleAlert />
+                            )}
+                            {loan.status.charAt(0).toUpperCase() +
+                              loan.status.slice(1)}
+                          </div>
+                        </td>
+                        <td className="border border-gray-200 p-2">
+                          <Link
+                            href={`/profile/loan/${encodeURIComponent(
+                              loan.name
+                            )}`}
+                            className="text-blue-600 hover:underline"
+                          >
+                            View
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Events</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="list-disc pl-6">
+                {userData.events.map((event, index) => (
+                  <li key={index}>{event.name} - {event.date}</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
         </div>
-        <div className={styles.profileCard}>
-          <h3>Profile Settings</h3>
-          <Link href="/profile/settings">Edit Profile</Link>
-        </div>
-        <div className={styles.profileCard}>
-          <h3>Upcoming Events</h3>
-          {userData.events.map((event, index) => (
-            <div key={index} className={styles.eventItem}>
-              <p><strong>Event:</strong> {event.name}</p>
-              <p><strong>Date:</strong> {event.date}</p>
-            </div>
-          ))}
-        </div>
-        <div className={styles.profileCard}>
-          <h3>User Finances</h3>
-          <p><strong>Balance:</strong> {userData.finances.balance}</p>
-          <p><strong>Contributions:</strong> {userData.finances.contributions}</p>
-        </div>
-        <div className={styles.profileCard}>
-          <h3>Loans</h3>
-          {userData.loans.map((loan, index) => (
-            <div key={index} className={styles.loanItem}>
-              <p><strong>Loan:</strong> {loan.name}</p>
-              <p><strong>Amount:</strong> {loan.amount}</p>
-              <p><strong>Status:</strong> {loan.status}</p>
-            </div>
-          ))}
-        </div>
-        <div className={styles.profileCard}>
-          <h3>Other CBOs</h3>
-          {userData.otherCbos.map((cbo, index) => (
-            <div key={index} className={styles.cboItem}>
-              <p>{cbo.name}</p>
-              <Link href={`/cbos/${cbo.name}`}>View Details</Link>
-            </div>
-          ))}
-        </div> */}
+      </div>
     </div>
   );
 };

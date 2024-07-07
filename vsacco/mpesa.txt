@@ -1,0 +1,20 @@
+//.env
+
+MPESA_CONSUMER_SECRET=PASTE_CONSUMER_SECRET
+MPESA_CONSUMER_KEY=PASTE_CONSUMER_KEY
+MPESA_PASS_KEY=PASTE_PASS_KEY
+MPESA_BUSINESS_SHORT_CODE=PASTE_BUSINESS_SHORT_CODE
+
+PORT=YOUR_SERVER_PORT //The server port
+
+
+appname --- Test-user-payment
+part a -- 254 708374149 (You may use your mpesa number to get push on your phone)
+phone number --- 254 708374149 (You may use your mpesa number to get push on your phone)
+business short code --- 174379
+account reference --- CompanyXLTD
+transaction description --- Payment of X
+call back url --- https://mydomain.com/path (Must be https)
+transaction type --- CustomerPayBillOnline
+timestamp ---- 20240629055812
+passkey ---- bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919

@@ -55,7 +55,7 @@ const FileUpload = ({ onFileUpload }) => {
     };
 
     return (
-        <div className={styles.container}>
+        <>
             {!file ? (
                 <div
                     onDragOver={handleDragOver}
@@ -84,7 +84,7 @@ const FileUpload = ({ onFileUpload }) => {
                     <span onClick={() => setFile("")}>Reset</span>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

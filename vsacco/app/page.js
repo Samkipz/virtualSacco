@@ -1,6 +1,6 @@
 import styles from './page.module.css'
+import Footer from './ui/footer/page'
 import Navbar from './ui/navbar/page'
-import Brand from './ui/brand/page'
 import HeroSlider from './ui/slider/page'
 
 const Homepage = () => {
@@ -8,6 +8,7 @@ const Homepage = () => {
     <div className={styles}>
       <Navbar/>
       <HeroSlider/>
+      <Footer/>
     </div>
   )
 }

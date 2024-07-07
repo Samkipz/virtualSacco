@@ -8,7 +8,7 @@ const Brand = () => {
           <Link href='/'>MQ</Link>
         </div>
         <p className={styles.brand_slogan}>Your One Stop Sacco</p>
-      </div>
+    </div>
   )
 }
 

@@ -21,7 +21,7 @@ export async function POST(request) {
     PartyA: `254${phoneSub}`,
     PartyB: MPESA_BUSINESS_SHORT_CODE,
     PhoneNumber: `254${phoneSub}`,
-    CallBackURL: 'https://rnndx-196-202-217-130.a.free.pinggy.link/api/mpesa/callback',
+    CallBackURL: 'https://c6a2-154-159-237-9.ngrok-free.app/api/mpesa/callback',
     AccountReference: `254${phoneSub}`,
     TransactionDesc: 'Payment',
   };

@@ -2,7 +2,7 @@
 import prisma from "../prisma";
 import { auth } from "@/app/api/auth/auth";
 
-//User Request to join Chama
+//=================== User Request to join Chama ==========//
 export async function joinChama(chama) {
   const session = await auth();
   if (!session) {
@@ -48,13 +48,12 @@ export async function joinChama(chama) {
   }
 }
 
-//Admin approve to join Chama
-
+//===================== Admin approve to join Chama =======//
 export async function approveRequest(chamaId, userId){
   const intUserId = parseInt(userId);
   const intChamaId = parseInt(chamaId);
 
-  console.log("chama ---> "+chamaId+" user ----> "+userId);
+  // console.log("chama ---> "+chamaId+" user ----> "+userId);
 
   //check db if the request exist
   //if it exist as blank throw err
@@ -99,4 +98,24 @@ export async function approveRequest(chamaId, userId){
     return { success: false, message: "An error occurred" };
   }
   
+}
+
+// ================ Cancel Join Request =========== //
+export async function cancelRequest(chamaId, userId){
+  const intUserId = parseInt(userId);
+  const intChamaId = parseInt(chamaId);
+  try{
+    await prisma.user_has_chama.delete({
+      where: {
+        user_id_chama_id: {
+          user_id: intUserId,
+          chama_id: intChamaId
+        }
+      },
+    });
+    return { success: true, message: "Request to join this chama has successfully been cancelled" };
+  }catch(err){
+    console.log("An error occurred while cancelling the join request --> ", err);
+    return { success: false, message: "An error occurred while cancelling your join request" };
+  }
 }

@@ -1,23 +1,23 @@
 .container{
-    display: flex;
-    justify-content: space-between;
-    margin-right: auto;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    /* margin-right: auto;
     margin-left: auto;
     padding-left: 15px;
     padding-right: 15px;
-    min-width: 300px;
-    background: var(--myBlue);
-    color: var(--myWhite);
+    min-width: 300px; */
+    /* background: var(--myBlue); */
+    /* color: var(--myWhite); */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    height: 10vh;
+    /* height: 10vh; */
 }
 
-.inContainer{
+/* .inContainer{
     width: 100%;
     display: flex;
     justify-content: space-between;
     height: 100%;
-}
+} */
 
 .adminNavContainer{
     width: 100%;

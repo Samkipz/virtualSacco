@@ -39,7 +39,6 @@ const HeroSlider = () => {
   
 
   return (
-    <div>
       <div className={styles.container}>
         {[1, 2, 3, 4].map((i) => (
           <div
@@ -58,7 +57,7 @@ const HeroSlider = () => {
               priority
             />
             <div className={styles.heroCenter}>
-              <h1>
+              <h1 className="flex text-white items-center justify-center">
                 {i === 1
                   ? "Table banking is the future for today!"
                   : i === 2
@@ -73,7 +72,7 @@ const HeroSlider = () => {
                   onMouseOver={handleMouseOver}
                   onMouseOut={handleMouseOut}
                   className={`${styles.btn} ${styles.btnMd} 
-                  ${ hovered ? styles.btnWhite : styles.btnBlue}`}
+                  ${ hovered ? "text-white bg-none border-2 border-white" : "text-white bg-primary border-2 border-primary"}`}
                 >
                   Learn More about us
                 </Link>
@@ -82,7 +81,7 @@ const HeroSlider = () => {
                   onMouseOver={handleMouseOver}
                   onMouseOut={handleMouseOut}
                   className={`${styles.btn} ${styles.btnMd} 
-                  ${ hovered ? styles.btnBlue : styles.btnWhite}`}
+                  ${ hovered ? "text-white bg-primary border-2 border-primary" : "text-white bg-none border-2 border-white"}`}
                 >
                   Know our Services
                 </Link>
@@ -90,15 +89,14 @@ const HeroSlider = () => {
             </div>
           </div>
         ))}
-        <span className={styles.prev} onClick={() => plusSlides(-1)}>
+        <span className={`${styles.prev} hover:text-primary `} onClick={() => plusSlides(-1)}>
           ❮❮
         </span>
-        <span className={styles.next} onClick={() => plusSlides(1)}>
+        <span className={`${styles.next} hover:text-primary `} onClick={() => plusSlides(1)}>
           ❯❯
         </span>
       </div>
-      <p>Some footer Content</p>
-    </div>
+   
   );
 };
 

@@ -39,7 +39,7 @@
     color: var(--myBlack);
 } */
 
-.navItem a.active {
+.active {
     background: var(--myWhite);
     color: var(--myBlack);
 }

@@ -11,10 +11,10 @@ const Navbar = async ({ admin }) => {
   session && console.log(session, 'session user is not admin -- ', !session.isAdmin); 
 
   return (
-    <div className={styles.container}>
+    <div className="flex text-white justify-between">
       {!admin ? (
-        <div className={styles.inContainer}>
-          <Brand />
+        <div className="flex flex-col md:flex-row p-0 justify-between lg:justify-normal w-full">
+          {/* <Brand /> */}
           <Nav session={session} />
         </div>
       ) : (

@@ -1,104 +1,104 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import styles from './loginPage.module.css';
 import Link from 'next/link';
-import { ImEnter } from "react-icons/im";
 import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const Login = () => {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    idNum: '',
-    password: '',
-    remember: false,
-  });
+    const router = useRouter();
+    const [formData, setFormData] = useState({
+      idNum: '',
+      password: '',
+    });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
+    const handleChange = (e) => {
+      const { name, value, type, checked } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    try {
-      const response = await fetch('/api/user/login', {
-        method: 'POST',
-        body: JSON.stringify(formData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      try {
+        const response = await fetch('/api/user/login', {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-      if (response.ok) {
-        const data = response;
-        console.log("User logged in!");
+        if (response.ok) {
+          const data = response;
+          console.log("User logged in!");
 
-        if (data.isAdmin) {
-          router.push("/admin");
-          router.refresh();
+          if (data.isAdmin) {
+            router.push("/admin");
+            router.refresh();
+          } else {
+            router.push("/profile");
+            router.refresh();
+          }
         } else {
-          router.push("/profile");
-          router.refresh();
+          console.error("Failed to log in.");
         }
-      } else {
-        console.error("Failed to log in.");
+      } catch (error) {
+        console.error("Error logging in:", error);
       }
-    } catch (error) {
-      console.error("Error logging in:", error);
-    }
-  };
-
+    };
   return (
-    <div className={styles.container}>
-      <div className={styles.contentSection}>
-        <form onSubmit={handleSubmit} className={styles.formSection}>
-          <div className={styles.col}>
-            <h2 className={styles.h2}>Login</h2>
-            <div className={styles.inputArea}>
-              <input
-                type="number"
-                name="idNum"
-                placeholder="ID/Passport Number"
-                value={formData.idNum}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.inputArea}>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.submitBtn}>
-              <div className={styles.formGrp}>
-                <input
-                  type="checkbox"
-                  id="remember"
-                  name="remember"
-                  checked={formData.remember}
-                  onChange={handleChange}
-                />
-                <label htmlFor="remember">Remember me</label>
-              </div>
-              <button type='submit' className={styles.submitButton}><ImEnter /> Login</button>
-              <div className={styles.registerLink}>
-                Dont have an account? <Link href="/register">Register here</Link>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
+    <Card className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardDescription>
+          Use your National ID/passport number.
+        </CardDescription>
+      </CardHeader>
+      <form onSubmit={handleSubmit} >
+      <CardContent className="grid gap-4">
+      
+        <div className="grid gap-2">
+          <Label htmlFor="idNum">National ID/Passport</Label>
+          <Input id="idNum" 
+          name="idNum"
+          type="number" 
+          placeholder="ID/Passport" 
+          value={formData.idNum}
+          onChange={handleChange} required />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="password">Password</Label>
+          <Input id="password" 
+          name="password"
+          type="password" 
+          value={formData.password} 
+          onChange={handleChange} required />
+        </div>
+        
+      </CardContent>
+      <CardFooter className="flex flex-col">
+        <Button className="w-full">Sign in</Button>
+        <CardDescription>
+          Dont have an account? <Link href="/register">Register here</Link>
+        </CardDescription>
+      </CardFooter>
+      
+      </form>
+    </Card>
+  )
+}
 
 export default Login;
