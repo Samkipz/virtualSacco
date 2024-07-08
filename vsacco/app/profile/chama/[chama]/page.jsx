@@ -30,11 +30,30 @@ import { fetchChama, getUsersChama } from "@/app/lib/actions/fetchChama";
 const ChamaProfile = ({ params }) => {
   const [chama, setChama] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [balance, setBalance] = useState(null);
+  const [wallet, setWallet] = useState(null);
+  const [depformData, setdepformData] = useState({ phone: '', depAmount: '' });
+  const [withformData, setwithformData] = useState({ withAmount: '' });
+  const [recentTransactions, setRecentTransactions] = useState([]);
   const chamaId = parseInt(params.chama);
 
+  const handleChangeDep = (e) => {
+    const { name, value } = e.target;
+    setdepformData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleChangeWith = (e) => {
+    const { name, value } = e.target;
+    setwithformData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const getChamaDetails = async (chamaId) => {
-    const fetchedChama = await getUsersChama(chamaId)
+    const fetchedChama = await getUsersChama(chamaId);
     setChama(fetchedChama);
     setLoading(false); // Set loading to false after fetching data
   };
@@ -43,15 +62,14 @@ const ChamaProfile = ({ params }) => {
     getChamaDetails(chamaId);
   }, [chamaId]);
 
-  if (chama) console.log("User Details for this Chama:+++====>, ", JSON.stringify(chama, null, 2));
+  // if (chama) console.log("User Details for this Chama:+++====>, ", JSON.stringify(chama, null, 2));
 
-  // Dummy data for demonstration; replace with actual data
   const chamaData = {
     dateJoined: "22/4/2024",
     role: "Member",
     totalMembers: 400,
     totalContribution: 600,
-    recentTransactions: [
+    recentTransactions1: [
       {
         date: "2024-06-15",
         amount: "1000",
@@ -62,49 +80,101 @@ const ChamaProfile = ({ params }) => {
         transactionDate: "2024-06-15",
         status: "Completed",
       },
-      // More transactions...
     ],
   };
 
-
-//   {
-//     "message": "Wallet retrieved",
-//     "data": {
-//         "wallet_id": "YDVWGDY",
-//         "label": "Eve-Wallet",
-//         "can_disburse": true,
-//         "currency": "KES",
-//         "wallet_type": "WORKING",
-//         "current_balance": 5,
-//         "available_balance": 5,
-//         "updated_at": "2024-07-05T13:56:21.142460+03:00"
-//     }
-// }
-
-const handleGetBalance = async (wallet_id) => {
-  try {
-    const response = await fetch(`/api/instasend/wallets/fetchone?wallet_id=${wallet_id}`);
-    if (response.ok) {
-      const { data } = await response.json();
-      setBalance(data);
-      const currentBalance = balance.current_balance;
-      const availableBalance = balance.available_balance;
-      const currency = balance.currency;
-      
-    } else {
-      console.error('Failed to fetch wallet data:', response.statusText);
+  const handleGetWallet = async (wallet_label) => {
+    try {
+      const response = await fetch(`/api/instasend/wallets/fetchone?label=${wallet_label}`);
+      if (response.ok) {
+        const { data } = await response.json();
+        setWallet(data);
+      } else {
+        console.error('Failed to fetch wallet data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-  } catch (error) {
-    console.error('Error:', error);
+  };
+
+  const getWalletTransactions = async (wallet_id) =>{
+    try{
+      const response = await fetch(`/api/instasend/wallets/wallettrans?wallet_id=${wallet_id}`);
+      // if (response) console.log("Response Transactions-----",response)
+      if (response.ok) {
+        const { data } = await response.json();
+        // console.log("Data Transactions-----",data)
+        // Filtering transactions that have an invoice
+        const filteredTransactions = data.results.filter(transaction => transaction.invoice !== null);
+        // Updating the state with filtered transactions
+        console.log("Filtered Transactions-----",filteredTransactions)
+        setRecentTransactions(filteredTransactions);
+        
+      } else {
+        console.error('Failed to fetch wallet data:', response.statusText);
+      }
+    }catch(error){
+      console.log(error)
+    }
   }
-};
+
+  const handleDeposit = async (e) => {
+    e.preventDefault();
+    // console.log("dep form data ===> ", depformData);
+     if(wallet && chama){
+      // get wallet id
+      const walletId = wallet.wallet_id;
+      const phoneSub = depformData.phone.substring(1);
+      const phoneNumber = `254${phoneSub}`;
+      const email = chama.data.user.email;
+      const firstname = chama.data.firstname;
+      const laststname = chama.data.othernames;
+      const amount = depformData.depAmount;
+
+      const data ={ 
+        "phone":phoneNumber, 
+        "amount":amount, 
+        "first_name":firstname, 
+        "last_name":laststname, 
+        "email":email, 
+        "wallet_id":walletId
+      }
+
+      try {
+        const response = await fetch('/api/instasend/wallets/fundwallet', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (response.ok) {
+          console.log("Deposit Request Send!");
+        } else {
+          console.error("Failed to create deposit request.");
+        }
+      }catch (error) {
+        console.error("Some error occured when trying to deposit:", error);
+      }
+    }
+    else{
+      alert("You need to be an approved member of this Chama for You to Deposit");
+    }
+  };
 
   useEffect(() => {
-    if(chama){
-      const wallet_id = chama.data.userChama.wallet_id;
-      handleGetBalance(wallet_id);
+    if (chama) {
+      const wallet_label = chama.data.userChama.wallet_id;
+      handleGetWallet(wallet_label);
     }
   }, [chama]);
+
+  useEffect(() => {
+    if (wallet) {
+      getWalletTransactions(wallet.wallet_id);
+    }
+  }, [wallet]);
+  if (recentTransactions) console.log("Recent Transactions-----",recentTransactions)
 
   if (loading) {
     return <p>Loading..</p>;
@@ -161,17 +231,17 @@ const handleGetBalance = async (wallet_id) => {
                   <WalletMinimal className="h-6 w-6 mr-2" />
                   Account Balance
                 </div>
-                <div className="flex gap-3">Wallet ID: eee</div>
+                <div className="flex gap-3">Wallet ID: {wallet ? wallet.label : <p>Wallet Unavailabele</p>}</div>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex justify-center p-2 border-b">
                 {!chama.data.userChama.wallet_id ? 
-                 "You do Not Have a wallet ID. Probably, Your membership for this Chama is not active. Conduct admin"
+                 "You do Not Have a wallet. Probably, Your membership for this Chama is not active. Conduct admin"
                 : 
-                balance ? 
+                wallet ? 
                 <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                  <span className="text-3xl font-bold text-gray-900 dark:text-white">{balance.currency}.</span> {balance.current_balance}
+                  <span className="text-3xl font-bold text-gray-900 dark:text-white">{wallet.currency}.</span> {wallet.current_balance}
                 </h1>
                 : <span className="text-red-600 font-bold"> Loading balance... </span>}
               </div>
@@ -192,10 +262,17 @@ const handleGetBalance = async (wallet_id) => {
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
                       <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="username" className="text-right">
+                        <Label htmlFor="withAmount" className="text-right">
                           Enter Amount
                         </Label>
-                        <Input type="number" id="username" name="amount" className="col-span-3" />
+                        <Input 
+                          type="number" 
+                          id="withAmount" 
+                          name="withAmount" 
+                          placeholder="100" 
+                          value={withformData.withAmount}
+                          onChange={handleChangeWith} required
+                          className="col-span-3" />
                       </div>
                     </div>
                     <DialogFooter>
@@ -203,10 +280,55 @@ const handleGetBalance = async (wallet_id) => {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-                <Button variant="outline" className="flex-grow hover:bg-primary hover:text-white">
-                  <CircleArrowUp className="h-6 w-6 mr-2" />
-                  Deposit
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="flex-grow hover:bg-primary hover:text-white">
+                      <CircleArrowDown className="h-6 w-6 mr-2" />
+                      Deposit
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Deposit to Your Wallet</DialogTitle>
+                      <DialogDescription>
+                        Please note that transaction charges applies.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleDeposit}>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="phone" className="text-right">
+                            Enter Phone
+                          </Label>
+                          <Input 
+                            type="number" 
+                            id="phone" 
+                            name="phone" 
+                            placeholder="07..."
+                            value={depformData.phone}
+                            onChange={handleChangeDep} required
+                            className="col-span-3" />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="depAmount" className="text-right">
+                            Enter Amount
+                          </Label>
+                          <Input 
+                            type="number" 
+                            id="depAmount" 
+                            name="depAmount" 
+                            placeholder="100"
+                            value={depformData.depAmount}
+                            onChange={handleChangeDep} required
+                            className="col-span-3" />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit">Deposit</Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
                 <Button variant="outline" className="flex-grow hover:bg-primary hover:text-white">
                   <FolderSync className="h-6 w-6 mr-2" />
                   Transfer
@@ -234,41 +356,47 @@ const handleGetBalance = async (wallet_id) => {
         </div>
       </div>
 
-      {/* Recent Transactions Table */}
-      <div className="w-full">
-        <Card>
+        {/* Recent Transactions */}
+      <div className="w-full flex flex-wrap gap-3">
+        <Card className="w-full">
           <CardHeader>
-            <CardTitle>My Recent Transactions</CardTitle>
+            <CardTitle>Recent Transactions</CardTitle>
           </CardHeader>
           <CardContent>
-            <table className="w-full border-collapse border border-gray-200">
-              <thead className="bg-blue-600 text-white">
-                <tr>
-                  <th className="border border-gray-200 p-2">Date</th>
-                  <th className="border border-gray-200 p-2">Amount</th>
-                  <th className="border border-gray-200 p-2">Transaction Code</th>
-                  <th className="border border-gray-200 p-2">Category</th>
-                  <th className="border border-gray-200 p-2">Reason</th>
-                  <th className="border border-gray-200 p-2">Channel</th>
-                  <th className="border border-gray-200 p-2">Transaction Date</th>
-                  <th className="border border-gray-200 p-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {chamaData.recentTransactions.map((transaction, index) => (
-                  <tr key={index} className="border border-gray-200">
-                    <td className="border border-gray-200 p-2">{transaction.date}</td>
-                    <td className="border border-gray-200 p-2">{transaction.amount}</td>
-                    <td className="border border-gray-200 p-2">{transaction.transactionCode}</td>
-                    <td className="border border-gray-200 p-2">{transaction.transactionCategory}</td>
-                    <td className="border border-gray-200 p-2">{transaction.transactionReason}</td>
-                    <td className="border border-gray-200 p-2">{transaction.transactionChannel}</td>
-                    <td className="border border-gray-200 p-2">{transaction.transactionDate}</td>
-                    <td className="border border-gray-200 p-2">{transaction.status}</td>
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">INVOICE</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PROVIDER</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ACCOUNT</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CURRENCY</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AMOUNT</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CHARGE</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">MPESA REF</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">REASON</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DATE</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {recentTransactions && recentTransactions.map((transaction, index) => (
+                    <tr key={index}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">INV_{transaction.invoice.invoice_id || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.provider || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.account || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.currency || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.net_amount || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.charges || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.state || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.invoice.mpesa_ref || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{transaction.narrative || '_'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(transaction.invoice.created_at).toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </CardContent>
         </Card>
       </div>

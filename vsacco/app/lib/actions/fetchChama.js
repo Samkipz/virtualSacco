@@ -46,6 +46,8 @@ export async function getUsersChama(chamaId){
 
     const userId = parseInt(session.userId)
 
+    const {user, firstname, othernames} = session
+
     const userChama = await prisma.user_has_chama.findFirst({
         where:{
             chama_id: chamaId,
@@ -58,7 +60,7 @@ export async function getUsersChama(chamaId){
             id:chamaId,
         }
     })
-    return { success: true, data: {userId, userChama, chama}, message: "Users chama fetched" };
+    return { success: true, data: {user, firstname, othernames, userChama, chama}, message: "Users chama fetched" };
 }
 
 

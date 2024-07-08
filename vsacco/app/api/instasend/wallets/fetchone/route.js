@@ -9,14 +9,14 @@ export async function GET(request) {
 
   // Extract query parameters from the request URL
   const { searchParams } = new URL(request.url);
-  const wallet_id = searchParams.get('wallet_id');
+  const wallet_label = searchParams.get('label');
 
   try {
     // Retrieve the list of wallets
     const response = await wallets.list();
    
     // Filter the wallets to find the one with the matching wallet_id
-    const wallet = response.results.find(wallet => wallet.wallet_id === wallet_id);
+    const wallet = response.results.find(wallet => wallet.label === wallet_label);
 
     if (wallet) {
       return NextResponse.json({ message: 'Wallet retrieved', data: wallet }, { status: 200 });
