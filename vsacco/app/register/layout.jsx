@@ -1,13 +1,13 @@
 import Navbar from "../ui/navbar/page"
-import styles from './register.module.css'
+
 
 
 const layout = ({children}) => {
   return (
-    <div className={styles.container}>
-        <div className={styles.content}>
+    <div>
+        <div>
             <Navbar/>
-            <div className={styles.children}>{children}</div>
+            <div>{children}</div>
         </div>
     </div>
   )

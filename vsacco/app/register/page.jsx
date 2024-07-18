@@ -68,8 +68,8 @@ const Register = () => {
   return (
     <div className="flex justify-center min-h-screen">
       <form onSubmit={handleSubmit} className="flex flex-col md:flex-row bg-white 
-     border bg-card text-card-foreground p-0 mt-8 mb-12 mx-8 rounded-lg shadow-2xl w-full max-w-4xl">
-        <div className="flex flex-col w-full md:w-1/2 p-4">
+     border bg-card text-card-foreground mt-12 mx-8 h-max  rounded-lg shadow-2xl w-full max-w-4xl">
+        <div className="flex flex-col w-full md:w-1/2 p-4 pb-8">
           <h2 className="text-2xl font-semibold text-primary mb-4">General Information</h2>
           <div className="grid grid-cols-1 gap-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -143,17 +143,20 @@ const Register = () => {
                 className="border-b"
               />
             </div>
-            <div className='flex flex-col'>
+            <div className='flex flex-row'>
               <Label className='mb-4'>Upload National ID Image</Label>
-              <span className='flex justify-center h-24 p-12 relative'>
+              </div>
+            <div className='flex flex-col flex-grow gap-4 relative'>
+              
+              <div className='flex flex-row justify-center h-24 p-12 '>
                <FileUpload onFileUpload={handleFileUpload}/>
-              </span>
+              </div>
               
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-full mt-12 md:mt-0 md:w-1/2 p-4 bg-primary text-white rounded-r-lg">
-          <h2 className="text-2xl font-semibold mb-4">Contact Details</h2>
+        <div className="flex flex-col w-full mt-12 md:mt-0 md:w-1/2 p-4 pb-8 bg-primary text-white md:rounded-r-lg">
+          <h2 className="text-2xl font-semibold mb-8">Contact Details</h2>
           <div className="grid grid-cols-1 gap-4">
             <div>
               <Label htmlFor="email">Email</Label>
