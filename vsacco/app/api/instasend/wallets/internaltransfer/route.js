@@ -24,6 +24,6 @@ export async function POST(request) {
 
 
 
-let amount = 100;
-let narrative = 'Payment';
+// let amount = 100;
+// let narrative = 'Payment';
 

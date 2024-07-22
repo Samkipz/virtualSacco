@@ -13,7 +13,7 @@ const login = async (credentials) =>{
                 idNum: idNumInt
             }
         })
-        if (!user) throw new Error("Wrong credentials provided!");
+        if (!user) return { success: false, message: "Wrong credentials provided! e" };
         const isPasswordCorrect = await bcrypt.compare(
             credentials.password, user.password
         );

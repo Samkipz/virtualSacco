@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import { getUser } from "@/app/lib/actions/getUser";
 import { fetchChama, getUsersChama } from "@/app/lib/actions/fetchChama";
 import MaterialTable from "@/app/ui/table/page";
+import { LineWave, Hourglass } from 'react-loader-spinner';
 
 const ChamaProfile = ({ params }) => {
   const [chama, setChama] = useState(null);
@@ -70,6 +71,7 @@ const ChamaProfile = ({ params }) => {
 
   // if (chama) console.log("User Details for this Chama:+++====>, ", JSON.stringify(chama, null, 2));
 
+  // dummy data
   const chamaData = {
     dateJoined: "22/4/2024",
     role: "Member",
@@ -127,11 +129,10 @@ const ChamaProfile = ({ params }) => {
             state: transaction.invoice.state,
             mpesa_ref: transaction.invoice.mpesa_reference,
             api_ref: transaction.invoice.api_ref,
-            created_at: transaction.invoice.created_at
+            created_at: new Date(transaction.invoice.created_at).toLocaleString()
           }));
   
         // Updating the state with filtered transactions
-        console.log("Filtered Transactions-----", JSON.stringify(filteredTransactions, null, 2));
         setRecentTransactions(filteredTransactions);
       } else {
         console.error("Failed to fetch wallet data:", response.statusText);
@@ -199,18 +200,19 @@ const ChamaProfile = ({ params }) => {
       getWalletTransactions(wallet.wallet_id);
     }
   }, [wallet]);
-  // if (recentTransactions) {
-  //   // console.log(
-  //   //   "Recent Transactions-----",
-  //   //   JSON.stringify(recentTransactions, null, 2)
-  //   // );
-  //   // const myData=recentTransactions
-  //   // console.log("Recent Transactions-----", recentTransactions);
-  // }
-  // console.log("Recent Transactions-----", recentTransactions);
 
   if (loading) {
-    return <p>Loading..</p>;
+    return <p className="text-primary flex align-middle justify-center items-center h-screen">
+      <Hourglass
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="hourglass-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+        colors={['#306cce', '#72a1ed']}
+      />
+    </p>;
   }
 
   return (
@@ -244,24 +246,23 @@ const ChamaProfile = ({ params }) => {
           </CardContent>
         </Card>
 
-        {/* Action Buttons */}
         <div className="flex flex-col gap-3 md:w-2/3">
           <div className="flex gap-3">
             <Button
               variant="outline"
-              className="flex-grow hover:bg-primary hover:text-white"
+              className="flex-grow text-white bg-primary hover:bg-primary-foreground hover:border-1 border-primary hover:text-primary"
             >
               Members
             </Button>
             <Button
               variant="outline"
-              className="flex-grow hover:bg-primary hover:text-white"
+              className="flex-grow text-white bg-primary hover:bg-primary-foreground hover:border-1 border-primary hover:text-primary"
             >
               Events
             </Button>
             <Button
               variant="outline"
-              className="flex-grow hover:bg-primary hover:text-white"
+              className="flex-grow text-white bg-primary hover:bg-primary-foreground hover:border-1 border-primary hover:text-primary"
             >
               Blogs
             </Button>
@@ -275,7 +276,7 @@ const ChamaProfile = ({ params }) => {
                 </div>
                 <div className="flex gap-3">
                   Wallet ID:{" "}
-                  {wallet ? wallet.label : <p>Wallet Unavailabele</p>}
+                  {wallet ? wallet.label : <p>Wallet Unavailable</p>}
                 </div>
               </CardTitle>
             </CardHeader>
@@ -291,9 +292,20 @@ const ChamaProfile = ({ params }) => {
                     {wallet.current_balance}
                   </h1>
                 ) : (
-                  <span className="text-red-600 font-bold">
-                    {" "}
-                    Loading balance...{" "}
+                  <span className="text-red-600 font-bold flex flex-col justify-center items-center">
+                    <p>Loading balance </p>
+                    <LineWave
+                      visible={true}
+                      height="100"
+                      width="100"
+                      color="inherit"
+                      ariaLabel="line-wave-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                      firstLineColor=""
+                      middleLineColor=""
+                      lastLineColor=""
+                      />
                   </span>
                 )}
               </div>
@@ -343,7 +355,7 @@ const ChamaProfile = ({ params }) => {
                       variant="outline"
                       className="flex-grow hover:bg-primary hover:text-white"
                     >
-                      <CircleArrowDown className="h-6 w-6 mr-2" />
+                      <CircleArrowUp className="h-6 w-6 mr-2" />
                       Deposit
                     </Button>
                   </DialogTrigger>
@@ -433,120 +445,6 @@ const ChamaProfile = ({ params }) => {
       <div className="w-full flex flex-wrap gap-3">
         {/* Material Table */}
         <MaterialTable data={recentTransactions} />
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      INVOICE
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      PROVIDER
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      ACCOUNT
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      CURRENCY
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      AMOUNT
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      CHARGE
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      STATUS
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      MPESA REF
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      REASON
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
-                      DATE
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {recentTransactions &&
-                    recentTransactions.map((transaction, index) => (
-                      <tr key={index}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          INV_{transaction.invoice.invoice_id || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.provider || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.account || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.currency || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.net_amount || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.charges || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.state || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.mpesa_ref || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {transaction.invoice.api_ref || "_"}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {new Date(
-                            transaction.invoice.created_at
-                          ).toLocaleString()}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

@@ -3,14 +3,14 @@
 import { NextResponse } from 'next/server';
 import IntaSend from 'intasend-node';
 
-export async function GET() {
+export async function POST() {
   const { INTASEND_PUBLISHABLE_KEY, INTASEND_SECRET_KEY } = process.env;
 
   const intasend = new IntaSend(INTASEND_PUBLISHABLE_KEY, INTASEND_SECRET_KEY, true);
 
   try {
     const wallets = intasend.wallets();
-    const response = await wallets.transactions('RGP9JVR')
+    const response = await wallets.transactions('Q8EPR5M') 
     console.log('Wallets Response:', response);
     
     return NextResponse.json({ message: 'Transactions retrieved', data: response }, { status: 200 });

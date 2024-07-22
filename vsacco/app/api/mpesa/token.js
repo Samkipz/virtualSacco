@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 
 export default async function handler(req, res) {
   const auth = new Buffer(`${process.env.MPESA_API_KEY}:${process.env.MPESA_API_SECRET}`).toString('base64');
