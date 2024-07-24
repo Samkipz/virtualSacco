@@ -14,6 +14,8 @@ export async function GET(request) {
   try {
     // Retrieve the list of wallets
     const response = await wallets.list();
+
+    console.log(response.results);
    
     // Filter the wallets to find the one with the matching wallet_id
     const wallet = response.results.find(wallet => wallet.label === wallet_label);

@@ -190,7 +190,7 @@ const ChamaProfile = ({ params }) => {
 
   useEffect(() => {
     if (chama) {
-      const wallet_label = chama.data.userChama.wallet_id;
+      const wallet_label = chama.data.userChama.wallet_label;
       handleGetWallet(wallet_label);
     }
   }, [chama]);
@@ -282,7 +282,7 @@ const ChamaProfile = ({ params }) => {
             </CardHeader>
             <CardContent>
               <div className="flex justify-center p-2 border-b">
-                {!chama.data.userChama.wallet_id ? (
+                {!chama.data.userChama.wallet_label ? (
                   "You do Not Have a wallet. Probably, Your membership for this Chama is not active. Conduct admin"
                 ) : wallet ? (
                   <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">

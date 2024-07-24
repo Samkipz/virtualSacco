@@ -1,12 +1,29 @@
-DATABASE_URL="mysql://root:Samkipz12345@localhost:3306/vsacco"
+DATABASE_URL="mysql://root:samkipz12345@localhost:3306/vsacco"
 AUTH_SECRET=secretkey
-AUTH_URL=http://localhost:3000/api/auth
+
+# MPESA_API_KEY=your_api_key
+# MPESA_API_SECRET=your_api_secret
+
+# DATABASE_URL="mysql://avnadmin:AVNS_X7OYynoGsIZk9_r1KZu@mysql-1ade6e35-ndiemasam-efca.e.aivencloud.com:16230/defaultdb?ssl-mode=REQUIRED"
 
 MPESA_CONSUMER_KEY=M7HlZMGm0ITIcyZvjUDQ7CHK4GNq8VBMOUXWdjO92drNrZH1
 MPESA_CONSUMER_SECRET=rkXKAcAJYVmo0iXSA8GuspOo1A27lcZKUmSG3ekbWgwh8Lvtzhed5FxFhoRbNvHY
 MPESA_BUSINESS_SHORT_CODE=174379
 MPESA_PASS_KEY=bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919
 
-
-INTASEND_PUBLISHABLE_KEY=ISSecretKey_test_56ab963c-13e5-4901-9ba8-e1809f33a635
+# INSTASEND
+INTASEND_PUBLISHABLE_KEY=ISPubKey_test_520484d1-f622-4c3b-b8f2-0d18d2cec580
 INTASEND_SECRET_KEY=ISSecretKey_test_56ab963c-13e5-4901-9ba8-e1809f33a635
+
+
+# AVN MYSQL CONFIG
+uri = mysql://avnadmin:AVNS_X7OYynoGsIZk9_r1KZu@mysql-1ade6e35-ndiemasam-efca.e.aivencloud.com:16230/defaultdb?ssl-mode=REQUIRED
+db_name = defaultdb
+host = mysql-1ade6e35-ndiemasam-efca.e.aivencloud.com
+port = 16230
+user = avnadmin
+pass = AVNS_X7OYynoGsIZk9_r1KZu
+ssl = REQUIRED
+
+
+

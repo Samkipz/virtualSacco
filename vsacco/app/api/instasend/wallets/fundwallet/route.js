@@ -50,7 +50,7 @@ export async function POST(request) {
     // Set an interval to check the status every 5 seconds (5000 milliseconds)
     const intervalId = setInterval(() => {
       checkStatus(collection, invoiceId, intervalId);
-    }, 5000);
+    }, 10000);
 
     return NextResponse.json({ message: 'STK Push initiated', data: response }, { status: 201 });
   } catch (error) {
