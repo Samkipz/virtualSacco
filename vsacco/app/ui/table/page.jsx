@@ -3,7 +3,7 @@ import {
   createMRTColumnHelper,
   useMaterialReactTable,
 } from "material-react-table";
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { mkConfig, generateCsv, download } from "export-to-csv"; //or use your library of choice here
 import { jsPDF } from "jspdf"; //or use your library of choice here
@@ -21,41 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowRightLeft, CloudDownload } from "lucide-react";
-
-const columnHelper = createMRTColumnHelper();
-
-const columns = [
-  columnHelper.accessor("invoice_id", {
-    header: "INVOICE",
-  }),
-  columnHelper.accessor("provider", {
-    header: "PROVIDER",
-  }),
-  columnHelper.accessor("account", {
-    header: "ACCOUNT",
-  }),
-  columnHelper.accessor("currency", {
-    header: "CURRENCY",
-  }),
-  columnHelper.accessor("net_amount", {
-    header: "AMOUNT",
-  }),
-  columnHelper.accessor("charges", {
-    header: "CHARGES",
-  }),
-  columnHelper.accessor("state", {
-    header: "STATUS",
-  }),
-  columnHelper.accessor("mpesa_ref", {
-    header: "MPESA_REF",
-  }),
-  columnHelper.accessor("api_ref", {
-    header: "REASON",
-  }),
-  columnHelper.accessor("created_at", {
-    header: "DATE",
-  }),
-];
+import EditIcon from '@mui/icons-material/Edit';
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -63,7 +29,7 @@ const csvConfig = mkConfig({
   useKeysAsHeaders: true,
 });
 
-const MaterialTable = ({ data }) => {
+const MaterialTable = ({ data, columns, tableName }) => {
   // Export PDF
   const handleExportRowsPDF = (rows) => {
     const doc = new jsPDF();
@@ -93,6 +59,17 @@ const MaterialTable = ({ data }) => {
     columns,
     data,
     enableRowSelection: true,
+    enableRowActions: true,
+    positionActionsColumn: 'last',
+    getRowId: (row) => row.id,
+    muiTableBodyProps: {
+      sx: {
+        //stripe the rows, make odd rows a darker color
+        '& tr:nth-of-type(odd) > td': {
+          backgroundColor: '#f5f5f5',
+        },
+      },
+    },
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
@@ -107,7 +84,7 @@ const MaterialTable = ({ data }) => {
       >
         <div className="flex gap-3">
           <ArrowRightLeft className="h-6 w-6 mr-2" />
-          <h3 className="font-semibold">Recent Transations</h3>
+          <h3 className="font-semibold">{tableName}</h3>
         </div>
         
        
@@ -248,6 +225,15 @@ const MaterialTable = ({ data }) => {
             <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>
+      </Box>
+    ),
+    renderRowActions: ({ row, table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => alert("clicked")}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
     ),
   });

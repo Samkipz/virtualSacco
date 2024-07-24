@@ -1,16 +1,54 @@
-import MyBtn from '@/app/ui/button/page'
-import styles from './cbo.module.css'
-import Link from 'next/link'
+"use client";
+import MyBtn from "@/app/ui/button/page";
+import styles from "./cbo.module.css";
+import Link from "next/link";
 import { MdAdd } from "react-icons/md";
-import Search from '@/app/ui/search/search';
-import prisma from '@/app/lib/prisma';
+import Search from "@/app/ui/search/search";
+import prisma from "@/app/lib/prisma";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { createMRTColumnHelper } from "material-react-table";
+import useSWR from "swr";
+import MaterialTable from "@/app/ui/table/page";
 
-const cbo = async () => {
-  const chamaList = await prisma.chama.findMany({
-    where:{
-      deleted: 0,
-    }
-  });
+const columnHelper = createMRTColumnHelper();
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
+
+const columns = [
+  columnHelper.accessor("name", {
+    header: "CHAMA",
+    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+  }),
+  columnHelper.accessor("description", {
+    header: "DESCRIPTION",
+    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+  }),
+  columnHelper.accessor("location", {
+    header: "LOCATION",
+    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+  }),
+  columnHelper.accessor("address", {
+    header: "ADDRESS",
+    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+  }),
+  columnHelper.accessor("certificate", {
+    header: "CERTIFICATE NUMBER",
+    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+  }),
+  columnHelper.accessor("date_created", {
+    header: "CREATED ON",
+    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    Cell: ({ cell }) => <>{new Date(cell.getValue()).toLocaleString()}</>, //optional custom cell render
+  }),
+];
+
+
+const cbo = () => {
+  const { data, error, isLoading } = useSWR("/api/chama", fetcher);
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+  console.log(data);
 
   // Function to format date
   function formatCreatedDate(isoDateString) {
@@ -21,65 +59,22 @@ const cbo = async () => {
     return dte.toLocaleDateString();
   }
 
-  let num = 1
+  let num = 1;
 
   return (
-    <div className={styles.container}>
-        <div className={styles.topPart}>
-            <MyBtn icon={<MdAdd />} path='/admin/cbo/add' btnName='Register New Chama' />
-        </div>
-        <div className={styles.top}>Top space</div>
-      <div className={styles.tableContainer}>
-        <div className={styles.tableTop}>
-          <Search placeholder="Search for chama"/>
-        </div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <td>#</td>
-              <td>Name</td>
-              <td>Description</td>
-              <td>Location</td>
-              <td>Address</td>
-              <td>Certificate Number</td>
-              <td>Created On</td>
-              <td>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            {chamaList.map((chama)=>(
-              <tr key={chama.id}>
-                <td> { num++ }</td>
-                <td>
-                  <div className={styles.user}>
-                    {chama.name}
-                  </div>
-                </td>
-                <td>{chama.description}</td>
-                <td>{chama.location}</td>
-                <td>{chama.address}</td>
-                <td>{chama.certificate?chama.certificate:'_'}</td>
-                <td>{formatCreatedDate(chama.date_created)}</td>
-                <td>
-                  <div className={styles.buttons}>
-                    {/* <MyBtn icon=w' /> */}
-                    <Link href={`/admin/cbo/${encodeURIComponent(chama.id)}`}>
-                      <button className={`${styles.button} ${styles.view}`}> 
-                        View
-                      </button>
-                    </Link>
-                    <button className={`${styles.button} ${styles.delete}`}>
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
-    </div>
-  )
-}
+    <>
+      <div className="flex w-full justify-end mb-4">
+        <Button>
+          <Plus className="mr-2 h-6 w-5" /> Register New Chama
+        </Button>
+      </div>
+      <div className="w-full flex flex-wrap justify-center">
+        <MaterialTable data={data} columns={columns} tableName={<Button variant="contained" className="bg-primary">
+          Some Table Name
+        </Button>}/>
+      </div>
+    </>
+  );
+};
 
-export default cbo
+export default cbo;

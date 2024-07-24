@@ -33,6 +33,42 @@ import { getUser } from "@/app/lib/actions/getUser";
 import { fetchChama, getUsersChama } from "@/app/lib/actions/fetchChama";
 import MaterialTable from "@/app/ui/table/page";
 import { LineWave, Hourglass } from 'react-loader-spinner';
+import { createMRTColumnHelper } from "material-react-table";
+
+const columnHelper = createMRTColumnHelper();
+
+const columns = [
+  columnHelper.accessor("invoice_id", {
+    header: "INVOICE",
+  }),
+  columnHelper.accessor("provider", {
+    header: "PROVIDER",
+  }),
+  columnHelper.accessor("account", {
+    header: "ACCOUNT",
+  }),
+  columnHelper.accessor("currency", {
+    header: "CURRENCY",
+  }),
+  columnHelper.accessor("net_amount", {
+    header: "AMOUNT",
+  }),
+  columnHelper.accessor("charges", {
+    header: "CHARGES",
+  }),
+  columnHelper.accessor("state", {
+    header: "STATUS",
+  }),
+  columnHelper.accessor("mpesa_ref", {
+    header: "MPESA_REF",
+  }),
+  columnHelper.accessor("api_ref", {
+    header: "REASON",
+  }),
+  columnHelper.accessor("created_at", {
+    header: "DATE",
+  }),
+];
 
 const ChamaProfile = ({ params }) => {
   const [chama, setChama] = useState(null);
@@ -444,7 +480,7 @@ const ChamaProfile = ({ params }) => {
       {/* Recent Transactions */}
       <div className="w-full flex flex-wrap gap-3">
         {/* Material Table */}
-        <MaterialTable data={recentTransactions} />
+        <MaterialTable data={recentTransactions} columns={columns}/>
       </div>
     </div>
   );
