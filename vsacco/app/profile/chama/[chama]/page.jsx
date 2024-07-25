@@ -480,7 +480,11 @@ const ChamaProfile = ({ params }) => {
       {/* Recent Transactions */}
       <div className="w-full flex flex-wrap gap-3">
         {/* Material Table */}
-        <MaterialTable data={recentTransactions} columns={columns}/>
+        <MaterialTable data={recentTransactions} columns={columns} tableName={
+          <span className="text-primary flex gap-3 font-semibold">
+            <ArrowRightLeft className="h-6 w-6 mr-2" />
+              Recent Transactions
+          </span>}/>
       </div>
     </div>
   );

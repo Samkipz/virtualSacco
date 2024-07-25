@@ -20,8 +20,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ArrowRightLeft, CloudDownload } from "lucide-react";
-import EditIcon from '@mui/icons-material/Edit';
+import { ArrowRightLeft, CloudDownload, PenLine } from "lucide-react";
+import EditIcon from "@mui/icons-material/Edit";
+import Link from "next/link";
+import { NotebookPen } from "lucide-react";
 
 const csvConfig = mkConfig({
   fieldSeparator: ",",
@@ -60,13 +62,13 @@ const MaterialTable = ({ data, columns, tableName }) => {
     data,
     enableRowSelection: true,
     enableRowActions: true,
-    positionActionsColumn: 'last',
+    positionActionsColumn: "last",
     getRowId: (row) => row.id,
     muiTableBodyProps: {
       sx: {
         //stripe the rows, make odd rows a darker color
-        '& tr:nth-of-type(odd) > td': {
-          backgroundColor: '#f5f5f5',
+        "& tr:nth-of-type(odd) > td": {
+          backgroundColor: "#f5f5f5",
         },
       },
     },
@@ -83,16 +85,15 @@ const MaterialTable = ({ data, columns, tableName }) => {
         }}
       >
         <div className="flex gap-3">
-          <ArrowRightLeft className="h-6 w-6 mr-2" />
           <h3 className="font-semibold">{tableName}</h3>
         </div>
-        
-       
+
         {/* Export Data */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <CloudDownload/>
-            
+            <Tooltip title="Export Data">
+              <CloudDownload />
+            </Tooltip>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
@@ -126,7 +127,9 @@ const MaterialTable = ({ data, columns, tableName }) => {
                         <Button
                           disabled={table.getRowModel().rows.length === 0}
                           //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-                          onClick={() => handleExportRowsPDF(table.getRowModel().rows)}
+                          onClick={() =>
+                            handleExportRowsPDF(table.getRowModel().rows)
+                          }
                           startIcon={<FileDownloadIcon />}
                         >
                           Export Page Rows
@@ -137,10 +140,15 @@ const MaterialTable = ({ data, columns, tableName }) => {
                       <span>
                         <Button
                           disabled={
-                            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+                            !table.getIsSomeRowsSelected() &&
+                            !table.getIsAllRowsSelected()
                           }
                           //only export selected rows
-                          onClick={() => handleExportRowsPDF(table.getSelectedRowModel().rows)}
+                          onClick={() =>
+                            handleExportRowsPDF(
+                              table.getSelectedRowModel().rows
+                            )
+                          }
                           startIcon={<FileDownloadIcon />}
                         >
                           Export Selected Rows
@@ -228,11 +236,16 @@ const MaterialTable = ({ data, columns, tableName }) => {
       </Box>
     ),
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Tooltip title="Edit">
-          <IconButton onClick={() => alert("clicked")}>
-            <EditIcon />
-          </IconButton>
+      <Box sx={{ display: "flex", gap: "1rem" }}>
+        <Tooltip title="View">
+          <Button className="flex items-center" color="error">
+            <Link
+              href={`/admin/cbo/${encodeURIComponent(row.original.id)}`}
+              className="flex gap-1 hover:underline"
+            >
+              <PenLine className="h-4 w-4" /> Manage
+            </Link>
+          </Button>
         </Tooltip>
       </Box>
     ),

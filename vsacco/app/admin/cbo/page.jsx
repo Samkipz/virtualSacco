@@ -6,6 +6,8 @@ import { MdAdd } from "react-icons/md";
 import Search from "@/app/ui/search/search";
 import prisma from "@/app/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { IconButton, Tooltip } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import { Plus } from "lucide-react";
 import { createMRTColumnHelper } from "material-react-table";
 import useSWR from "swr";
@@ -17,31 +19,30 @@ const fetcher = (...args) => fetch(...args).then((res) => res.json());
 const columns = [
   columnHelper.accessor("name", {
     header: "CHAMA",
-    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    muiTableHeadCellProps: { style: { color: "rgb(37 99 235)" } },
   }),
   columnHelper.accessor("description", {
     header: "DESCRIPTION",
-    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    muiTableHeadCellProps: { style: { color: "rgb(37 99 235)" } },
   }),
   columnHelper.accessor("location", {
     header: "LOCATION",
-    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    muiTableHeadCellProps: { style: { color: "rgb(37 99 235)" } },
   }),
   columnHelper.accessor("address", {
     header: "ADDRESS",
-    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    muiTableHeadCellProps: { style: { color: "rgb(37 99 235)" } },
   }),
   columnHelper.accessor("certificate", {
     header: "CERTIFICATE NUMBER",
-    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    muiTableHeadCellProps: { style: { color: "rgb(37 99 235)" } },
   }),
   columnHelper.accessor("date_created", {
     header: "CREATED ON",
-    muiTableHeadCellProps: { style: { color: 'rgb(37 99 235)' } },
+    muiTableHeadCellProps: { style: { color: "rgb(37 99 235)" } },
     Cell: ({ cell }) => <>{new Date(cell.getValue()).toLocaleString()}</>, //optional custom cell render
   }),
 ];
-
 
 const cbo = () => {
   const { data, error, isLoading } = useSWR("/api/chama", fetcher);
@@ -65,13 +66,20 @@ const cbo = () => {
     <>
       <div className="flex w-full justify-end mb-4">
         <Button>
-          <Plus className="mr-2 h-6 w-5" /> Register New Chama
+          <Link
+            href={`/admin/cbo/add`}
+            className="flex"
+          >
+            <Plus className="mr-2 h-6 w-5" /> Register New Chama
+          </Link>
         </Button>
       </div>
       <div className="w-full flex flex-wrap justify-center">
-        <MaterialTable data={data} columns={columns} tableName={<Button variant="contained" className="bg-primary">
-          Some Table Name
-        </Button>}/>
+        <MaterialTable
+          data={data}
+          columns={columns}
+          tableName={<span className="font-semibold">List of Chamas</span>}
+        />
       </div>
     </>
   );
