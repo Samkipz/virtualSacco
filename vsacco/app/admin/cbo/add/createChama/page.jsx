@@ -12,7 +12,7 @@ const CreateChamaForm = ({ onChamaCreated }) => {
     address: "",
     certificate: "",
   });
-
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
