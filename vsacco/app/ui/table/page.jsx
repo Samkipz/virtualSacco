@@ -62,7 +62,23 @@ const MaterialTable = ({ data, columns, tableName }) => {
     data,
     enableRowSelection: true,
     enableRowActions: true,
+    enableRowNumbers: true,
     positionActionsColumn: "last",
+    defaultColumn: {
+      minSize: 20, //allow columns to get smaller than default
+      maxSize: 1000, //allow columns to get larger than default
+      size: 150, //make columns wider by default
+    },
+    displayColumnDefOptions: {
+      'mrt-row-select': {
+        size: 20, //adjust the size of the row select column
+        grow: false, //new in v2.8 (default is false for this column)
+      },
+      'mrt-row-numbers': {
+        size: 20,
+        grow: true, //new in v2.8 (allow this column to grow to fill in remaining space)
+      },
+    },
     getRowId: (row) => row.id,
     muiTableBodyProps: {
       sx: {
@@ -80,7 +96,7 @@ const MaterialTable = ({ data, columns, tableName }) => {
         sx={{
           display: "flex",
           gap: "16px",
-          padding: "8px",
+          padding: "4px",
           flexWrap: "wrap",
         }}
       >
