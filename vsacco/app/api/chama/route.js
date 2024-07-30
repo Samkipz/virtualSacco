@@ -5,27 +5,37 @@ import { redirect } from "next/navigation";
 
 //--------------------------- create new chama----------------------//
 export async function POST(req) {
-  const data = await req.formData();
-
   //create a function that when invoked will create a chama
-  async function createChama(data) {
-      const { chama_name, description, location, address, certificate = null } = Object.fromEntries(data);
+  async function createChama(req) {
+    let {chamaName, description, location, address, registered, certificate=null} = await req.json();
+    console.log(chamaName, description, location, address, registered, certificate);
       
       //Check db if the chama exists
       const existingChama = await prisma.chama.findUnique({
           where: {
-              name: chama_name,
+              name: chamaName,
           },
       });
-      
+
+      //Check db if the cetificate already exists
+      if (certificate){
+        const existingCert = await prisma.chama.findUnique({
+          where: {
+            certificate: certificate,
+          },
+        });
+        if (existingCert) {
+          throw new Error("A chama with this certificate already exist in our database. Please contact admin.");
+        }
+      }
       if (existingChama) {
-          throw new Error("A chama with this name already exists");
+          throw new Error("A chama with this name already exists. Please contact admin.");
       } else {
           // If chama doesn't exist, create a new entry
           try {
               await prisma.chama.create({
                   data: {
-                      name: chama_name,
+                      name: chamaName,
                       description,
                       location,
                       address,
@@ -43,10 +53,10 @@ export async function POST(req) {
   //invoke the create chama function passing into it the data that we received from the form
   //then return a json response
   try {
-      await createChama(data);
+      await createChama(req);
       revalidatePath("/chama");
       revalidatePath("/admin/cbo");
-      return new Response(JSON.stringify({ message: 'Chama created!' }), 
+      return new Response(JSON.stringify({ message: 'New Chama successfully created!' }), 
       {
           status: 200,
           headers: { 'Content-Type': 'application/json' },

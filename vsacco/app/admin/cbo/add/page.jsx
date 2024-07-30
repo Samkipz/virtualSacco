@@ -1,48 +1,3 @@
-// "use client";
-// import { useState, useEffect } from "react";
-// import styles from "./add.module.css";
-// import AddMembersForm from "./addMembers/page";
-// import CreateChamaForm from "./createChama/page";
-
-// const AddCBO = () => {
-//   const [isChamaCreated, setIsChamaCreated] = useState(false);
-
-//   useEffect(() => {
-//     const isCreated = sessionStorage.getItem("isChamaCreated") === "true";
-//     setIsChamaCreated(isCreated);
-//   }, []);
-
-//   const handleChamaCreated = (success) => {
-//     if (success) {
-//       console.log("New Chama created!");
-//       // setIsChamaCreated(true);
-//       // sessionStorage.setItem("isChamaCreated", "true");
-//     }
-//   };
-
-//   const handleBack = () => {
-//     setIsChamaCreated(false);
-//     sessionStorage.removeItem("isChamaCreated");
-//   };
-
-//   return (
-//     <div className={styles.container}>
-//        <CreateChamaForm onChamaCreated={handleChamaCreated} />
-
-//       {/* {!isChamaCreated ? (
-
-//       ) : (
-//         <div>
-//           <button onClick={handleBack}>Back</button>
-//           <AddMembersForm />
-//         </div>
-//       )} */}
-//     </div>
-//   );
-// };
-
-// export default AddCBO;
-
 "use client";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -70,7 +25,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
+import { ThreeDots } from "react-loader-spinner";
 
 const FormSchema = z
   .object({
@@ -104,6 +62,11 @@ const FormSchema = z
 const AddCBO = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [certificate, setCertificate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const { toast } = useToast();
+  const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -115,43 +78,62 @@ const AddCBO = () => {
     },
   });
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
+    setSubmitting(true);
     console.log(JSON.stringify(data, null, 2));
-    // sUBMIT LIKE SHOWN BELOW
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    try {
+      const response = await fetch("/api/chama", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const msg = JSON.parse(await response.text());
+        setSubmitting(false);
+        await Swal.fire({
+          title: "Chama Created!",
+          text: msg.message,
+          icon: "success",
+        }).then(() => router.push("/admin/cbo"));
+      } else {
+        const error = JSON.parse(await response.text());
+        setSubmitting(false);
+        Swal.fire({
+          title: "Error!",
+          text: error.error,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    } catch (error) {
+      setSubmitting(false);
+      Swal.fire({
+        title: "Error!",
+        text: "Some error occured while saving the Chama. Please try again.:",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
   }
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const data = new FormData();
-  //   for (const key in formData) {
-  //     data.append(key, formData[key]);
-  //   }
-
-  //   try {
-  //     const response = await fetch('/api/chama', {
-  //       method: 'POST',
-  //       body: data,
-  //     });
-
-  //     if (response.ok) {
-  //       console.log("Chama created!");
-  //       redirect('/admin/cbo');
-  //     } else {
-  //       console.error("Failed to create chama.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Some error occured chama:", error);
-  //   }
-  // };
+  if (submitting) {
+    return <p className="text-primary flex align-middle justify-center items-center h-screen">
+      <br/>
+      <ThreeDots
+        visible={true}
+        height="80"
+        width="80"
+        color="#2563eb"
+        radius="9"
+        ariaLabel="saving-chama-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+      />
+    </p>;
+  }
 
   return (
     <div className="w-full flex justify-center items-center ">

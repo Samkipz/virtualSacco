@@ -6,6 +6,7 @@ import { Plus } from "lucide-react";
 import { createMRTColumnHelper } from "material-react-table";
 import useSWR from "swr";
 import MaterialTable from "@/app/ui/table/page";
+import { ThreeDots } from "react-loader-spinner";
 
 const columnHelper = createMRTColumnHelper();
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -44,8 +45,20 @@ const cbo = () => {
   const { data, error, isLoading } = useSWR("/api/chama", fetcher);
 
   if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
-  console.log(data);
+  if (isLoading) {
+    return <p className="text-primary flex align-middle justify-center items-center h-screen">
+      <ThreeDots
+        visible={true}
+        height="80"
+        width="80"
+        color="#2563eb"
+        radius="9"
+        ariaLabel="saving-chama-loading"
+        wrapperStyle={{}}
+        wrapperClass=""
+      />
+    </p>;
+  }
 
   return (
     <>

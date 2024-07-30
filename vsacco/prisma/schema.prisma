@@ -13,7 +13,7 @@ model chama {
   description    String           @db.Text
   location       String           @db.VarChar(200)
   address        String           @db.VarChar(150)
-  certificate    String?          @db.VarChar(150)
+  certificate    String?          @unique(map: "certificate_UNIQUE") @db.VarChar(150)
   date_created   DateTime         @default(now()) @db.Timestamp(0)
   deleted        Int              @default(0)
   user_has_chama user_has_chama[]
