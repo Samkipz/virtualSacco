@@ -46,7 +46,7 @@ const cbo = () => {
 
   if (error) return <div>failed to load</div>;
   if (isLoading) {
-    return <p className="text-primary flex align-middle justify-center items-center h-screen">
+    return <div className="text-primary flex align-middle justify-center items-center h-screen">
       <ThreeDots
         visible={true}
         height="80"
@@ -57,7 +57,7 @@ const cbo = () => {
         wrapperStyle={{}}
         wrapperClass=""
       />
-    </p>;
+    </div>;
   }
 
   return (

@@ -1,220 +1,6 @@
-// "use client"
-// import { fetchChama } from "@/app/lib/actions/fetchChama";
-// import styles from "./chamaId.module.css";
-// import { usePathname } from "next/navigation";
-// import { useState, useEffect } from "react";
-// import { approveRequest } from "@/app/lib/actions/joinChama";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
-// import useSWR from "swr";
-// import { ThreeDots } from "react-loader-spinner";
-
-// const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-// const SingleChama = () => {
-//   // const [Chama, setChama] = useState(null);
-//   const pathname = usePathname();
-
-//   const chamaId = parseInt(pathname.split("/").pop());
-//   console.log("====>",chamaId);
-//   const { data, error, isLoading } = useSWR(`/api/chama?id=KSh. {chamaId}`, fetcher);
-
-//   // const getChama = async (chamaId) =>{
-//   //   const fetchedChama = await fetchChama(chamaId);
-//   //   setChama(fetchedChama);
-//   // }
-
-//   // useEffect(()=>{
-//   //   getChama(chamaId);
-//   // },[chamaId])
-
-//   // if(Chama) console.log('======>>',JSON.stringify(Chama,null,2));
-
-//   // ----------- Other Functions to handle page events ------ //
-//   const handleApprove = async (chamaId, userId)=> {
-//     //handle accept
-//     // alert("chama -"+ chamaId+" user - "+ userId);
-//     const response = await approveRequest(chamaId, userId);
-//     console.log("====>",response);
-//     if (response){
-//       alert(response.message);
-//     }
-//   }
-
-//   const chama = data
-//   console.log("====> Chama", chama);
-
-//   if (error) return <div>failed to load</div>;
-//   if (isLoading) {
-//     return <div className="text-primary flex align-middle justify-center items-center h-screen">
-//       <ThreeDots
-//         visible={true}
-//         height="80"
-//         width="80"
-//         color="#2563eb"
-//         radius="9"
-//         ariaLabel="chama-loading"
-//         wrapperStyle={{}}
-//         wrapperClass=""
-//       />
-//     </div>;
-//   }
-
-//   return (
-//     <div className={styles.container}>
-//        <>
-//        <div className={styles.cardsCircleRow}>
-//         <div className={styles.cardsColumn}>
-
-//           <div className={styles.titleRow}>
-//               <h1 className="text-3xl font-bold underline">
-//                 {chama.name}
-//               </h1>
-//               <Dialog>
-//                 <DialogTrigger>Open</DialogTrigger>
-//                 <DialogContent>
-//                   <DialogHeader>
-//                     <DialogTitle>Are you absolutely sure?</DialogTitle>
-//                     <DialogDescription>
-//                       This action cannot be undone. This will permanently delete your account
-//                       and remove your data from our servers.
-//                     </DialogDescription>
-//                   </DialogHeader>
-//                 </DialogContent>
-//               </Dialog>
-
-//           </div>
-//           <div className={styles.cardsRow}>
-//             <div className={styles.card}>
-//               <h3>Members</h3>
-//               <p>Total: 8</p>
-//             </div>
-//             <div className={styles.card}>
-//               <h3>Contribution</h3>
-//               <p>KShs. 200000</p>
-//             </div>
-//             <div className={styles.card}>
-//               <h3>Events</h3>
-//               <p>2 Upcoming this month</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         <div className={styles.circlesBtnColumn}>
-//           <div className={styles.BtnsRow}>
-//               <button className={styles.button}>Contributions</button>
-//               <button className={styles.button}>Edit Chama</button>
-//               <button className={styles.button}>Create Event</button>
-//               <button className={styles.button}>Post a blog</button>
-//           </div>
-
-//           <div className={styles.circlesRow}>
-//             <div className={styles.circle}>
-//               <h4>KShs. 20000</h4>
-//               <p>Total Loans</p>
-//             </div>
-//             <div className={styles.circle}>
-//               <h4 className={styles.h4}>KShs. 100000</h4>
-//               <p>Total Contribution</p>
-//             </div>
-//           </div>
-
-//         </div>
-//       </div>
-
-//       <div className={styles.tableContainer}>
-//         <h3>Recent Members</h3>
-
-//           <table  className={styles.table}>
-//           <thead>
-//             <tr>
-//               <th>#</th>
-//               <th>Full Names</th>
-//               <th>Id Number</th>
-//               <th>Id File</th>
-//               <th>Action</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//           {chama.user_has_chama.length ? chama.user_has_chama.map((user, index) =>(
-//             <tr key={index}>
-//               <td>{index + 1}</td>
-//               <td>{user.user.firstname} {user.user.othernames}</td>
-//               <td>{user.user.idNum}</td>
-//               <td>
-//                 {/* <a href="/path/to/file/sample.pdf" download>
-//                   sample.pdf
-//                 </a> */}
-//                 <a
-//                   href={`data:image/jpeg;base64,KSh. {user.user.idFile}`}
-//                   download={`KSh. {user.user.firstname}_ID.jpg`}
-//                   className={styles.userDoc}
-//                 >
-//                   Download {user.user.firstname} ID File
-//                 </a>
-//               </td>
-//               <td>
-//               <div className={styles.BtnsRow}>
-//                   <button onClick={()=>handleApprove(Chama.id, user.user.id)} className={styles.button}>Accept</button>
-//                   <button className={styles.button}>Decline</button>
-//                   <button className={styles.button}>View</button>
-//                 </div>
-//               </td>
-//             </tr>
-//             )) : undefined}
-//           </tbody>
-//         </table>
-
-//       </div>
-
-//       <div className={styles.tableContainer}>
-//         <h3>Recent Transactions</h3>
-//         <table className={styles.table}>
-//           <thead>
-//             <tr>
-//               <th>#</th>
-//               <th>Full Names</th>
-//               <th>Transaction Type</th>
-//               <th>Transaction Category</th>
-//               <th>Transaction Id</th>
-//               <th>Transaction Date</th>
-//               <th>Authorized By</th>
-//               <th>View More Details</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             <tr>
-//               <td>1</td>
-//               <td>John Smith</td>
-//               <td>Deposit</td>
-//               <td>General Contribution</td>
-//               <td>TX123456</td>
-//               <td>2024-06-24</td>
-//               <td>Admin</td>
-//               <td>
-//                 <button className={styles.button}>View</button>
-//               </td>
-//             </tr>
-//           </tbody>
-//         </table>
-//       </div>
-//        </>
-
-//     </div>
-//   );
-// };
-
-// export default SingleChama;
-
 // ----------------------------//
 //     Shadcn Dashboard        //
-// ---------------------------- //
+//---------------------------- //
 
 import Link from "next/link";
 import {
@@ -261,61 +47,121 @@ import {
 const SingleChama = () => {
   return (
     <div className="flex min-h-screen w-full flex-col">
-      <header className="flex justify-between h-16 items-center border-b bg-background px-4 md:px-6 ">
-        <div className="flex md:w-auto items-start text-lg font-medium text-foreground">
-          Chama Name Here
-        </div>
-        <div className="hidden justify-between font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+          <Link
+            href="#"
+            className="flex items-center gap-2 text-lg font-semibold md:text-base"
+          >
+            <Package2 className="h-6 w-6" />
+            <span className="sr-only">Acme Inc</span>
+          </Link>
           <Link
             href="#"
             className="text-foreground transition-colors hover:text-foreground"
           >
-            Contribution
+            Dashboard
           </Link>
           <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Events
+            Orders
           </Link>
           <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Members
+            Products
           </Link>
           <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Blog
+            Customers
           </Link>
           <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Edit
+            Analytics
           </Link>
-        </div>
-        <div className="flex md:hidden">
+        </nav>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="shrink-0 md:hidden"
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <nav className="grid gap-6 text-lg font-medium">
+              <Link
+                href="#"
+                className="flex items-center gap-2 text-lg font-semibold"
+              >
+                <Package2 className="h-6 w-6" />
+                <span className="sr-only">Acme Inc</span>
+              </Link>
+              <Link href="#" className="hover:text-foreground">
+                Dashboard
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Orders
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Products
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Customers
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Analytics
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
+        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+          <form className="ml-auto flex-1 sm:flex-initial">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search products..."
+                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+              />
+            </div>
+          </form>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="shrink-0 md:hidden"
-              >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle navigation menu</span>
+              <Button variant="secondary" size="icon" className="rounded-full">
+                <CircleUser className="h-5 w-5" />
+                <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Contribution</DropdownMenuItem>
-              <DropdownMenuItem>Events</DropdownMenuItem>
-              <DropdownMenuItem>Members</DropdownMenuItem>
-              <DropdownMenuItem>Blog</DropdownMenuItem>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -325,12 +171,12 @@ const SingleChama = () => {
           <Card x-chunk="dashboard-01-chunk-0">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Total Contribution
+                Total Revenue
               </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">KSh. 45,231.89</div>
+              <div className="text-2xl font-bold">$45,231.89</div>
               <p className="text-xs text-muted-foreground">
                 +20.1% from last month
               </p>
@@ -339,12 +185,12 @@ const SingleChama = () => {
           <Card x-chunk="dashboard-01-chunk-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Loans Requested
+                Subscriptions
               </CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">KSh. 20,211.72</div>
+              <div className="text-2xl font-bold">+2350</div>
               <p className="text-xs text-muted-foreground">
                 +180.1% from last month
               </p>
@@ -352,8 +198,8 @@ const SingleChama = () => {
           </Card>
           <Card x-chunk="dashboard-01-chunk-2">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Members</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Sales</CardTitle>
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">+12,234</div>
@@ -375,7 +221,6 @@ const SingleChama = () => {
             </CardContent>
           </Card>
         </div>
-
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
             <CardHeader className="flex flex-row items-center">
@@ -428,7 +273,7 @@ const SingleChama = () => {
                     <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                       2023-06-23
                     </TableCell>
-                    <TableCell className="text-right">KSh. 250.00</TableCell>
+                    <TableCell className="text-right">$250.00</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
@@ -448,7 +293,7 @@ const SingleChama = () => {
                     <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                       2023-06-24
                     </TableCell>
-                    <TableCell className="text-right">KSh. 150.00</TableCell>
+                    <TableCell className="text-right">$150.00</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
@@ -468,7 +313,7 @@ const SingleChama = () => {
                     <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                       2023-06-25
                     </TableCell>
-                    <TableCell className="text-right">KSh. 350.00</TableCell>
+                    <TableCell className="text-right">$350.00</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
@@ -488,7 +333,7 @@ const SingleChama = () => {
                     <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                       2023-06-26
                     </TableCell>
-                    <TableCell className="text-right">KSh. 450.00</TableCell>
+                    <TableCell className="text-right">$450.00</TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>
@@ -508,7 +353,7 @@ const SingleChama = () => {
                     <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
                       2023-06-27
                     </TableCell>
-                    <TableCell className="text-right">KSh. 550.00</TableCell>
+                    <TableCell className="text-right">$550.00</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -532,7 +377,7 @@ const SingleChama = () => {
                     olivia.martin@email.com
                   </p>
                 </div>
-                <div className="ml-auto font-medium">+KSh. 1,999.00</div>
+                <div className="ml-auto font-medium">+$1,999.00</div>
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
@@ -547,7 +392,7 @@ const SingleChama = () => {
                     jackson.lee@email.com
                   </p>
                 </div>
-                <div className="ml-auto font-medium">+KSh. 39.00</div>
+                <div className="ml-auto font-medium">+$39.00</div>
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
@@ -562,7 +407,7 @@ const SingleChama = () => {
                     isabella.nguyen@email.com
                   </p>
                 </div>
-                <div className="ml-auto font-medium">+KSh. 299.00</div>
+                <div className="ml-auto font-medium">+$299.00</div>
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
@@ -577,7 +422,7 @@ const SingleChama = () => {
                     will@email.com
                   </p>
                 </div>
-                <div className="ml-auto font-medium">+KSh. 99.00</div>
+                <div className="ml-auto font-medium">+$99.00</div>
               </div>
               <div className="flex items-center gap-4">
                 <Avatar className="hidden h-9 w-9 sm:flex">
@@ -592,7 +437,7 @@ const SingleChama = () => {
                     sofia.davis@email.com
                   </p>
                 </div>
-                <div className="ml-auto font-medium">+KSh. 39.00</div>
+                <div className="ml-auto font-medium">+$39.00</div>
               </div>
             </CardContent>
           </Card>

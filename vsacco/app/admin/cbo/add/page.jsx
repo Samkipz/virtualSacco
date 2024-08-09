@@ -100,6 +100,7 @@ const AddCBO = () => {
         }).then(() => router.push("/admin/cbo"));
       } else {
         const error = JSON.parse(await response.text());
+        console.log(error)
         setSubmitting(false);
         Swal.fire({
           title: "Error!",

@@ -22,7 +22,7 @@ const AdminSidebar = () => {
   const pathname = usePathname();
   
   return (
-    <div className="flex-1">
+    <div className="flex-1 sticky">
         {/* <nav className="grid gap-2 text-lg font-medium">
                 <Link
                   href="#"
