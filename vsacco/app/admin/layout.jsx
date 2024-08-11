@@ -37,10 +37,10 @@ import AdminNav from "../ui/adminNav/page";
 
 const layout = async ({ children}) => {
   return (
-    <div className="flex min-h-screen w-screen md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="flex min-h-screen min-w-screen">
       
-      <div className="hidden border-r md:block bg-primary text-primary-foreground md:w-1/4">
-        <div className="flex h-full flex-col gap-2">
+      <div className="hidden sticky top-0 border-r h-screen md:block bg-primary text-primary-foreground md:w-1/4">
+        <div className="sticky top-0 flex h-full flex-col gap-2">
           <div className="flex h-14 items-center px-4 lg:h-[60px] lg:px-6 ">
             <Brand />
           </div>
@@ -66,7 +66,7 @@ const layout = async ({ children}) => {
         </div>
       </div>
       
-      <div className="flex flex-col md:w-3/4 bg-slate-100">
+      <div className="flex flex-col md:w-3/4 bg-slate-100 ">
         <AdminNav/>
         {/* Children */}
           <div className="flex flex-col gap-4 p-4 lg:gap-6 lg:p-6l bg-slate-100">{children}</div>

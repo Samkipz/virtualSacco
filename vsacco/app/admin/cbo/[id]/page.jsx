@@ -4,14 +4,7 @@
 // import { usePathname } from "next/navigation";
 // import { useState, useEffect } from "react";
 // import { approveRequest } from "@/app/lib/actions/joinChama";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
+
 // import useSWR from "swr";
 // import { ThreeDots } from "react-loader-spinner";
 
@@ -215,7 +208,7 @@
 // ----------------------------//
 //     Shadcn Dashboard        //
 // ---------------------------- //
-
+"use client";
 import Link from "next/link";
 import {
   Activity,
@@ -257,13 +250,53 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { usePathname } from "next/navigation";
+import useSWR from "swr";
+import { ThreeDots } from "react-loader-spinner";
+import { approveRequest } from "@/app/lib/actions/joinChama";
+
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 const SingleChama = () => {
+  const pathname = usePathname();
+
+  // fetch chama
+  const chamaId = parseInt(pathname.split("/").pop());
+  const {
+    data: chama,
+    error,
+    isLoading,
+  } = useSWR(`/api/chama?id=${chamaId}`, fetcher);
+  if (error) return <div>failed to load</div>;
+  if (isLoading) {
+    return (
+      <div className="text-primary flex align-middle justify-center items-center h-screen">
+        <ThreeDots
+          visible={true}
+          height="80"
+          width="80"
+          color="#2563eb"
+          radius="9"
+          ariaLabel="chama-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+  }
+
+  // fetch chama members
+  const {
+    data: users,
+    error: membersError,
+    isLoading: LoadingMembers,
+  } = useSWR(`/api/chama/members?id=${chamaId}`, fetcher);
+
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="flex justify-between h-16 items-center border-b bg-background px-4 md:px-6 ">
         <div className="flex md:w-auto items-start text-lg font-medium text-foreground">
-          Chama Name Here
+          {chama.name}
         </div>
         <div className="hidden justify-between font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
@@ -315,7 +348,7 @@ const SingleChama = () => {
               <DropdownMenuItem>Members</DropdownMenuItem>
               <DropdownMenuItem>Blog</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem>Manage</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -380,9 +413,9 @@ const SingleChama = () => {
           <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-4">
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">
-                <CardTitle>Transactions</CardTitle>
+                <CardTitle>Members</CardTitle>
                 <CardDescription>
-                  Recent transactions from your store.
+                  Recent requests to join this Chama.
                 </CardDescription>
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
@@ -396,8 +429,11 @@ const SingleChama = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Customer</TableHead>
-                    <TableHead className="hidden xl:table-column">
+                    <TableHead>Member</TableHead>
+                    <TableHead>Id/Passport No.</TableHead>
+                    <TableHead>Doc</TableHead>
+                    <TableHead>Date Joined</TableHead>
+                    {/* <TableHead className="hidden xl:table-column">
                       Type
                     </TableHead>
                     <TableHead className="hidden xl:table-column">
@@ -405,8 +441,8 @@ const SingleChama = () => {
                     </TableHead>
                     <TableHead className="hidden xl:table-column">
                       Date
-                    </TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    </TableHead> */}
+                    <TableHead className="text-right">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -470,60 +506,16 @@ const SingleChama = () => {
                     </TableCell>
                     <TableCell className="text-right">KSh. 350.00</TableCell>
                   </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Emma Brown</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        emma@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-26
-                    </TableCell>
-                    <TableCell className="text-right">KSh. 450.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-27
-                    </TableCell>
-                    <TableCell className="text-right">KSh. 550.00</TableCell>
-                  </TableRow>
                 </TableBody>
               </Table>
             </CardContent>
           </Card>
           <Card x-chunk="dashboard-01-chunk-5">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
+              <CardTitle>Recent Transactions</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/01.png" alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Olivia Martin
@@ -535,10 +527,6 @@ const SingleChama = () => {
                 <div className="ml-auto font-medium">+KSh. 1,999.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/02.png" alt="Avatar" />
-                  <AvatarFallback>JL</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Jackson Lee
@@ -550,10 +538,6 @@ const SingleChama = () => {
                 <div className="ml-auto font-medium">+KSh. 39.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                  <AvatarFallback>IN</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Isabella Nguyen
@@ -565,10 +549,6 @@ const SingleChama = () => {
                 <div className="ml-auto font-medium">+KSh. 299.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/04.png" alt="Avatar" />
-                  <AvatarFallback>WK</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     William Kim
@@ -580,10 +560,6 @@ const SingleChama = () => {
                 <div className="ml-auto font-medium">+KSh. 99.00</div>
               </div>
               <div className="flex items-center gap-4">
-                <Avatar className="hidden h-9 w-9 sm:flex">
-                  <AvatarImage src="/avatars/05.png" alt="Avatar" />
-                  <AvatarFallback>SD</AvatarFallback>
-                </Avatar>
                 <div className="grid gap-1">
                   <p className="text-sm font-medium leading-none">
                     Sofia Davis
@@ -597,6 +573,7 @@ const SingleChama = () => {
             </CardContent>
           </Card>
         </div>
+        <div className="flex">Recent Transactions detailed</div>
       </main>
     </div>
   );

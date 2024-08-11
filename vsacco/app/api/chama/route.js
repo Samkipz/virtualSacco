@@ -76,7 +76,7 @@ export async function GET(req) {
     //Extract parameters from the url
     const url = new URL(req.url).searchParams;
     const id = Number(url.get("id")) || 0;
-    console.log("Backend ID====>",id);
+    
 
     // ---------------------- ANOTHER BETTER APPROACH --------------//
     //          const { searchParams } = new URL(request.url)       //
@@ -120,4 +120,5 @@ export async function GET(req) {
     return new NextResponse('Method Not Allowed!', { status: 405 });
   }
 }
+
 
