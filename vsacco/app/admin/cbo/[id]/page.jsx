@@ -219,7 +219,9 @@ import {
   Menu,
   Package2,
   Search,
+  Trash2,
   Users,
+  View,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -250,10 +252,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
 import useSWR from "swr";
 import { ThreeDots } from "react-loader-spinner";
 import { approveRequest } from "@/app/lib/actions/joinChama";
+import { columns } from "./members/columns";
+import { DataTable } from "./members/data-table";
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -267,6 +288,44 @@ const SingleChama = () => {
     error,
     isLoading,
   } = useSWR(`/api/chama?id=${chamaId}`, fetcher);
+  // fetch chama members
+  const {
+    data: members,
+    error: membersError,
+    isLoading: LoadingMembers,
+  } = useSWR(`/api/chama/members?id=${chamaId}`, fetcher);
+  console.log("Members===>", members);
+
+  // //get flat data to use in our tables
+  // const flatMembers = members?.map(member => ({
+  //   ...member,        // Spread the parent object (member)
+  //   ...member.user    // Spread the nested 'user' object
+  // }));
+  // console.log("flatMembers===>", flatMembers);
+
+  // Extract only specific fields in filteredMembers
+  const filteredMembers = members?.map((member) => ({
+    chama_id: member.chama_id,
+    joinRequestDate: member.create_time,
+    status: member.status,
+    processedDate: member.update_time,
+    registrationDate: member.user.create_time,
+    dob: member.user.dob,
+    email: member.user.email,
+    firstname: member.user.firstname,
+    isAdmin: member.user.isAdmin,
+    othernames: member.user.othernames,
+    gender: member.user.gender,
+    user_id: member.user_id,
+    idFile: member.user.idFile,
+    idNum: member.user.idNum,
+    phone1: member.user.phone1,
+    phone2: member.user.phone2,
+    wallet_label: member.wallet_label,
+  }));
+
+  console.log("filteredMembers===>", filteredMembers);
+
   if (error) return <div>failed to load</div>;
   if (isLoading) {
     return (
@@ -285,17 +344,10 @@ const SingleChama = () => {
     );
   }
 
-  // fetch chama members
-  const {
-    data: users,
-    error: membersError,
-    isLoading: LoadingMembers,
-  } = useSWR(`/api/chama/members?id=${chamaId}`, fetcher);
-
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="flex justify-between h-16 items-center border-b bg-background px-4 md:px-6 ">
-        <div className="flex md:w-auto items-start text-lg font-medium text-foreground">
+        <div className="flex md:w-auto items-start text-lg font-medium text-foreground capitalize">
           {chama.name}
         </div>
         <div className="hidden justify-between font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -419,7 +471,7 @@ const SingleChama = () => {
                 </CardDescription>
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
+                <Link href="/admin/cbo/members">
                   View All
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
@@ -433,6 +485,7 @@ const SingleChama = () => {
                     <TableHead>Id/Passport No.</TableHead>
                     <TableHead>Doc</TableHead>
                     <TableHead>Date Joined</TableHead>
+                    <TableHead>Status</TableHead>
                     {/* <TableHead className="hidden xl:table-column">
                       Type
                     </TableHead>
@@ -446,66 +499,116 @@ const SingleChama = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Liam Johnson</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        liam@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Sale
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-23
-                    </TableCell>
-                    <TableCell className="text-right">KSh. 250.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Olivia Smith</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        olivia@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Refund
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Declined
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-24
-                    </TableCell>
-                    <TableCell className="text-right">KSh. 150.00</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>
-                      <div className="font-medium">Noah Williams</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                        noah@example.com
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      Subscription
-                    </TableCell>
-                    <TableCell className="hidden xl:table-column">
-                      <Badge className="text-xs" variant="outline">
-                        Approved
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                      2023-06-25
-                    </TableCell>
-                    <TableCell className="text-right">KSh. 350.00</TableCell>
-                  </TableRow>
+                  {filteredMembers ? (
+                    filteredMembers.map((member, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <div className="font-medium capitalize">
+                            {member.firstname} {member.othernames}
+                          </div>
+                          <div className="hidden text-sm text-muted-foreground md:inline">
+                            {member.email}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {member.idNum}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {member.idNum}
+                        </TableCell>
+                        <TableCell className="text-left">
+                          {member.joinRequestDate}
+                        </TableCell>
+                        <TableCell className="text-left text-white capitalize">
+                          {member.status === "approved" ? (
+                            <Badge
+                              className="text-xs bg-green-500"
+                              variant="success"
+                            >
+                              {member.status}
+                            </Badge>
+                          ) : member.status === "pending" ? (
+                            <Badge className="text-xs bg-yellow-500">
+                              {member.status}
+                            </Badge>
+                          ) : (
+                            <Badge className="text-xs" variant="destructive">
+                              {member.status}
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span className="flex justify-end gap-2">
+                            <AlertDialog>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <AlertDialogTrigger asChild>
+                                      <Trash2
+                                        size={18}
+                                        className="text-red-500 hover:cursor-pointer"
+                                      />
+                                    </AlertDialogTrigger>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Remove Member</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will
+                                    permanently delete your account and remove
+                                    your data from our servers.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction>
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <View
+                                    size={18}
+                                    className="text-blue-500 hover:cursor-pointer"
+                                  />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>View Details</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </span>
+                        </TableCell>
+
+                        {/* <TableCell className="hidden xl:table-column">
+                          Sale
+                        </TableCell>
+                        <TableCell className="hidden xl:table-column">
+                          <Badge className="text-xs" variant="outline">
+                            Approved
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
+                          2023-06-23
+                        </TableCell>
+                        <TableCell className="text-right">
+                          KSh. 250.00
+                        </TableCell> */}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <div>No Members Available Here</div>
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

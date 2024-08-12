@@ -11,15 +11,17 @@ export async function GET(req) {
     console.log("===> Backend ID", chamaId)
 
     try {
-        const chamaMembers = await prisma.user_has_chama.findMany({
-          where:{
-            chama_id: chamaId,
-          },
-          include:{
-            user: true,
+      const chamaMembers = await prisma.user_has_chama.findMany({
+        where: {
+          chama_id: chamaId,
+          user: {
+            deleted: 0,  // This filters users with deleted field set to 0
           }
+        },
+        include: {
+          user: true,  // Include the user relation
+        },
         });
-
         // return new NextResponse({body: JSON.stringify(chamaList)}, {status: 200})
   
         return new NextResponse(JSON.stringify(chamaMembers),{status: 200});

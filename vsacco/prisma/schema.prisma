@@ -32,7 +32,7 @@ model user {
   gender         String           @db.VarChar(50)
   dob            DateTime         @db.Date
   idNum          Int              @unique(map: "idNum_UNIQUE")
-  idFile         Bytes            @db.Blob
+  idFile         String           @db.VarChar(200)
   email          String           @db.VarChar(50)
   phone1         String           @db.VarChar(50)
   phone2         String?          @db.VarChar(45)
