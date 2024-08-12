@@ -269,6 +269,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { usePathname } from "next/navigation";
 import useSWR from "swr";
 import { ThreeDots } from "react-loader-spinner";
@@ -303,10 +313,16 @@ const SingleChama = () => {
   // }));
   // console.log("flatMembers===>", flatMembers);
 
+  // Date formater
+  const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+
   // Extract only specific fields in filteredMembers
   const filteredMembers = members?.map((member) => ({
     chama_id: member.chama_id,
-    joinRequestDate: member.create_time,
+    joinRequestDate: new Date(member.create_time).toLocaleDateString(
+      undefined,
+      options
+    ),
     status: member.status,
     processedDate: member.update_time,
     registrationDate: member.user.create_time,
@@ -528,7 +544,10 @@ const SingleChama = () => {
                               {member.status}
                             </Badge>
                           ) : member.status === "pending" ? (
-                            <Badge className="text-xs bg-yellow-500">
+                            <Badge
+                              className="text-xs bg-yellow-500"
+                              variant="warning"
+                            >
                               {member.status}
                             </Badge>
                           ) : (
@@ -577,10 +596,56 @@ const SingleChama = () => {
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <View
-                                    size={18}
-                                    className="text-blue-500 hover:cursor-pointer"
-                                  />
+                                  <Dialog>
+                                    <DialogTrigger asChild>
+                                      <View
+                                        size={18}
+                                        className="text-blue-500 hover:cursor-pointer"
+                                      />
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px] md:max-w-2xl lg:max-w-6xl h-4/5">
+                                      <DialogHeader>
+                                        <DialogTitle className="capitalize">{member.firstname} {member.othernames}</DialogTitle>
+                                        <DialogDescription>
+                                          Make changes to your profile here.
+                                          Click save when you're done.
+                                        </DialogDescription>
+                                      </DialogHeader>
+                                      <div className="grid gap-4 py-4">
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                          <Label
+                                            htmlFor="name"
+                                            className="text-right"
+                                          >
+                                            Name
+                                          </Label>
+                                          <Input
+                                            id="name"
+                                            defaultValue="Pedro Duarte"
+                                            className="col-span-3"
+                                          />
+                                        </div>
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                          <Label
+                                            htmlFor="username"
+                                            className="text-right"
+                                          >
+                                            Username
+                                          </Label>
+                                          <Input
+                                            id="username"
+                                            defaultValue="@peduarte"
+                                            className="col-span-3"
+                                          />
+                                        </div>
+                                      </div>
+                                      <DialogFooter>
+                                        <Button type="submit">
+                                          Save changes
+                                        </Button>
+                                      </DialogFooter>
+                                    </DialogContent>
+                                  </Dialog>
                                 </TooltipTrigger>
                                 <TooltipContent>
                                   <p>View Details</p>
@@ -607,7 +672,11 @@ const SingleChama = () => {
                       </TableRow>
                     ))
                   ) : (
-                    <div>No Members Available Here</div>
+                    <TableRow>
+                      <TableCell className="text-right">
+                        <div>No Members Available Here</div>
+                      </TableCell>
+                    </TableRow>
                   )}
                 </TableBody>
               </Table>
