@@ -28,7 +28,7 @@ const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout} className={styles.logoutButton}>
+    <button onClick={handleLogout} className="font-semibold border-none text-inherit cursor-pointer">
       Logout
     </button>
   );

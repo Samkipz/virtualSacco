@@ -31,6 +31,7 @@ export async function middleware(req) {
       }
     }
   } else {
+    // no token
     // Redirect unauthenticated users away from protected routes
     if (pathname.startsWith('/admin') || pathname.startsWith('/profile')) {
       return NextResponse.redirect(new URL('/login', req.url));

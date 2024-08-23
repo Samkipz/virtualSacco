@@ -19,8 +19,30 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import AdminSidebar from "../adminSidebar/page";
+import LogoutButton from "../Logout/page";
 
 const AdminNav = () => {
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/user/logout", {
+        method: "POST",
+        body: "",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        console.log("User logged out!");
+        router.push("/");
+        router.refresh();
+      } else {
+        console.error("Failed to log out.");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
   return (
     <header className="sticky top-0 flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6 bg-primary text-primary-foreground">
       <Sheet>
@@ -103,7 +125,9 @@ const AdminNav = () => {
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem>
+              <LogoutButton/>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

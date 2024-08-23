@@ -2,6 +2,7 @@ import prisma from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 import { storage } from "@/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { NextResponse } from 'next/server';
 
 export const config = {
   api: {
@@ -33,21 +34,22 @@ export async function POST(req) {
         fileUrl = await getDownloadURL(snapshot.ref);
       } catch (err) {
         console.error('Error uploading file:', err);
-        return res.status(500).json({ error: 'File upload failed' });
+        return NextResponse.json({ message:'Error uploading file', error: err.error }, { status: 500 });
+        // return res.status(500).json({ error: 'File upload failed' });
       }
     }
     if (!file) {
-      return res.status(400).json({ error: 'Please attach your id/passport' });
+      return NextResponse.json({ error:'Please attach your id/passport'}, { status: 400 });
     }
 
     const { firstname, othernames, gender, dob, idNum, email, phone1, phone2, password1, password2, terms } = formData;
 
     if (password1 !== password2) {
-      return res.status(400).json({ error: 'Passwords do not match' });
+      return NextResponse.json({ error: 'Passwords do not match' }, { status: 400 });
     }
 
     if (terms !== 'true') {
-      return res.status(400).json({ error: 'You must accept the terms and conditions' });
+      return NextResponse.json({ error: 'You must accept the terms and conditions' }, { status: 400 });
     }
 
     const userIdNum = parseInt(idNum);
@@ -57,7 +59,7 @@ export async function POST(req) {
     });
 
     if (existingUser) {
-      return res.status(400).json({ error: 'User with this ID number already exists' });
+      return NextResponse.json({ error: 'User with this ID number already exists' }, { status: 400 });
     }
 
     const dobISO = new Date(dob).toISOString();
@@ -79,9 +81,9 @@ export async function POST(req) {
       },
     });
 
-    return res.status(200).json({ message: 'User created!' });
+    return NextResponse.json({ message: 'User created!' }, { status: 200 });
   } catch (error) {
     console.error('Error creating user:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return NextResponse.json({ message:'Internal server error occured', error: err.error }, { status: 500 });
   }
 }

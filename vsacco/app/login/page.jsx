@@ -25,6 +25,12 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useActionState } from "react";
+import { authenticate } from "../lib/actions/authenticate";
+import { FaExclamationCircle } from "react-icons/fa";
+import { GrStatusGood } from "react-icons/gr";
+import clsx from "clsx";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   idNum: z
@@ -46,7 +52,10 @@ const Login = () => {
     idNum: "",
     password: "",
   });
-  const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+  // const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
 
   // 1. Define form.
   const form = useForm({
@@ -57,6 +66,7 @@ const Login = () => {
   });
   // 2. Define a submit handler.
   async function onSubmit(values) {
+    setPending(true);
     try {
       const response = await fetch("/api/user/login", {
         method: "POST",
@@ -66,11 +76,15 @@ const Login = () => {
         },
       });
 
-      console.log(JSON.stringify(response,null,2));
+      if (response) setPending(false);
 
       if (response.ok) {
         const data = response;
-        alert("User logged in!");
+        setMessage(
+          <p className="font-semibold text-green-500 flex flex-col items-center justify-center">
+            <GrStatusGood /> User Logged in!
+          </p>
+        );
 
         if (data.isAdmin) {
           router.push("/admin");
@@ -80,7 +94,8 @@ const Login = () => {
           router.refresh();
         }
       } else {
-        console.error("Failed to log in.");
+        const error = JSON.parse(await response.text());
+        setError(error.message);
       }
     } catch (error) {
       console.error("Error logging in:", error);
@@ -97,9 +112,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    
   };
+
+  // if (pending) {
+  //   return (
+  //     <Button disabled>
+  //       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+  //       Loading.. Please wait
+  //     </Button>
+  //   );
+  // }
+
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
@@ -107,7 +130,7 @@ const Login = () => {
         <CardDescription>Use your National ID/passport number.</CardDescription>
       </CardHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="grid gap-4">
             <FormField
               control={form.control}
@@ -137,7 +160,35 @@ const Login = () => {
             />
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button className="w-full">Sign in</Button>
+            {message ||
+              (error && (
+                <span
+                  className={clsx("flex flex-col items-center justify-center", {
+                    "text-green-500": message,
+                    "text-red-500": error,
+                  })}
+                >
+                  {message ? (
+                    <>
+                      <GrStatusGood />
+                      {message}{" "}
+                    </>
+                  ) : error ? (
+                    <>
+                      <FaExclamationCircle /> {error}
+                    </>
+                  ) : undefined}
+                </span>
+              ))}
+
+            {pending ? (
+              <Button disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loging in.. Please wait
+              </Button>
+            ) : (
+              <Button className="w-full">Sign in</Button>
+            )}
             <CardDescription>
               Dont have an account? <Link href="/register">Register here</Link>
             </CardDescription>

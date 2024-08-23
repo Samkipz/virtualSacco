@@ -10,7 +10,7 @@ datasource db {
 model chama {
   id             Int              @id @unique @default(autoincrement())
   name           String           @unique @db.VarChar(200)
-  description    String           @db.Text
+  description    String
   location       String           @db.VarChar(200)
   address        String           @db.VarChar(150)
   certificate    String?          @unique @db.VarChar(150)
@@ -22,7 +22,7 @@ model chama {
 model sacco {
   id          Int     @id @default(autoincrement())
   name        String  @db.VarChar(150)
-  description String? @db.Text
+  description String?
 }
 
 model user {
@@ -31,29 +31,16 @@ model user {
   othernames     String           @db.VarChar(50)
   gender         String           @db.VarChar(50)
   dob            DateTime         @db.Date
-  idNum          Int              @unique
-  idFile         String           @db.VarChar(200)
+  idNum          String           @unique @db.VarChar(50)
+  idFileUrl      String           @db.VarChar(200)
   email          String           @db.VarChar(50)
   phone1         String           @db.VarChar(50)
   phone2         String?          @db.VarChar(45)
   password       String           @db.VarChar(200)
   create_time    DateTime?        @default(now())
-  isAdmin        Int?             
+  isAdmin        Int?
   deleted        Int?             @default(0)
-  idfile         idfile[]
   user_has_chama user_has_chama[]
-}
-
-model idfile {
-  id           Int      @id @default(autoincrement())
-  name         String   @db.VarChar(100)
-  size         Int
-  type         String   @db.VarChar(100)
-  user_id      Int
-  lastModified DateTime
-  user         user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@index([user_id])
 }
 
 model user_has_chama {
