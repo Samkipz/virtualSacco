@@ -2,6 +2,11 @@ export const authConfig = {
   pages: {
     signIn: '/login',
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 3 * 60,  // Set session duration to 5 minutes (300 seconds)
+    updateAge: 3 * 60,  // Update the session maxAge only if the user has been active within 5 minutes
+  },
   callbacks: {
     async jwt({token, user}){
       // console.log("USER IS >>> --- ",user);
@@ -11,6 +16,10 @@ export const authConfig = {
         token.othernames = user.othernames,
         token.idNum = user.idNum,
         token.isAdmin = user.isAdmin
+
+        // Set session expiration to 5 minutes from now
+        // const currentTime = Date.now();
+        // session.expires = new Date(currentTime + 3 * 60 * 1000).toISOString();
       }
       return token;
     },
@@ -24,18 +33,7 @@ export const authConfig = {
       }
       return session;
     },
-    // async jwt({ token, user }) {
-    //   if (user) {
-    //     token.isAdmin = user.isAdmin;
-    //   }
-    //   return token;
-    // },
-    // async session({ session, token }) {
-    //   session.user.isAdmin = token.isAdmin;
-    //   return session;
-    // },
     async authorized({auth }) {
-      // const token = await getToken({ req, secret: process.env.AUTH_SECRET });
       const isLoggedIn = !!auth?.user;
       return isLoggedIn; 
     },

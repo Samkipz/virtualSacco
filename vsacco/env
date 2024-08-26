@@ -3,7 +3,10 @@
 # DATABASE_URL="mysql://root:Samkipz12345@localhost:3306/vsacco"
 
 # postgress
-DATABASE_URL="postgresql://postgres:samkipz12345@localhost:5432/vsacco?schema=public"
+# DATABASE_URL="postgresql://postgres:samkipz12345@localhost:5432/vsacco?schema=public"
+
+# AIVEN
+DATABASE_URL="postgres://avnadmin:AVNS_OtGPmTVYTY7L1EfR_yi@virtual-sacco-ndiemasam-efca.d.aivencloud.com:16230/defaultdb?sslmode=require"
 
 # AUTH
 AUTH_SECRET=secretkey

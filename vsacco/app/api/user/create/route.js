@@ -52,10 +52,10 @@ export async function POST(req) {
       return NextResponse.json({ error: 'You must accept the terms and conditions' }, { status: 400 });
     }
 
-    const userIdNum = parseInt(idNum);
+    // const userIdNum = parseInt(idNum);
 
     const existingUser = await prisma.user.findUnique({
-      where: { idNum: userIdNum },
+      where: { idNum: idNum },
     });
 
     if (existingUser) {
@@ -72,7 +72,7 @@ export async function POST(req) {
         othernames,
         gender,
         dob: dobISO,
-        idNum: userIdNum,
+        idNum,
         email,
         phone1,
         phone2,

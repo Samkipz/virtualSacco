@@ -1,27 +1,34 @@
 "use client";
-import React, { useState } from 'react';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Link from "next/link";
 import { ImEnter } from "react-icons/im";
-import FileUpload from '../ui/fileUpload/page';
-import { useRouter } from 'next/navigation';
+import FileUpload from "../ui/fileUpload/page";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FaExclamationCircle } from "react-icons/fa";
+import { GrStatusGood } from "react-icons/gr";
+import clsx from "clsx";
+import { Loader2 } from "lucide-react";
 
 const Register = () => {
   const router = useRouter();
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
   const [formData, setFormData] = useState({
-    firstname: '',
-    othernames: '',
-    gender: '',
-    dob: '',
-    idNum: '',
+    firstname: "",
+    othernames: "",
+    gender: "",
+    dob: "",
+    idNum: "",
     idFile: null,
-    email: '',
-    phone1: '',
-    phone2: '',
-    password1: '',
-    password2: '',
+    email: "",
+    phone1: "",
+    phone2: "",
+    password1: "",
+    password2: "",
     terms: false,
   });
 
@@ -29,7 +36,8 @@ const Register = () => {
     const { name, value, type, checked, files } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : type === 'file' ? files[0] : value,
+      [name]:
+        type === "checkbox" ? checked : type === "file" ? files[0] : value,
     }));
   };
 
@@ -48,29 +56,44 @@ const Register = () => {
       data.append(key, formData[key]);
     }
 
+    setPending(true);
     try {
-      const response = await fetch('/api/user/create', {
-        method: 'POST',
+      const response = await fetch("/api/user/create", {
+        method: "POST",
         body: data,
       });
 
+      if (response) setPending(false);
       if (response.ok) {
+        setMessage(
+          <p className="font-semibold text-green-500 flex flex-col items-center justify-center">
+            <GrStatusGood /> User created!
+          </p>
+        );
         console.log("User created!");
+
         router.push("/login");
       } else {
+        setError(error.message);
         console.error("Failed to create user.");
       }
     } catch (error) {
+      setError(error.message);
       console.error("Error creating user:", error);
     }
   };
 
   return (
     <div className="flex justify-center min-h-screen">
-      <form onSubmit={handleSubmit} className="flex flex-col md:flex-row bg-white 
-     border bg-card text-card-foreground mt-12 mx-8 h-max  rounded-lg shadow-2xl w-full max-w-4xl">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col md:flex-row bg-white 
+     border bg-card text-card-foreground mt-12 mx-8 h-max  rounded-lg shadow-2xl w-full max-w-4xl"
+      >
         <div className="flex flex-col w-full md:w-1/2 p-4 pb-8">
-          <h2 className="text-2xl font-semibold text-primary mb-4">General Information</h2>
+          <h2 className="text-2xl font-semibold text-primary mb-4">
+            General Information
+          </h2>
           <div className="grid grid-cols-1 gap-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -111,7 +134,9 @@ const Register = () => {
                   required
                   className="block w-full mt-1 rounded-md border-b shadow-sm"
                 >
-                  <option value="" disabled>Select Gender</option>
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                   <option value="other">Other</option>
@@ -143,15 +168,13 @@ const Register = () => {
                 className="border-b"
               />
             </div>
-            <div className='flex flex-row'>
-              <Label className='mb-4'>Upload National ID Image</Label>
+            <div className="flex flex-row">
+              <Label className="mb-4">Upload National ID Image</Label>
+            </div>
+            <div className="flex flex-col flex-grow gap-4 relative">
+              <div className="flex flex-row justify-center h-24 p-12 ">
+                <FileUpload onFileUpload={handleFileUpload} />
               </div>
-            <div className='flex flex-col flex-grow gap-4 relative'>
-              
-              <div className='flex flex-row justify-center h-24 p-12 '>
-               <FileUpload onFileUpload={handleFileUpload}/>
-              </div>
-              
             </div>
           </div>
         </div>
@@ -238,16 +261,57 @@ const Register = () => {
                 className="mr-2 bg-white text-black w-min"
               />
               <Label htmlFor="terms">
-                I do accept the <Link href="#" className="underline">Terms and Conditions</Link> of this site.
+                I do accept the{" "}
+                <Link href="#" className="underline">
+                  Terms and Conditions
+                </Link>{" "}
+                of this site.
               </Label>
             </div>
             <div>
-              <Button type="submit" 
-              className="w-full mt-2 bg-white text-black flex items-center justify-center gap-2 hover:bg-secondary hover:text-primary">
-                <ImEnter /> Register
-              </Button>
+              {message ||
+                (error && (
+                  <span
+                    className={clsx(
+                      "flex flex-col items-center justify-center",
+                      {
+                        "text-green-500": message,
+                        "text-red-500": error,
+                      }
+                    )}
+                  >
+                    {message ? (
+                      <>
+                        <GrStatusGood />
+                        {message}{" "}
+                      </>
+                    ) : error ? (
+                      <>
+                        <FaExclamationCircle /> {error}
+                      </>
+                    ) : undefined}
+                  </span>
+                ))}
+
+              {pending ? (
+                <Button disabled>
+                  <Loader2 className="mr-2 bg-white text-black flex items-center justify-center h-4 w-4 animate-spin" />
+                  Creating User.. Please wait
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  className="w-full mt-2 bg-white text-black flex items-center justify-center gap-2 hover:bg-secondary hover:text-primary"
+                >
+                  <ImEnter /> Register
+                </Button>
+              )}
+
               <div className="mt-4">
-                Already have an account? <Link href="/login" className="underline">Login here</Link>
+                Already have an account?{" "}
+                <Link href="/login" className="underline">
+                  Login here
+                </Link>
               </div>
             </div>
           </div>

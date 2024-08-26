@@ -43,6 +43,9 @@ const Profile = async () => {
     },
   });
 
+  const currentTime = Date.now();
+  console.log("Current Time is === ", currentTime);
+
   // Dummy data for demonstration
   const userData = {
     name: "John Doe",
@@ -393,7 +396,9 @@ const Profile = async () => {
             <CardContent>
               <ul className="list-disc pl-6">
                 {userData.events.map((event, index) => (
-                  <li key={index}>{event.name} - {event.date}</li>
+                  <li key={index}>
+                    {event.name} - {event.date}
+                  </li>
                 ))}
               </ul>
             </CardContent>
