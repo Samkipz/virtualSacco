@@ -4,12 +4,6 @@ import { storage } from "@/firebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { NextResponse } from 'next/server';
 
-export const config = {
-  api: {
-    bodyParser: false, // Disallow body parsing, since we're using formData
-  },
-};
-
 export async function POST(req) {
   try {
     const data = await req.formData();
