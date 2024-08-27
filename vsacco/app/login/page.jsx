@@ -86,13 +86,7 @@ const Login = () => {
           </p>
         );
 
-        if (data.isAdmin) {
-          router.push("/admin");
-          router.refresh();
-        } else {
-          router.push("/profile");
-          router.refresh();
-        }
+        router.refresh();
       } else {
         const error = JSON.parse(await response.text());
         setError(error.message);
