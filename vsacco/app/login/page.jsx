@@ -84,8 +84,7 @@ const Login = () => {
             <GrStatusGood /> User Logged in!
           </p>
         );
-        router.push('/profile');
-        router.refresh();
+        router.push('/profile')
       } else {
         const error = JSON.parse(await response.text());
         setError(error.message);
