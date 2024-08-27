@@ -81,11 +81,12 @@ const Login = () => {
       if (response) setPending(false);
 
       if (response.ok) {
-        setMessage(
+        await setMessage(
           <p className="font-semibold text-green-500 flex flex-col items-center justify-center">
             <GrStatusGood /> User Logged in!
           </p>
         );
+        router.push('/admin');
       } else {
         console.log("Response.ok error ==> ", response.ok);
         const error = JSON.parse(await response.text());
