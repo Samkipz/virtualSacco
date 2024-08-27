@@ -5,8 +5,8 @@ import { getToken } from 'next-auth/jwt';
 export async function middleware(req) {
   const secret = process.env.AUTH_SECRET;
   const token = await getToken({ req, cookieName: process.env.VERCEL_ENV === "development"
-    ? "next-auth.session-token"
-    : "__Secure-next-auth.session-token",
+    ? "authjs.session-token"
+    : "__Secure-authjs.session-token",
 secret });
 
   const { pathname } = req.nextUrl;
