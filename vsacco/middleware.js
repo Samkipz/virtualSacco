@@ -7,6 +7,10 @@ export async function middleware(req) {
 
   const { pathname } = req.nextUrl;
 
+  console.log('Token:', token);
+  console.log('Pathname:', pathname);
+
+
   if (token) {
     // Redirect logged-in users away from login page
     if (pathname === '/login') { 
