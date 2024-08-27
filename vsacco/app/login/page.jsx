@@ -79,13 +79,12 @@ const Login = () => {
       if (response) setPending(false);
 
       if (response.ok) {
-        const data = response;
         setMessage(
           <p className="font-semibold text-green-500 flex flex-col items-center justify-center">
             <GrStatusGood /> User Logged in!
           </p>
         );
-
+        router.push('/profile');
         router.refresh();
       } else {
         const error = JSON.parse(await response.text());
