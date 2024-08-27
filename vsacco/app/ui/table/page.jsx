@@ -1,14 +1,15 @@
-'use client'
+'use client';
+
 import {
   MaterialReactTable,
   createMRTColumnHelper,
   useMaterialReactTable,
-} from "material-react-table";
-import { Box, Button, IconButton, Tooltip } from "@mui/material";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { mkConfig, generateCsv, download } from "export-to-csv"; //or use your library of choice here
-import { jsPDF } from "jspdf"; //or use your library of choice here
-import autoTable from "jspdf-autotable";
+} from 'material-react-table';
+import { Box, Button, IconButton, Tooltip } from '@mui/material';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { mkConfig, generateCsv, download } from 'export-to-csv'; 
+import { jsPDF } from 'jspdf'; 
+import autoTable from 'jspdf-autotable';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,20 +21,23 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { ArrowRightLeft, CloudDownload, PenLine } from "lucide-react";
-import EditIcon from "@mui/icons-material/Edit";
-import Link from "next/link";
-import { NotebookPen } from "lucide-react";
+} from '@/components/ui/dropdown-menu';
+import { ArrowRightLeft, CloudDownload, PenLine } from 'lucide-react';
+import EditIcon from '@mui/icons-material/Edit';
+import Link from 'next/link';
 
 const csvConfig = mkConfig({
-  fieldSeparator: ",",
-  decimalSeparator: ".",
+  fieldSeparator: ',',
+  decimalSeparator: '.',
   useKeysAsHeaders: true,
 });
 
-const MaterialTable = ({ data, columns, tableName }) => {
-  // Export PDF
+const MaterialTable = ({ data = [], columns = [], tableName }) => {
+  if (!Array.isArray(data) || !Array.isArray(columns)) {
+    console.error("Data or columns are not properly initialized");
+    return null; 
+  }
+
   const handleExportRowsPDF = (rows) => {
     const doc = new jsPDF();
     const tableData = rows.map((row) => Object.values(row.original));
@@ -44,7 +48,7 @@ const MaterialTable = ({ data, columns, tableName }) => {
       body: tableData,
     });
 
-    doc.save("User-Transactions.pdf");
+    doc.save('User-Transactions.pdf');
   };
 
   const handleExportRows = (rows) => {
@@ -64,26 +68,25 @@ const MaterialTable = ({ data, columns, tableName }) => {
     enableRowSelection: true,
     enableRowActions: true,
     enableRowNumbers: true,
-    positionActionsColumn: "last",
+    positionActionsColumn: 'last',
     defaultColumn: {
-      minSize: 20, //allow columns to get smaller than default
-      maxSize: 1000, //allow columns to get larger than default
-      size: 150, //make columns wider by default
+      minSize: 20,
+      maxSize: 1000,
+      size: 150,
     },
     displayColumnDefOptions: {
       'mrt-row-select': {
-        size: 20, //adjust the size of the row select column
-        grow: false, //new in v2.8 (default is false for this column)
+        size: 20,
+        grow: false,
       },
       'mrt-row-numbers': {
         size: 20,
-        grow: true, //new in v2.8 (allow this column to grow to fill in remaining space)
+        grow: true,
       },
     },
     getRowId: (row) => row.id,
     muiTableBodyProps: {
       sx: {
-        //stripe the rows, make odd rows a darker color
         "& tr:nth-of-type(odd) > td": {
           backgroundColor: "#f5f5f5",
         },
@@ -127,7 +130,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                           disabled={
                             table.getPrePaginationRowModel().rows.length === 0
                           }
-                          //export all rows, including from the next page, (still respects filtering and sorting)
                           onClick={() =>
                             handleExportRowsPDF(
                               table.getPrePaginationRowModel().rows
@@ -143,7 +145,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                       <span>
                         <Button
                           disabled={table.getRowModel().rows.length === 0}
-                          //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
                           onClick={() =>
                             handleExportRowsPDF(table.getRowModel().rows)
                           }
@@ -160,7 +161,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                             !table.getIsSomeRowsSelected() &&
                             !table.getIsAllRowsSelected()
                           }
-                          //only export selected rows
                           onClick={() =>
                             handleExportRowsPDF(
                               table.getSelectedRowModel().rows
@@ -186,7 +186,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                     <DropdownMenuItem>
                       <span>
                         <Button
-                          //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
                           onClick={handleExportData}
                           startIcon={<FileDownloadIcon />}
                         >
@@ -200,7 +199,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                           disabled={
                             table.getPrePaginationRowModel().rows.length === 0
                           }
-                          //export all rows, including from the next page, (still respects filtering and sorting)
                           onClick={() =>
                             handleExportRows(
                               table.getPrePaginationRowModel().rows
@@ -216,7 +214,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                       <span>
                         <Button
                           disabled={table.getRowModel().rows.length === 0}
-                          //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
                           onClick={() =>
                             handleExportRows(table.getRowModel().rows)
                           }
@@ -233,7 +230,6 @@ const MaterialTable = ({ data, columns, tableName }) => {
                             !table.getIsSomeRowsSelected() &&
                             !table.getIsAllRowsSelected()
                           }
-                          //only export selected rows
                           onClick={() =>
                             handleExportRows(table.getSelectedRowModel().rows)
                           }
@@ -253,7 +249,7 @@ const MaterialTable = ({ data, columns, tableName }) => {
       </Box>
     ),
     renderRowActions: ({ row, table }) => (
-      <Box sx={{ display: "flex", gap: "1rem" }}>
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Tooltip title="View">
           <Button className="flex items-center" color="error">
             <Link
