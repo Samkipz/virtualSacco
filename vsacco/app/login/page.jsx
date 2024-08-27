@@ -76,6 +76,8 @@ const Login = () => {
         },
       });
 
+      console.log("Response form login ==> ", response);
+
       if (response) setPending(false);
 
       if (response.ok) {
@@ -84,7 +86,6 @@ const Login = () => {
             <GrStatusGood /> User Logged in!
           </p>
         );
-        router.push('/profile')
       } else {
         const error = JSON.parse(await response.text());
         setError(error.message);
