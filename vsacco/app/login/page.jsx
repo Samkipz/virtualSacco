@@ -90,6 +90,7 @@ const Login = () => {
       } else {
         console.log("Response.ok error ==> ", response.ok);
         const error = JSON.parse(await response.text());
+        console.log("Error message ==> ", error.message);
         setError(error.message);
       }
     } catch (error) {
