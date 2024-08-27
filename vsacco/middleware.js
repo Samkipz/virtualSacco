@@ -9,7 +9,7 @@ export async function middleware(req) {
 
   if (token) {
     // Redirect logged-in users away from login page
-    if (pathname === '/login') {
+    if (pathname === '/login') { 
       if (token.isAdmin) {
         return NextResponse.redirect(new URL('/admin', req.url));
       } else {
