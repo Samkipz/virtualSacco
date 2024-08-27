@@ -87,6 +87,7 @@ const Login = () => {
           </p>
         );
       } else {
+        console.log("Response.ok error ==> ", response.ok);
         const error = JSON.parse(await response.text());
         setError(error.message);
       }
