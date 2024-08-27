@@ -18,7 +18,7 @@ export async function middleware(req) {
     // Redirect logged-in users away from login page
     if(token.isAdmin === 1) console.log('Admin token true, i.e :',token.isAdmin);
     if (pathname === '/login') { 
-      if (token.isAdmin) {
+      if (token.isAdmin === 1) {
         return NextResponse.redirect(new URL('/admin', req.url));
       } else {
         return NextResponse.redirect(new URL('/profile', req.url));
