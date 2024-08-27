@@ -12,6 +12,15 @@ export async function POST(request) {
   var req_approval = "YES" // Set to 'NO' if you want the transaction 
                          // to go through without calling the approve method
 
+  payouts
+  .approve(resp, false)
+  .then((resp) => {
+    console.log(`Payouts approve:`, resp);
+  })
+  .catch((err) => {
+    console.error(`Payouts approve error:`,err);
+  });
+
   try {
     // const response = await wallet.intraTransfer(source_wallet_id, destination_wallet_id, amount, narrative);
     const response = await payouts.mpesa({
