@@ -6,7 +6,7 @@ export async function POST(req) {
   let { idNum, password } = await req.json();
   try{
     await signIn("credentials", {idNum, password});
-    return NextResponse.json({ message:'Login successful!'}, { status: 200 });
+    // return NextResponse.json({ message:'Login successful!'}, { status: 200 });
   }
   catch (error) {
     if (error instanceof AuthError) {
