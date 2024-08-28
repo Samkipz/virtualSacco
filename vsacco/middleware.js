@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-
 export async function middleware(req) {
   const secret = process.env.AUTH_SECRET;
   const token = await getToken({ req, cookieName: process.env.NODE_ENV === 'production'
@@ -10,22 +9,11 @@ export async function middleware(req) {
 
   const { pathname } = req.nextUrl;
 
-  console.log('Token:', token);
-  console.log('Pathname:', pathname);
-
-
   if (token) {
-    // Redirect logged-in users away from login page
-    // if(token.isAdmin === 1) console.log('Admin token true, i.e :',token.isAdmin);
-
-
-    // if (pathname === '/login' && token.isAdmin === 1) {
-    //   return NextResponse.redirect(new URL('/admin', req.url), { method: 'GET' });
-    // }
-
-    // if (pathname === '/login' && !token.isAdmin) {
-    //   return NextResponse.redirect(new URL('/profile', req.url), { method: 'GET' });
-    // }
+    // // Redirect logged-in users away from login/register pages
+    if (pathname.startsWith('/login') || pathname.startsWith('/register') && token) {
+      return NextResponse.redirect(new URL('/profile', req.url), { method: 'GET' });
+    }
 
     // Redirect admin to admin profile.
     if (pathname.startsWith('/profile') && token.isAdmin) {
@@ -43,7 +31,6 @@ export async function middleware(req) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }
-
   return NextResponse.next();
 }
 
