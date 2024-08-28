@@ -81,7 +81,7 @@ const Login = () => {
       if (response) setPending(false);
 
       if (response.ok) {
-        await setMessage(
+        setMessage(
           <p className="font-semibold text-green-500 flex flex-col items-center justify-center">
             <GrStatusGood /> User Logged in!
           </p>
