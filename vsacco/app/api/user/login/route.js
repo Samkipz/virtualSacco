@@ -14,7 +14,7 @@ export async function POST(req) {
         case 'CallbackRouteError':
           return NextResponse.json({ message:'Invalid credentials provided!', error: error}, { status: 401 });
         default:
-          return NextResponse.json({ message:'An error occured!', error: error}, { status: 500 });
+          return NextResponse.json({ message:'Some other error occured! try again', error: error}, { status: 500 });
       }
     }
     throw error;

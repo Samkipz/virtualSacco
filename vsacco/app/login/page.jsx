@@ -25,8 +25,6 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useActionState } from "react";
-import { authenticate } from "../lib/actions/authenticate";
 import { FaExclamationCircle } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import clsx from "clsx";
@@ -76,7 +74,7 @@ const Login = () => {
         },
       });
 
-      console.log("Response form login ==> ", JSON.stringify(response,null,2));
+      console.log("Response form login ==> ", response);
 
       if (response) setPending(false);
 
@@ -123,15 +121,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
-
-  // if (pending) {
-  //   return (
-  //     <Button disabled>
-  //       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-  //       Loading.. Please wait
-  //     </Button>
-  //   );
-  // }
 
   return (
     <Card className="w-full max-w-sm">
