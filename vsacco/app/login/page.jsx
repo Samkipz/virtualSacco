@@ -76,7 +76,7 @@ const Login = () => {
         },
       });
 
-      console.log("Response form login ==> ", JSON.stringify(response));
+      console.log("Response form login ==> ", JSON.stringify(response,null,2));
 
       if (response) setPending(false);
 
