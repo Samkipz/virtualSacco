@@ -29,6 +29,7 @@ import { FaExclamationCircle } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
+import { getUser } from "../lib/actions/getUser";
 
 const formSchema = z.object({
   idNum: z
@@ -53,7 +54,21 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [userPresent, setUserPresent] = useState(false);
   // const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
+
+  const checkUser = async () => {
+    const us = await getUser();
+    if (us) {
+      setUserPresent(true);
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  if(userPresent) router.push('/profile');
 
   // 1. Define form.
   const form = useForm({

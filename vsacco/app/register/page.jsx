@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ImEnter } from "react-icons/im";
 import FileUpload from "../ui/fileUpload/page";
@@ -11,12 +11,14 @@ import { FaExclamationCircle } from "react-icons/fa";
 import { GrStatusGood } from "react-icons/gr";
 import clsx from "clsx";
 import { Loader2 } from "lucide-react";
+import { getUser } from "../lib/actions/getUser";
 
 const Register = () => {
   const router = useRouter();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
+  const [userPresent, setUserPresent] = useState(false);
   const [formData, setFormData] = useState({
     firstname: "",
     othernames: "",
@@ -31,6 +33,19 @@ const Register = () => {
     password2: "",
     terms: false,
   });
+
+  const checkUser = async () => {
+    const us = await getUser();
+    if (us) {
+      setUserPresent(true);
+    }
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  if(userPresent) router.push('/profile');
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
