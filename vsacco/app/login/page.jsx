@@ -84,27 +84,27 @@ const Login = () => {
             <GrStatusGood /> User Logged in!
           </p>
         );
-        router.push('/profile');
+        await router.push("/");
       } else {
         console.log("Response.ok error ==> ", response.ok);
-    
+
         const responseText = await response.text();
-    
+
         // Handle the case where the response text is empty
         if (responseText && responseText.trim() !== "") {
-            try {
-                const error = JSON.parse(responseText);
-                console.log("Error message ==> ", error.message);
-                setError(error.message);
-            } catch (jsonError) {
-                console.error("Failed to parse JSON:", jsonError);
-                setError("An unexpected error occurred while parsing the response");
-            }
+          try {
+            const error = JSON.parse(responseText);
+            console.log("Error message ==> ", error.message);
+            setError(error.message);
+          } catch (jsonError) {
+            console.error("Failed to parse JSON:", jsonError);
+            setError("An unexpected error occurred while parsing the response");
+          }
         } else {
-            console.log("Empty response or non-JSON content");
-            setError("An unexpected error occurred");
+          console.log("Empty response or non-JSON content");
+          setError("An unexpected error occurred");
         }
-    }
+      }
     } catch (error) {
       console.error("Error logging in:", error);
     }

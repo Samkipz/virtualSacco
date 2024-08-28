@@ -17,27 +17,23 @@ export async function middleware(req) {
   if (token) {
     // Redirect logged-in users away from login page
     if(token.isAdmin === 1) console.log('Admin token true, i.e :',token.isAdmin);
-    
-    if (pathname === '/login') { 
-      if (token.isAdmin === 1) {
-        return NextResponse.redirect(new URL('/admin', req.url));
-      } else {
-        return NextResponse.redirect(new URL('/profile', req.url));
-      }
+
+    if (pathname === '/login' && token.isAdmin === 1) {
+      return NextResponse.redirect(new URL('/admin', req.url), { method: 'GET' });
+    }
+
+    if (pathname === '/login' && !token.isAdmin) {
+      return NextResponse.redirect(new URL('/profile', req.url), { method: 'GET' });
     }
 
     // Redirect admin to admin profile.
-    if (pathname.startsWith('/profile')) {
-      if (token.isAdmin) {
-        return NextResponse.redirect(new URL('/admin', req.url));
-      }
+    if (pathname.startsWith('/profile') && token.isAdmin) {
+      return NextResponse.redirect(new URL('/admin', req.url), { method: 'GET' });
     }
 
     // Protect the /admin route (Redirect non-admin logged in users to normal profile)
-    if (pathname.startsWith('/admin')) {
-      if (!token.isAdmin) {
-        return NextResponse.redirect(new URL('/profile', req.url));
-      }
+    if (pathname.startsWith('/admin') && !token.isAdmin) {
+      return NextResponse.redirect(new URL('/profile', req.url), { method: 'GET' });
     }
   } else {
     // no token
