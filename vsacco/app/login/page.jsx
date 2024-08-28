@@ -84,7 +84,7 @@ const Login = () => {
             <GrStatusGood /> User Logged in!
           </p>
         );
-        await router.push("/");
+        await router.push("/admin");
       } else {
         console.log("Response.ok error ==> ", response.ok);
 
