@@ -11,9 +11,9 @@ export async function middleware(req) {
 
   if (token) {
     // // Redirect logged-in users away from login/register pages
-    if (pathname.startsWith('/login') || pathname.startsWith('/register') && token) {
-      return NextResponse.redirect(new URL('/profile', req.url), { method: 'GET' });
-    }
+    // if (pathname.startsWith('/login') || pathname.startsWith('/register') && token) {
+    //   return NextResponse.redirect(new URL('/profile', req.url), { method: 'GET' });
+    // }
 
     // Redirect admin to admin profile.
     if (pathname.startsWith('/profile') && token.isAdmin) {
