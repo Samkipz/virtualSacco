@@ -19,7 +19,7 @@ const ChamaList = async () => {
         Our Chamas
       </h1>
       <p className="text-muted-foreground mt-2 text-lg">
-        Learn more about palettify and write your posts with MDX.
+        You can grow with us. Learn more about a chama, join the most appealing and, start investing. 
       </p>
       <div>
         <h2 className="mb-2 mt-4 text-xl font-bold">Search chama by name</h2>
