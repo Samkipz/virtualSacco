@@ -46,7 +46,15 @@ const ChamaList = async () => {
                     <div>
                       <h2 className="text-lg font-bold">{chama.name}</h2>
                       <p className="mb-2 text-sm text-gray-400">
-                        Published on Nov 19, 2023 • 4 min read
+                        Added on{" "}
+                        {new Date(chama.date_created).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )}
                       </p>
                     </div>
                   </div>
