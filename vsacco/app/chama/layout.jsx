@@ -7,7 +7,7 @@ const layout = ({children}) => {
     <div className={styles.container}>
         <div className={styles.content}>
             <Navbar/>
-            <div className={styles.children}>{children}</div>
+            <div className="min-h-[calc(100vh-64px)] pb-4">{children}</div>
         </div>
     </div>
   )
