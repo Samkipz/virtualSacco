@@ -1,19 +1,5 @@
-.container{
-    display: flex;
-    width: 100%;
-}
-.titleArea{
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-}
 
-.titleArea h1{
-    font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 .Btn{
     font-size: 15px;
