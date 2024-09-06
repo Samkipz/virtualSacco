@@ -90,8 +90,8 @@ const HeroSlider = () => {
             </Link>
           </span>
         </span>
-        <CarouselPrevious className="absolute left-1/4" />
-        <CarouselNext className="absolute right-1/4" />
+        <CarouselPrevious className="hidden md:flex absolute md:left-[12%] lg:left-1/4" />
+        <CarouselNext className="hidden md:flex absolute md:right-[12%] lg:right-1/4" />
       </Carousel>
       {/* <div className="py-2 text-center text-sm text-muted-foreground">
         Slide {current} of {count}
