@@ -494,7 +494,7 @@ const Nav = ({ session }) => {
                             src="https://github.com/shadcn.png"
                             alt="@shadcn"
                           />
-                          <AvatarFallback>AD</AvatarFallback>
+                          <AvatarFallback>DP</AvatarFallback>
                         </Avatar>
                         <p className="whitespace-nowrap">
                           Welcome {session.firstname}!
@@ -540,17 +540,6 @@ const Nav = ({ session }) => {
               Login
             </Link>
           )}
-          {/* <Link
-            href="#"
-            className={clsx(
-              "font-medium flex whitespace-nowrap items-center w-full transition-colors hover:text-foreground hover:bg-gray-300 px-8 py-7",
-              {
-                "text-black bg-white": pathname === "/logi",
-              }
-            )}
-          >
-            Login/L
-          </Link> */}
         </div>
         {/* Mobile view */}
         <div className="flex md:hidden">
@@ -582,13 +571,13 @@ const Nav = ({ session }) => {
                   <span className="sr-only">Sacco Logo</span>
                 </Link>
                 <Link
-                  href="#"
+                  href="/"
                   className="text-muted-foreground hover:text-foreground hover:bg-muted p-3"
                 >
                   Home
                 </Link>
                 <Link
-                  href="#"
+                  href="/chama"
                   className="text-muted-foreground hover:text-foreground hover:bg-muted p-3"
                 >
                   Our Chamas
@@ -605,12 +594,30 @@ const Nav = ({ session }) => {
                 >
                   About
                 </Link>
-                <Link
+                {session ? (
+                  <span className="hover:text-foreground hover:bg-muted p-3">
+                    <LogoutButton />
+                  </span>
+                ) : (
+                  // <Link
+                  //   href="/login"
+                  //   className="hover:text-foreground hover:bg-muted p-3"
+                  // >
+                  //   Logout
+                  // </Link>
+                  <Link
+                    href="/login"
+                    className="hover:text-foreground hover:bg-muted p-3"
+                  >
+                    Login
+                  </Link>
+                )}
+                {/* <Link
                   href="#"
                   className="hover:text-foreground hover:bg-muted p-3"
                 >
                   Logout Area
-                </Link>
+                </Link> */}
               </nav>
             </SheetContent>
           </Sheet>
