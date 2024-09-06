@@ -595,16 +595,18 @@ const Nav = ({ session }) => {
                   About
                 </Link>
                 {session ? (
-                  <span className="hover:text-foreground hover:bg-muted p-3">
-                    <LogoutButton />
+                  <span className="grid gap-2 text-lg font-medium">
+                    <Link
+                      href="/profile"
+                      className="hover:text-foreground hover:bg-muted p-3"
+                    >
+                      Profile
+                    </Link>
+                    <span className="hover:text-foreground hover:bg-muted p-3">
+                      <LogoutButton />
+                    </span>
                   </span>
                 ) : (
-                  // <Link
-                  //   href="/login"
-                  //   className="hover:text-foreground hover:bg-muted p-3"
-                  // >
-                  //   Logout
-                  // </Link>
                   <Link
                     href="/login"
                     className="hover:text-foreground hover:bg-muted p-3"
