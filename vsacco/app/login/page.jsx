@@ -75,6 +75,7 @@ const Login = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       idNum: "",
+      password: "",
     },
   });
   // 2. Define a submit handler.
@@ -88,35 +89,27 @@ const Login = () => {
           "Content-Type": "application/json",
         },
       });
-
-      console.log("Response form login ==> ", response);
-
       if (response) setPending(false);
 
       if (response.ok) {
         setMessage(
           <p className="font-semibold text-green-500 flex flex-col items-center justify-center">
-            <GrStatusGood /> User Logged in!
+            <GrStatusGood /> User Loged in!. Redirecting, please wait.
           </p>
         );
         await router.push("/admin");
       } else {
-        console.log("Response.ok error ==> ", response.ok);
-
         const responseText = await response.text();
 
         // Handle the case where the response text is empty
         if (responseText && responseText.trim() !== "") {
           try {
             const error = JSON.parse(responseText);
-            console.log("Error message ==> ", error.message);
             setError(error.message);
           } catch (jsonError) {
-            console.error("Failed to parse JSON:", jsonError);
             setError("An unexpected error occurred while parsing the response");
           }
         } else {
-          console.log("Empty response or non-JSON content");
           setError("An unexpected error occurred");
         }
       }
@@ -153,7 +146,7 @@ const Login = () => {
                 <FormItem className="space-y-2">
                   <FormLabel>National ID/Passport</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="ID/Passport" {...field} />
+                    <Input type="number" placeholder="ID/Passport" {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -166,7 +159,7 @@ const Login = () => {
                 <FormItem className="space-y-2">
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" placeholder="Password" {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

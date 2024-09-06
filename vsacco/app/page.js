@@ -5,10 +5,16 @@ import HeroSlider from './ui/slider/page'
 
 const Homepage = () => {
   return (
-    <div className={styles}>
+    <div className='h-screen flex flex-col'>
       <Navbar/>
-      <HeroSlider/>
-      <Footer/>
+      <div className='flex h-fit'> 
+        <HeroSlider/>
+      </div>
+      <div className='flex flex-col flex-grow'> 
+        <Footer/>
+      </div>
+      
+      
     </div>
   )
 }

@@ -79,7 +79,7 @@ const Chama = () => {
         user.userId
       );
       await Swal.fire({
-        title: "Cancel Membership request",
+        title: "Cancel Membership",
         text: "Do you really want to cancel your request?",
         icon: "warning",
         showCancelButton: true,
@@ -94,7 +94,7 @@ const Chama = () => {
             setMembershipStatus("");
             setMessage(response.message);
             Swal.fire({
-              title: "Deleted!",
+              title: "Cancelled!",
               text: "Your request has been deleted.",
               icon: "success",
             });
@@ -111,6 +111,12 @@ const Chama = () => {
     console.log("Result is -->", result.success);
     if (result.success) {
       setMembershipStatus("pending");
+      Swal.fire({
+        title: "Success!",
+        text: result.message,
+        icon: "success",
+      });
+    } else {
       Swal.fire({
         title: "Not loged in",
         text: result.message,
@@ -142,7 +148,7 @@ const Chama = () => {
                       <span
                         className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-colors 
                       focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none 
-                      disabled:opacity-50 h-9 px-4 py-2 border rounded-l bg-yellow-500 text-white"
+                      disabled:opacity-50 h-9 px-4 py-2 mx-0 border border-yellow-500 rounded-l bg-yellow-500 text-white"
                       >
                         Membership Pending
                       </span>
@@ -153,7 +159,7 @@ const Chama = () => {
                               className="inline-flex items-center justify-center whitespace-nowrap rounded-r text-sm font-medium 
                             transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none 
                             disabled:opacity-50 bg-background shadow-sm hover:bg-red-600 hover:text-white cursor-pointer h-9 
-                            px-4 py-2 border border-red-500"
+                            px-4 py-2 mx-0 border border-red-500"
                               onClick={() => {
                                 handleCancel(chama);
                               }}

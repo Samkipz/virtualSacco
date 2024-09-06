@@ -20,7 +20,7 @@ const Navbar = async ({ admin }) => {
       ) : (
         <div className={styles.adminNavContainer}>
           <div className={styles.navTitle}>
-            {/* {pathname.split("/").pop()} */} 
+            {/* {pathname.split("/").pop()} */}  
             Admin
           </div>
           <div className={styles.navMenu}>

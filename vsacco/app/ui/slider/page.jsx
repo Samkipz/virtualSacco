@@ -1,102 +1,102 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import styles from "./slider.module.css";
+import { useState, useEffect, useRef } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselApi,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const HeroSlider = () => {
-  const [slideIndex, setSlideIndex] = useState(1);
-  const [prevSlideIndex, setPrevSlideIndex] = useState(null);
-  const [hovered, setHovered] = useState(false);
-  const totalSlides = 4; // Adjust based on actual number of slides
+  const [api, setApi] = useState();
+  const [current, setCurrent] = useState(1);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      plusSlides(1);
-    }, 6000); // Change slide every 6 seconds
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [slideIndex]);
-
-  const plusSlides = (n) => {
-    setPrevSlideIndex(slideIndex);
-    let newIndex = slideIndex + n;
-    if (newIndex > totalSlides) {
-      newIndex = 1; // Loop back to the beginning
-    } else if (newIndex < 1) {
-      newIndex = totalSlides; // Loop to the end
+    if (!api) {
+      return;
     }
-    setSlideIndex(newIndex);
-  };
 
-  // ------ handle toggle buttons ------ //
-  const handleMouseOver = () => {
-    setHovered(true);
-  };
-  const handleMouseOut = () => {
-    setHovered(false);
-  }
-  
+    setCount(api.scrollSnapList().length);
+    setCurrent(api.selectedScrollSnap() + 1);
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap() + 1);
+    });
+  }, [api]);
+
+  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
+
+  const images = ["/image1.jpg", "/image2.jpg", "/image3.jpg", "/image4.jpg"];
+
+  const heroText = [
+    "Table banking is the future for today!",
+    "Together we can achieve more!",
+    "Start your Investment as early as now!",
+    "Build your future with us",
+  ];
 
   return (
-      <div className={styles.container}>
-        {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className={`${styles.mySlides} ${
-              i === slideIndex ? styles['slide-in-right'] : prevSlideIndex === i ? styles['slide-out-left'] : ""
-            }`}
-            style={{ display: i === slideIndex || i === prevSlideIndex ? "block" : "none" }}
-          >
-            <Image
-              fill
-              src={`/image${i}.jpg`} // Adjust the source based on images
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              alt=""
-              className={styles.bgImage}
-              priority
-            />
-            <div className={styles.heroCenter}>
-              <h1 className="flex text-white items-center justify-center">
-                {i === 1
-                  ? "Table banking is the future for today!"
-                  : i === 2
-                  ? "Together we can achieve more!"
-                  : i === 3
-                  ? "Start your Investment as early as now!"
-                  : "Build your future with us"}
-              </h1>
-              <div className={styles.btnGrp}>
-                <Link
-                  href="/"
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                  className={`${styles.btn} ${styles.btnMd} 
-                  ${ hovered ? "text-white bg-none border-2 border-white" : "text-white bg-primary border-2 border-primary"}`}
-                >
-                  Learn More about us
-                </Link>
-                <Link
-                  href="/"
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                  className={`${styles.btn} ${styles.btnMd} 
-                  ${ hovered ? "text-white bg-primary border-2 border-primary" : "text-white bg-none border-2 border-white"}`}
-                >
-                  Know our Services
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
-        <span className={`${styles.prev} hover:text-primary `} onClick={() => plusSlides(-1)}>
-          ❮❮
+    <div className="mx-0 h-full w-full">
+      <Carousel
+        setApi={setApi}
+        plugins={[plugin.current]}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+        className="w-full"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+      >
+        <CarouselContent className="w-full h-full mx-0">
+          {images.map((src, index) => (
+            <CarouselItem key={index} className="w-full mx-0 p-0">
+              <span className="relative w-full h-[42rem] flex flex-col align-middle items-center justify-center">
+                <Image
+                  fill
+                  src={src}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  alt=""
+                  className="absolute object-cover"
+                  priority
+                />
+              </span>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <span className="flex flex-col flex-wrap justify-center items-center  absolute text-white top-1/3 w-full">
+          <p className="flex flex-wrap items-center justify-center 
+          justify-items-center font-bold text-3xl text-wrap text-center w-full md:w-4/5 pb-6">
+            {heroText[current - 1]}
+          </p>
+          <span className="flex flex-shrink flex-nowrap gap-2">
+            <Link href="#" className="group relative inline-block overflow-hidden border-2 border-background hover:border-background bg-transparent px-8 py-3 font-medium text-background">
+              <span className="absolute left-0 top-0 mb-0 flex h-full w-0 translate-x-0 transform bg-background opacity-90 transition-all duration-300 ease-out group-hover:w-full"></span>
+              <span className="relative transition-colors duration-300 ease-out group-hover:text-primary hover:border-none">
+                Learn About Us
+              </span>
+            </Link>
+            <Link href="#" className="group relative inline-block overflow-hidden border-2 border-primary hover:border-background bg-primary px-8 py-3 font-medium text-background">
+              <span className="absolute left-0 top-0 mb-0 flex h-full w-0 translate-x-0 transform bg-background opacity-90 transition-all duration-300 ease-out group-hover:w-full"></span>
+              <span className="relative transition-colors duration-300 ease-out group-hover:text-foreground hover:border-none">
+                Know Our Services
+              </span>
+            </Link>
+          </span>
         </span>
-        <span className={`${styles.next} hover:text-primary `} onClick={() => plusSlides(1)}>
-          ❯❯
-        </span>
-      </div>
-   
+        <CarouselPrevious className="absolute left-1/4" />
+        <CarouselNext className="absolute right-1/4" />
+      </Carousel>
+      {/* <div className="py-2 text-center text-sm text-muted-foreground">
+        Slide {current} of {count}
+      </div> */}
+    </div>
   );
 };
 
